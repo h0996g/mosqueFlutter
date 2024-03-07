@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:mosque/screen/register.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mosque/component/const.dart';
+import 'package:mosque/helper/cachhelper.dart';
+import 'package:mosque/helper/observer.dart';
+import 'package:mosque/screen/Auth/login.dart';
+import 'package:mosque/screen/home/home.dart';
 import 'package:mosque/theme/theam.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
+  await CachHelper.init();
+  Widget startWidget = Login();
+  // CachHelper.removdata(key: "TOKEN");
+  // TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
+
+  if (TOKEN != '') {
+    DECODEDTOKEN = JwtDecoder.decode(TOKEN);
+    startWidget = const Home();
+  }
+
+  runApp(MyApp(
+    startwidget: startWidget,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+  final Widget startwidget;
+  const MyApp({super.key, required this.startwidget});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,7 +44,7 @@ class MyApp extends StatelessWidget {
       locale: const Locale("fa", "IR"),
       debugShowCheckedModeBanner: false,
       theme: light_theme(),
-      home: Register(),
+      home: startwidget,
     );
   }
 }
