@@ -2,13 +2,13 @@ class UserModel {
   bool? status;
   String? success;
   String? token;
-  Data? data;
+  DataUserModel? data;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     success = json['success'];
     token = json['token'];
-    data = Data.fromJson(json['data']);
+    data = DataUserModel.fromJson(json['data']);
   }
 
   Map<String, dynamic> toJson() {
@@ -21,7 +21,21 @@ class UserModel {
   }
 }
 
-class Data {
+class DataUserModel {
+  DataUserModel({
+    this.id,
+    this.nom,
+    this.prenom,
+    this.email,
+    this.telephone,
+    this.age,
+    this.photo,
+    this.commants,
+    this.createdAt,
+    this.updatedAt,
+    // required this._V,
+  });
+
   String? id;
   String? nom;
   String? prenom;
@@ -30,11 +44,11 @@ class Data {
   int? age;
   String? photo;
   List<dynamic>? commants;
+
   String? createdAt;
   String? updatedAt;
-  int? _V;
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataUserModel.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     nom = json['nom'];
     prenom = json['prenom'];
@@ -42,10 +56,10 @@ class Data {
     telephone = json['telephone'];
     age = json['age'];
     photo = json['photo'];
-    commants = List.castFrom<dynamic, dynamic>(json['commants']);
+    commants = json['commants'];
+
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    _V = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,11 +70,11 @@ class Data {
     _data['email'] = email;
     _data['telephone'] = telephone;
     _data['age'] = age;
+
     _data['photo'] = photo;
     _data['commants'] = commants;
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
-    _data['__v'] = _V;
     return _data;
   }
 }

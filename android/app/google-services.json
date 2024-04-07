@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "873318761374",
+    "project_id": "mosque-c27a5",
+    "storage_bucket": "mosque-c27a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873318761374:android:b45c65c6759cbf079a0c8f",
+        "android_client_info": {
+          "package_name": "com.example.mosque"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHBxuUFMzc3R96vaWuYswnv2zQLBZBPv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

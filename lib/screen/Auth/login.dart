@@ -1,68 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/helper/cachhelper.dart';
+import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
+import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
-import 'package:mosque/screen/Auth/register.dart';
-import 'package:mosque/screen/home/home.dart';
+import 'package:mosque/screen/Auth/recoverypasswordscreen.dart';
+import 'package:mosque/screen/Auth/register_user.dart';
+import 'package:mosque/screen/userScreens/home/home.dart';
 
 class Login extends StatelessWidget {
-  Login({Key? key}) : super(key: key);
-
+  Login({super.key});
   final emailController = TextEditingController();
   final passController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: formKey,
+    var screenSize = MediaQuery.of(context).size;
+    var screenHeight = screenSize.height;
+    var screenWidth = screenSize.width;
+    double verticalPadding = screenHeight * 0.02;
+    double horizontalPadding = screenWidth * 0.05;
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+            vertical: verticalPadding, horizontal: horizontalPadding),
+        child: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: screenHeight * 0.2),
+                Text(
+                  'مرحبًا بعودتك،',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                SizedBox(height: screenHeight * 0.01),
+                // Text(
+                //   "Discover Limitess Choices and Unmatched Convenience.",
+                //   style: Theme.of(context).textTheme.bodyMedium,
+                // )
+              ],
+            ),
+            Form(
+              key: formKey,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
                 child: Column(
                   children: [
-                    const Text(
-                      "تسجيل الدخول",
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                    defaultForm3(
+                      context: context,
+                      controller: emailController,
+                      type: TextInputType.emailAddress,
+                      valid: (String value) {
+                        if (value.isEmpty) {
+                          return 'يجب ألا يكون البريد الإلكتروني فارغًا';
+                        }
+                      },
+                      prefixIcon: const Icon(
+                        Icons.keyboard_arrow_right_sharp,
+                        color: Colors.grey,
+                      ),
+                      labelText: "بريد إلكتروني",
+                      textInputAction: TextInputAction.next,
                     ),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    defaultForm(
-                        context: context,
-                        controller: emailController,
-                        type: TextInputType.emailAddress,
-                        lable: const Text(
-                          'البريد الالكتروني',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        valid: (String value) {
-                          if (value.isEmpty) {
-                            return 'Email Must Not Be Empty';
-                          }
-                        },
-                        onFieldSubmitted: () {},
-                        prefixIcon: const Icon(
-                          Icons.email,
-                          color: Colors.grey,
-                        ),
-                        textInputAction: TextInputAction.next),
-                    const SizedBox(
-                      height: 18,
-                    ),
+                    SizedBox(height: screenHeight * 0.015),
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
-                        return defaultForm(
+                        return defaultForm3(
                             context: context,
                             textInputAction: TextInputAction.done,
                             controller: passController,
@@ -71,15 +78,12 @@ class Login extends StatelessWidget {
                             obscureText: AuthCubit.get(context).ishidden,
                             valid: (value) {
                               if (value.isEmpty) {
-                                return 'mot_de_passe Must Be Not Empty';
+                                return 'يجب ألا تكون كلمة المرور فارغة';
                               }
                             },
-                            lable: const Text(
-                              'كلمة السر',
-                              style: TextStyle(color: Colors.grey),
-                            ),
+                            labelText: 'mot_de_passe',
                             prefixIcon: const Icon(
-                              Icons.password,
+                              Icons.password_outlined,
                               color: Colors.grey,
                             ),
                             sufixIcon: IconButton(
@@ -91,14 +95,71 @@ class Login extends StatelessWidget {
                             ));
                       },
                     ),
-                    const SizedBox(
-                      height: 18,
+                    SizedBox(height: screenHeight * 0.01),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) {
+                            return Row(
+                              children: [
+                                Checkbox(
+                                    value: AuthCubit.get(context).checkBox,
+                                    onChanged: (value) {
+                                      AuthCubit.get(context).changeCheckBox();
+                                      PATH = value == true
+                                          ? Loginadmin
+                                          : Loginuser;
+                                      PATH1 = value == true
+                                          ? RECOVERPASSWORD
+                                          : RECOVERPASSWORDADMIN;
+                                      PATH2 = value == true
+                                          ? VERIFYJOUEURCODE
+                                          : VERIFYADMINCODE;
+                                      PATH3 = value == true
+                                          ? RESETPASSWORD
+                                          : RESETPASSWORDADMIN;
+                                    }),
+                                TextButton(
+                                    child: const Text(
+                                      'Responsable',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      AuthCubit.get(context).changeCheckBox();
+                                      if (PATH == Loginadmin) {
+                                        PATH = Loginuser;
+                                      } else {
+                                        PATH = Loginadmin;
+                                      }
+                                    })
+                              ],
+                            );
+                          },
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              navigatAndReturn(
+                                context: context,
+                                page: PasswordRecoveryScreen(),
+                              );
+                            },
+                            child: const Text("نسيت كلمة المرور؟?"))
+                      ],
                     ),
+                    SizedBox(height: screenHeight * 0.03),
                     BlocConsumer<AuthCubit, AuthState>(
-                      listener: (BuildContext context, AuthState state) {
+                      listener: (BuildContext context, AuthState state) async {
                         if (state is LoginStateGood) {
-                          navigatAndFinish(
-                              context: context, page: const Home());
+                          if (PATH == Loginadmin) {
+                            HomeAdminCubit.get(context)
+                                .setAdminModel(state.model.data!);
+                            navigatAndFinish(
+                                context: context, page: const HomeAdmin());
+                          } else if (PATH == Loginuser) {
+                            navigatAndFinish(
+                                context: context, page: const HomeUser());
+                          }
                           showToast(
                               msg: 'Hi ${state.model.data!.nom!}',
                               state: ToastStates.success);
@@ -117,10 +178,8 @@ class Login extends StatelessWidget {
                         if (state is LoginLoadingState) {
                           return const CircularProgressIndicator();
                         }
-                        return buttonSubmit(
-                            text: 'تسجيل الدخول',
-                            context: context,
-                            onPressed: () {
+                        return defaultSubmit(
+                            valid: () {
                               if (formKey.currentState!.validate()) {
                                 Map<String, dynamic> sendinfologin = {
                                   "email": emailController.text,
@@ -128,39 +187,102 @@ class Login extends StatelessWidget {
                                 };
                                 AuthCubit.get(context).login(
                                   data: sendinfologin,
+                                  path: PATH,
                                 );
                               }
-                            });
+                            },
+                            text: 'تسجيل الدخول');
                       },
                     ),
-                    const SizedBox(
-                      height: 18,
+                    SizedBox(height: screenHeight * 0.015),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5))),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 15),
+                          // textStyle: const TextStyle(fontSize: 19),
+                          // backgroundColor: Colors.blueAccent,
+                        ),
+                        onPressed: () {
+                          navigatAndReturn(
+                              context: context, page: RegisterUser());
+                        },
+                        child: const Text(
+                          "إنشاء حساب",
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "ليس لديك حساب من قبل",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              navigatAndReturn(
-                                  context: context, page: Register());
-                            },
-                            child: const Text('انشاء حساب'))
-                      ],
-                    )
                   ],
                 ),
               ),
             ),
-          ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Flexible(
+                  child: Divider(
+                    color: Colors.grey,
+                    thickness: 0.5,
+                    indent: 60,
+                    endIndent: 5,
+                  ),
+                ),
+                Text(
+                  " تسجيل الدخول ب : ",
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                const Flexible(
+                  child: Divider(
+                    color: Colors.grey,
+                    height: 3,
+                    thickness: 0.5,
+                    indent: 5,
+                    endIndent: 60,
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: screenHeight * 0.015),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: IconButton(
+                    icon: const Image(
+                      width: 24,
+                      height: 24,
+                      image: AssetImage("assets/images/google.png"),
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+                SizedBox(width: screenWidth * 0.015),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: IconButton(
+                    icon: const Image(
+                      width: 24,
+                      height: 24,
+                      image: AssetImage("assets/images/facebook.png"),
+                    ),
+                    onPressed: () {},
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       ),
     );

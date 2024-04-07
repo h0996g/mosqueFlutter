@@ -28,6 +28,7 @@ class Httplar {
     var url = Uri.http(URLHTTP, path, query);
     return await http.get(url, headers: {
       'Accept': 'application/json',
+      "Content-Type": "application/json",
       'Authorization': 'Bearer $TOKEN'
     });
   }
@@ -35,7 +36,7 @@ class Httplar {
   static Future<http.Response> httpdelete(
       {required path,
       Map<String, dynamic>? query,
-      required Map<String, dynamic> data}) async {
+      Map<String, dynamic>? data}) async {
     var url = Uri.http(
       URLHTTP,
       path,
@@ -51,13 +52,17 @@ class Httplar {
       {required path,
       Map<String, dynamic>? query,
       required Map<String, dynamic> data}) async {
+    var bodyEncoded = json.encode(data);
+
     var url = Uri.http(
       URLHTTP,
       path,
       query,
     );
-    return await http.put(url, body: data, headers: {
+
+    return await http.put(url, body: bodyEncoded, headers: {
       'Accept': 'application/json',
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer $TOKEN'
     });
   }
