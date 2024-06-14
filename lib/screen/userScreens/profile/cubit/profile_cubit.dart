@@ -7,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:meta/meta.dart';
 import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/Api/httplaravel.dart';
-import 'package:mosque/model/error_model%20copy.dart';
+import 'package:mosque/model/error_model.dart';
 import 'dart:convert' as convert;
 
 import 'package:mosque/model/user_model.dart';

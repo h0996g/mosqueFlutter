@@ -8,13 +8,12 @@ import 'package:mosque/screen/userScreens/home/home.dart';
 class RegisterUser extends StatelessWidget {
   RegisterUser({super.key});
 
-  final nomController = TextEditingController();
-  final prenomController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final emailController = TextEditingController();
-  final motDePasseController = TextEditingController();
-  final telephoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  final phoneController = TextEditingController();
   final ageController = TextEditingController();
-  // final ageController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -46,12 +45,12 @@ class RegisterUser extends StatelessWidget {
                           Expanded(
                             child: defaultForm3(
                                 context: context,
-                                controller: nomController,
+                                controller: firstNameController,
                                 type: TextInputType.text,
-                                labelText: "Nom",
+                                labelText: "First Name",
                                 valid: (String value) {
                                   if (value.isEmpty) {
-                                    return 'Nom Must Not Be Empty';
+                                    return 'First Name must not be empty';
                                   }
                                 },
                                 onFieldSubmitted: () {},
@@ -64,12 +63,12 @@ class RegisterUser extends StatelessWidget {
                           Expanded(
                             child: defaultForm3(
                                 context: context,
-                                controller: prenomController,
+                                controller: lastNameController,
                                 type: TextInputType.text,
-                                labelText: "Prenom",
+                                labelText: "Last Name",
                                 valid: (String value) {
                                   if (value.isEmpty) {
-                                    return 'prenom Must Not Be Empty';
+                                    return 'Last Name must not be empty';
                                   }
                                 },
                                 onFieldSubmitted: () {},
@@ -85,10 +84,10 @@ class RegisterUser extends StatelessWidget {
                           context: context,
                           controller: emailController,
                           type: TextInputType.emailAddress,
-                          labelText: "بريد إلكتروني",
+                          labelText: "Email",
                           valid: (String value) {
                             if (value.isEmpty) {
-                              return 'يجب ألا يكون البريد الإلكتروني فارغًا';
+                              return 'Email must not be empty';
                             }
                           },
                           onFieldSubmitted: () {},
@@ -99,12 +98,12 @@ class RegisterUser extends StatelessWidget {
                       SizedBox(height: sizedBoxSpacing),
                       defaultForm3(
                         context: context,
-                        controller: telephoneController,
+                        controller: phoneController,
                         type: TextInputType.number,
-                        labelText: "Telephone",
+                        labelText: "Phone",
                         valid: (String value) {
                           if (value.isEmpty) {
-                            return 'telephone Must Not Be Empty';
+                            return 'Phone must not be empty';
                           }
                         },
                         onFieldSubmitted: () {},
@@ -118,16 +117,16 @@ class RegisterUser extends StatelessWidget {
                           return defaultForm3(
                               context: context,
                               textInputAction: TextInputAction.done,
-                              controller: motDePasseController,
+                              controller: passwordController,
                               type: TextInputType.visiblePassword,
                               onFieldSubmitted: () {},
                               obscureText: AuthCubit.get(context).ishidden,
                               valid: (value) {
                                 if (value.isEmpty) {
-                                  return 'يجب ألا تكون كلمة المرور فارغة';
+                                  return 'Password must not be empty';
                                 }
                               },
-                              labelText: "Mot de passe",
+                              labelText: "Password",
                               prefixIcon: const Icon(
                                 Icons.password_outlined,
                               ),
@@ -147,7 +146,7 @@ class RegisterUser extends StatelessWidget {
                           labelText: "Age",
                           valid: (String value) {
                             if (value.isEmpty) {
-                              return 'Age Must Not Be Empty';
+                              return 'Age must not be empty';
                             }
                           },
                           onFieldSubmitted: () {},
@@ -155,22 +154,6 @@ class RegisterUser extends StatelessWidget {
                             Icons.format_list_numbered_rounded,
                           ),
                           textInputAction: TextInputAction.next),
-                      SizedBox(height: sizedBoxSpacing),
-                      defaultForm3(
-                        context: context,
-                        controller: ageController,
-                        type: TextInputType.text,
-                        labelText: "age",
-                        valid: (String value) {
-                          if (value.isEmpty) {
-                            return 'age Must Not Be Empty';
-                          }
-                        },
-                        onFieldSubmitted: () {},
-                        prefixIcon: const Icon(
-                          Icons.location_city_outlined,
-                        ),
-                      ),
                       SizedBox(height: screenHeight * 0.03),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (BuildContext context, AuthState state) {
@@ -198,18 +181,18 @@ class RegisterUser extends StatelessWidget {
                               valid: () {
                                 if (formKey.currentState!.validate()) {
                                   Map<String, dynamic> sendinfologin = {
-                                    'nom': nomController.text,
-                                    "prenom": prenomController.text,
+                                    'nom': firstNameController.text,
+                                    "prenom": lastNameController.text,
                                     "email": emailController.text,
                                     "age": ageController.text,
-                                    'mot_de_passe': motDePasseController.text,
-                                    "telephone": telephoneController.text,
+                                    'mot_de_passe': passwordController.text,
+                                    "telephone": phoneController.text,
                                   };
                                   AuthCubit.get(context)
                                       .registerUser(data: sendinfologin);
                                 }
                               },
-                              text: "إنشاء حساب");
+                              text: "Create Account");
                         },
                       ),
                       SizedBox(height: screenHeight * 0.02),
@@ -229,7 +212,7 @@ class RegisterUser extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Or تسجيل الدخول with",
+                    "Or sign in with",
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   const Flexible(

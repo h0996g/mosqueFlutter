@@ -11,7 +11,7 @@ import 'dart:convert' as convert;
 import 'package:mosque/screen/AdminScreens/terrains/terrains.dart';
 import 'package:mosque/screen/AdminScreens/tournoi/tournoi.dart';
 
-import '../../../../model/error_model copy.dart';
+import '../../../../model/error_model.dart';
 
 part 'home_admin_state.dart';
 

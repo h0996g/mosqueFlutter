@@ -6,7 +6,7 @@ import 'dart:convert' as convert;
 import 'package:mosque/Api/httplaravel.dart';
 import 'package:mosque/Model/admin_medel.dart';
 import 'package:mosque/Model/user_model.dart';
-import 'package:mosque/model/error_model%20copy.dart';
+import 'package:mosque/model/error_model.dart';
 
 import '../../../Model/recoverpassword_model.dart';
 

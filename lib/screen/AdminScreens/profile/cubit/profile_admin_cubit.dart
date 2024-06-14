@@ -10,7 +10,7 @@ import 'package:mosque/Api/httplaravel.dart';
 import 'dart:convert' as convert;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:mosque/Model/admin_medel.dart';
-import 'package:mosque/model/error_model%20copy.dart';
+import 'package:mosque/model/error_model.dart';
 
 part 'profile_admin_state.dart';
 

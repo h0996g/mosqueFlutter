@@ -7,7 +7,6 @@ import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
-import 'package:mosque/screen/Auth/recoverypasswordscreen.dart';
 import 'package:mosque/screen/Auth/register_user.dart';
 import 'package:mosque/screen/userScreens/home/home.dart';
 
@@ -34,7 +33,7 @@ class Login extends StatelessWidget {
               children: [
                 SizedBox(height: screenHeight * 0.2),
                 Text(
-                  'مرحبًا بعودتك،',
+                  'Welcome back,',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: screenHeight * 0.01),
@@ -56,14 +55,14 @@ class Login extends StatelessWidget {
                       type: TextInputType.emailAddress,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'يجب ألا يكون البريد الإلكتروني فارغًا';
+                          return 'Email must not be empty';
                         }
                       },
                       prefixIcon: const Icon(
                         Icons.keyboard_arrow_right_sharp,
                         color: Colors.grey,
                       ),
-                      labelText: "بريد إلكتروني",
+                      labelText: "Email",
                       textInputAction: TextInputAction.next,
                     ),
                     SizedBox(height: screenHeight * 0.015),
@@ -78,10 +77,10 @@ class Login extends StatelessWidget {
                             obscureText: AuthCubit.get(context).ishidden,
                             valid: (value) {
                               if (value.isEmpty) {
-                                return 'يجب ألا تكون كلمة المرور فارغة';
+                                return 'Password must not be empty';
                               }
                             },
-                            labelText: 'mot_de_passe',
+                            labelText: 'Password',
                             prefixIcon: const Icon(
                               Icons.password_outlined,
                               color: Colors.grey,
@@ -122,7 +121,7 @@ class Login extends StatelessWidget {
                                     }),
                                 TextButton(
                                     child: const Text(
-                                      'Responsable',
+                                      'Admin',
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     onPressed: () {
@@ -138,13 +137,8 @@ class Login extends StatelessWidget {
                           },
                         ),
                         TextButton(
-                            onPressed: () {
-                              navigatAndReturn(
-                                context: context,
-                                page: PasswordRecoveryScreen(),
-                              );
-                            },
-                            child: const Text("نسيت كلمة المرور؟?"))
+                            onPressed: () {},
+                            child: const Text("Forgot password?"))
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.03),
@@ -191,7 +185,7 @@ class Login extends StatelessWidget {
                                 );
                               }
                             },
-                            text: 'تسجيل الدخول');
+                            text: 'Login');
                       },
                     ),
                     SizedBox(height: screenHeight * 0.015),
@@ -212,7 +206,7 @@ class Login extends StatelessWidget {
                               context: context, page: RegisterUser());
                         },
                         child: const Text(
-                          "إنشاء حساب",
+                          "Create Account",
                           style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                       ),
@@ -233,7 +227,7 @@ class Login extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  " تسجيل الدخول ب : ",
+                  " Or login with ",
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
                 const Flexible(

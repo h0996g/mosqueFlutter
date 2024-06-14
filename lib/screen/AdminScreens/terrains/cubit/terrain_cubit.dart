@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:mosque/model/error_model%20copy.dart';
+import 'package:mosque/model/error_model.dart';
 
 import 'package:mosque/model/user_model.dart';
 

@@ -6,11 +6,9 @@ import 'package:mosque/component/const.dart';
 import 'package:mosque/firebase_options.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/helper/observer.dart';
-import 'package:mosque/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
-import 'package:mosque/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/Auth/login.dart';
 import 'package:mosque/screen/Auth/onboarding.dart';
@@ -73,10 +71,13 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales
-        ],
-        locale: const Locale("fa", "IR"),
+        // supportedLocales: const [
+        //   Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales
+        // ],
+        locale: const Locale(
+          "fr",
+          "FR",
+        ),
         debugShowCheckedModeBanner: false,
         home:
 
