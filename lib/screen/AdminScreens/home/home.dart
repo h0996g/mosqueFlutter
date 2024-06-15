@@ -4,8 +4,22 @@ import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/profile/profile.dart';
 
-class HomeAdmin extends StatelessWidget {
+class HomeAdmin extends StatefulWidget {
   const HomeAdmin({super.key});
+
+  @override
+  State<HomeAdmin> createState() => _HomeAdminState();
+}
+
+class _HomeAdminState extends State<HomeAdmin> {
+  HomeAdminCubit homeAdminCubit = HomeAdminCubit();
+  @override
+  void initState() {
+    // TODO: implement initState
+    homeAdminCubit = HomeAdminCubit.get(context);
+    homeAdminCubit.getMyInfo();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +36,12 @@ class HomeAdmin extends StatelessWidget {
                         navigatAndReturn(
                             context: context, page: const ProfileAdmin());
                       },
-                      child: CircleAvatar(
+                      child:
+                          // Container(
+                          //   padding: const EdgeInsets.all(8),
+                          //   child: const Icon(Icons.person),
+                          // ),
+                          CircleAvatar(
                         radius: 20,
                         backgroundImage: HomeAdminCubit.get(context)
                                     .adminModel!

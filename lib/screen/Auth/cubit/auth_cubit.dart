@@ -8,8 +8,6 @@ import 'package:mosque/Model/admin_medel.dart';
 import 'package:mosque/Model/user_model.dart';
 import 'package:mosque/model/error_model.dart';
 
-import '../../../Model/recoverpassword_model.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -35,9 +33,6 @@ class AuthCubit extends Cubit<AuthState> {
     emit(PasswordHiddenState());
   }
 
-  // UserModel? registerModel;
-  // ErrorModel? errorRegisterModel;
-
   void registerUser({required Map<String, dynamic> data}) {
     emit(RegisterLodinState());
 
@@ -57,10 +52,6 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  // UserModel? userModel;
-  // AdminModel? adminModel;
-
-  ErrorModel? errorloginModel;
   void login({required Map<String, dynamic> data, required String path}) {
     emit(LoginLoadingState());
     Httplar.httpPost(path: path, data: data).then((value) {
@@ -84,8 +75,6 @@ class AuthCubit extends Cubit<AuthState> {
       emit(LoginStateBad());
     });
   }
-
-  RecoverPasswordModel? recoverPasswordModel;
 
   Future<void> recoverPassword({required String email}) async {
     emit(PasswordRecoveryLoading());

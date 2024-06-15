@@ -4,7 +4,6 @@ import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/helper/cachhelper.dart';
-import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/Auth/register_user.dart';
@@ -37,10 +36,10 @@ class Login extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: screenHeight * 0.01),
-                // Text(
-                //   "Discover Limitess Choices and Unmatched Convenience.",
-                //   style: Theme.of(context).textTheme.bodyMedium,
-                // )
+                Text(
+                  "Discover Limitess Choices and Unmatched Convenience.",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                )
               ],
             ),
             Form(
@@ -146,8 +145,8 @@ class Login extends StatelessWidget {
                       listener: (BuildContext context, AuthState state) async {
                         if (state is LoginStateGood) {
                           if (PATH == Loginadmin) {
-                            HomeAdminCubit.get(context)
-                                .setAdminModel(state.model.data!);
+                            // HomeAdminCubit.get(context)
+                            //     .setAdminModel(state.model.data!);
                             navigatAndFinish(
                                 context: context, page: const HomeAdmin());
                           } else if (PATH == Loginuser) {

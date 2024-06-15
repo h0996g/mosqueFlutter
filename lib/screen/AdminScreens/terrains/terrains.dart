@@ -5,10 +5,9 @@ class Terrains extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Terrains'),
-      ),
-    );
+    return const Scaffold(
+        body: Center(
+      child: Text('Terrains'),
+    ));
   }
 }

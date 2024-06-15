@@ -11,7 +11,6 @@ import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/Auth/login.dart';
-import 'package:mosque/screen/Auth/onboarding.dart';
 import 'package:mosque/screen/userScreens/home/home.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,7 +24,7 @@ void main() async {
   );
   Widget startWidget = Login();
   // CachHelper.removdata(key: "onbording");
-  bool onbordingmain = await CachHelper.getData(key: 'onbording') ?? false;
+  // bool onbordingmain = await CachHelper.getData(key: 'onbording') ?? false;
   TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
 
   if (TOKEN != '') {
@@ -38,16 +37,13 @@ void main() async {
   }
   runApp(MyApp(
     startwidget: startWidget,
-    onbordingmain: onbordingmain,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final Widget startwidget;
-  final bool onbordingmain;
 
-  const MyApp(
-      {super.key, required this.startwidget, required this.onbordingmain});
+  const MyApp({super.key, required this.startwidget});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -56,7 +52,7 @@ class MyApp extends StatelessWidget {
           create: ((context) => AuthCubit()),
         ),
         BlocProvider(
-          create: ((context) => HomeAdminCubit()..getMyInfo()),
+          create: ((context) => HomeAdminCubit()),
         ),
         BlocProvider(
           create: ((context) => ProfileAdminCubit()),
@@ -83,7 +79,7 @@ class MyApp extends StatelessWidget {
 
             // Onbording(),
 
-            onbordingmain ? startwidget : const Onbording(),
+            startwidget,
       ),
     );
   }

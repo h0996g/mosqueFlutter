@@ -27,7 +27,7 @@ class UpdateMdpForm extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("modifier Mot de passe"),
+          title: const Text("Change Password"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -58,10 +58,10 @@ class UpdateMdpForm extends StatelessWidget {
                           ProfileAdminCubit.get(context).isHidden['pass']!,
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'يجب ألا تكون كلمة المرور فارغة';
+                          return 'Password must not be empty';
                         }
                       },
-                      labelText: 'encient mot de passe',
+                      labelText: 'Old Password',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -94,15 +94,15 @@ class UpdateMdpForm extends StatelessWidget {
                       onFieldSubmitted: () {},
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'يجب ألا تكون كلمة المرور فارغة';
+                          return 'Password must not be empty';
                         }
                         if (value != _new2Controller.text) {
-                          return 'mot de passe pas symetrique';
+                          return 'Passwords do not match';
                         }
                       },
                       obscureText:
                           ProfileAdminCubit.get(context).isHidden['pass1']!,
-                      labelText: 'nouveau mot de passe',
+                      labelText: 'New Password',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -137,13 +137,13 @@ class UpdateMdpForm extends StatelessWidget {
                           ProfileAdminCubit.get(context).isHidden['pass2']!,
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'يجب ألا تكون كلمة المرور فارغة';
+                          return 'Password must not be empty';
                         }
                         if (value != _new1Controller.text) {
-                          return 'mot de passe pas symetrique';
+                          return 'Passwords do not match';
                         }
                       },
-                      labelText: 'nouveau mot de passe',
+                      labelText: 'Confirm New Password',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -177,7 +177,7 @@ class UpdateMdpForm extends StatelessWidget {
                       }
                       if (state is UpdateMdpAdminStateGood) {
                         showToast(
-                            msg: "mot de passe modifier avec succes",
+                            msg: "Password changed successfully",
                             state: ToastStates.success);
                         Navigator.pushAndRemoveUntil(
                           context,
@@ -187,7 +187,7 @@ class UpdateMdpForm extends StatelessWidget {
                         );
                       } else if (state is UpdateMdpAdminStateBad) {
                         showToast(
-                            msg: "server crashed", state: ToastStates.error);
+                            msg: "Server crashed", state: ToastStates.error);
                       } else if (state is ErrorState) {
                         String errorMessage = state.errorModel.message!;
                         showToast(msg: errorMessage, state: ToastStates.error);

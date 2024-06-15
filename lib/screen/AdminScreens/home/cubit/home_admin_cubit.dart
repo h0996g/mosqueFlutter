@@ -33,10 +33,10 @@ class HomeAdminCubit extends Cubit<HomeAdminState> {
 
   DataAdminModel? adminModel;
 
-  setAdminModel(DataAdminModel adminModel) {
-    this.adminModel = adminModel;
-    emit(UpdateAdminModelVariable());
-  }
+  // setAdminModel(DataAdminModel adminModel) {
+  //   this.adminModel = adminModel;
+  //   emit(UpdateAdminModelVariable());
+  // }
 
   Future<void> getMyInfo() async {
     emit(GetMyInformationLoading());

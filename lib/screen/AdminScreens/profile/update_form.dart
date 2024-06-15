@@ -183,15 +183,14 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                       }
 
                       if (state is UpdateAdminStateGood) {
-                        showToast(msg: "Succes", state: ToastStates.success);
-                        HomeAdminCubit.get(context)
-                            .setAdminModel(state.dataAdminModel);
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfileAdmin()),
-                          (route) => false,
-                        );
+                        HomeAdminCubit.get(context).getMyInfo().then((value) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ProfileAdmin()),
+                            (route) => false,
+                          );
+                        });
                       }
                     },
                     builder: (context, state) {
@@ -200,9 +199,9 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                           background: Colors.blueAccent,
                           onPressed: () {
                             if (formkey.currentState!.validate()) {
-                              // if (state is LodinUpdateResponsableState) {
-                              //   return null;
-                              // }
+                              if (state is UpdateAdminLoadingState) {
+                                return null;
+                              }
                               ProfileAdminCubit.get(context).updateAdmin(
                                   nom: _nomController.text,
                                   prenom: _prenomController.text,

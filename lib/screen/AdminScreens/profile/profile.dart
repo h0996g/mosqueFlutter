@@ -44,138 +44,127 @@ class ProfileAdmin extends StatelessWidget {
         body: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
           listener: (context, state) {},
           builder: (context, state) {
-            // if (state is GetMyInformationLoading) {
-            //   return const Center(child: CircularProgressIndicator());
-            // }
-            return PopScope(
-              canPop: false,
-              onPopInvoked: (didPop) {
-                if (!didPop) {
-                  navigatAndFinish(context: context, page: const HomeAdmin());
-                }
-              },
-              child: SingleChildScrollView(
-                child: Column(
-                  // mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundImage: adminModel.photo != null
-                          ? NetworkImage(adminModel.photo!)
-                          : const AssetImage('assets/images/user.png')
-                              as ImageProvider<Object>,
+            return SingleChildScrollView(
+              child: Column(
+                // mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundImage: adminModel.photo != null
+                        ? NetworkImage(adminModel.photo!)
+                        : const AssetImage('assets/images/user.png')
+                            as ImageProvider<Object>,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('Nom'),
+                    subtitle: Text(
+                      adminModel.nom!,
                     ),
-                    const SizedBox(
-                      height: 5,
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('Prenom'),
+                    subtitle: Text(
+                      adminModel.prenom!,
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.person),
-                      title: const Text('Nom'),
-                      subtitle: Text(
-                        adminModel.nom!,
-                      ),
-                      onTap: () {},
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.location_city),
+                    title: const Text('age'),
+                    subtitle: Text(
+                      adminModel.age!.toString(),
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.person),
-                      title: const Text('Prenom'),
-                      subtitle: Text(
-                        adminModel.prenom!,
-                      ),
-                      onTap: () {},
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.email),
+                    title: const Text('Email'),
+                    subtitle: Text(
+                      adminModel.email!,
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.location_city),
-                      title: const Text('age'),
-                      subtitle: Text(
-                        adminModel.age!.toString(),
-                      ),
-                      onTap: () {},
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.phone),
+                    title: const Text('Phone'),
+                    subtitle: Text(
+                      adminModel.telephone!.toString(),
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.email),
-                      title: const Text('Email'),
-                      subtitle: Text(
-                        adminModel.email!,
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.phone),
-                      title: const Text('Phone'),
-                      subtitle: Text(
-                        adminModel.telephone!.toString(),
-                      ),
-                      onTap: () {},
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 55,
-                              color: Colors.blueAccent,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5))),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 15),
-                                    // textStyle: const TextStyle(fontSize: 19),
-                                    backgroundColor: Colors.blueAccent),
-                                onPressed: () {
-                                  navigatAndReturn(
-                                    context: context,
-                                    page: const UpdateAdminForm(),
-                                  );
-                                },
-                                child: const Text(
-                                  "Modifier profile",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
+                    onTap: () {},
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 55,
+                            color: Colors.blueAccent,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 15),
+                                  // textStyle: const TextStyle(fontSize: 19),
+                                  backgroundColor: Colors.blueAccent),
+                              onPressed: () {
+                                navigatAndReturn(
+                                  context: context,
+                                  page: const UpdateAdminForm(),
+                                );
+                              },
+                              child: const Text(
+                                "Modifier profile",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
                               ),
                             ),
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Container(
-                              height: 55,
-                              color: Colors.blueAccent,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5))),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 15),
-                                    // textStyle: const TextStyle(fontSize: 19),
-                                    backgroundColor: Colors.blueAccent),
-                                onPressed: () {
-                                  navigatAndReturn(
-                                    context: context,
-                                    page: UpdateMdpForm(),
-                                  );
-                                },
-                                child: const Text(
-                                  "Modifier mdp",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Container(
+                            height: 55,
+                            color: Colors.blueAccent,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 15),
+                                  // textStyle: const TextStyle(fontSize: 19),
+                                  backgroundColor: Colors.blueAccent),
+                              onPressed: () {
+                                navigatAndReturn(
+                                  context: context,
+                                  page: UpdateMdpForm(),
+                                );
+                              },
+                              child: const Text(
+                                "Modifier mdp",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           },
