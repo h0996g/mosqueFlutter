@@ -157,7 +157,6 @@ class Login extends StatelessWidget {
                               msg: 'Hi ${state.model.data!.nom!}',
                               state: ToastStates.success);
                           TOKEN = state.model.token!;
-                          print(TOKEN);
                           CachHelper.putcache(key: "TOKEN", value: TOKEN);
                         } else if (state is ErrorState) {
                           showToast(

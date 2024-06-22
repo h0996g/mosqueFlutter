@@ -2,8 +2,8 @@
 const URLHTTP = '192.168.1.31:3000';
 // const URLHTTP = '10.0.2.2:3000';
 
-const Loginuser = '/api/loginuser';
-const REGISTERJOUER = '/api/user';
+const Loginuser = '/api/user/login';
+const REGISTERJOUER = '/api/user/register';
 const GETMYINFORMATIONJOUEUR = '/api/user/myinformation';
 const GETMYINFORMATIONADMIN = '/api/admin/myinformation';
 const UPDATEJOUEUR = '/api/user';
@@ -16,7 +16,7 @@ const RESETPASSWORDADMIN = '/api/admin/resetpassword';
 const VERIFYJOUEURCODE = '/api/users/verifytoken';
 const VERIFYADMINCODE = '/api/admins/verifytoken';
 
-const Loginadmin = '/api/loginadmin';
+const Loginadmin = '/api/admin/login';
 const getJouerById = '/api/user/';
 String PATH = Loginuser;
 String PATH1 = RECOVERPASSWORD;

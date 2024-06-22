@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/profile.dart';
 
@@ -18,17 +19,21 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
   final TextEditingController _nomController = TextEditingController();
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
+  HomeUserCubit homeUserCubit = HomeUserCubit();
   final formkey = GlobalKey<FormState>();
   @override
   void initState() {
-    // TODO: implement setState
-    _nomController.text = ProfileCubit.get(context).userDataModel!.nom!;
-    _prenomController.text = ProfileCubit.get(context).userDataModel!.prenom!;
+    homeUserCubit = HomeUserCubit.get(context);
+    _nomController.text = HomeUserCubit.get(context).userDataModel!.nom!;
+    _prenomController.text = HomeUserCubit.get(context).userDataModel!.prenom!;
     _ageController.text =
-        ProfileCubit.get(context).userDataModel!.age!.toString();
+        HomeUserCubit.get(context).userDataModel!.age!.toString();
+    _emailController.text =
+        HomeUserCubit.get(context).userDataModel!.email!.toString();
     _telephoneController.text =
-        ProfileCubit.get(context).userDataModel!.telephone!.toString();
+        HomeUserCubit.get(context).userDataModel!.telephone!.toString();
     super.initState();
   }
 
@@ -38,7 +43,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
     _nomController.dispose();
     _prenomController.dispose();
     _ageController.dispose();
-    _ageController.dispose();
+    _emailController.dispose();
     _telephoneController.dispose();
     super.dispose();
   }
@@ -48,8 +53,14 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is UpdateUserStateGood) {
-          showToast(msg: "Succes", state: ToastStates.success);
-          navigatAndFinish(context: context, page: const ProfileUser());
+          HomeUserCubit.get(context).getMyInfo().then((value) {
+            showToast(msg: "Succes", state: ToastStates.success);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileUser()),
+              (route) => false,
+            );
+          });
         }
       },
       builder: (context, state) {
@@ -84,11 +95,11 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                                   null
                               ? FileImage(
                                   ProfileCubit.get(context).imageCompress!)
-                              : ProfileCubit.get(context)
+                              : HomeUserCubit.get(context)
                                           .userDataModel!
                                           .photo !=
                                       null
-                                  ? NetworkImage(ProfileCubit.get(context)
+                                  ? NetworkImage(HomeUserCubit.get(context)
                                       .userDataModel!
                                       .photo!)
                                   : const AssetImage('assets/images/user.png')
@@ -149,7 +160,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                         controller: _ageController,
                         textInputAction: TextInputAction.next,
                         label: 'Age',
-                        prefixIcon: const Icon(Icons.countertops),
+                        prefixIcon: const Icon(Icons.countertops_outlined),
                         type: TextInputType.text,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -160,14 +171,14 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                       height: 20,
                     ),
                     defaultForm2(
-                        controller: _ageController,
+                        controller: _emailController,
                         textInputAction: TextInputAction.next,
-                        label: 'age',
-                        prefixIcon: const Icon(Icons.location_city),
+                        label: 'Email',
+                        prefixIcon: const Icon(Icons.email_outlined),
                         type: TextInputType.text,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "age Must Be Not Empty";
+                            return "Email Must Be Not Empty";
                           }
                         }),
                     const SizedBox(
@@ -200,6 +211,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                               ProfileCubit.get(context).updateUser(
                                 nom: _nomController.text,
                                 prenom: _prenomController.text,
+                                email: _emailController.text,
                                 telephone: _telephoneController.text,
                                 age: _ageController.text,
                               );

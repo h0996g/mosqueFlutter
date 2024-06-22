@@ -18,44 +18,23 @@ class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitial());
 
   static ProfileCubit get(context) => BlocProvider.of(context);
-// ! data t3 UserModel
-  DataUserModel? userDataModel;
-  ErrorModel? errorGetMyInfoModel;
 
-  void getMyInfo() {
-    emit(GetMyInformationLoading());
-    Httplar.httpget(path: GETMYINFORMATIONJOUEUR).then((value) {
-      if (value.statusCode == 200) {
-        var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
-        userDataModel = DataUserModel.fromJson(jsonResponse);
-        emit(GetMyInformationStateGood(model: userDataModel!));
-      } else if (value.statusCode == 401) {
-        var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
-        errorGetMyInfoModel = ErrorModel.fromJson(jsonResponse);
-        emit(ErrorState(model: errorGetMyInfoModel!));
-      }
-    }).catchError((e) {
-      print(e.toString());
-      emit(GetMyInformationStateBad());
-    });
-  }
-
-  Future<void> updateUser({
-    required String nom,
-    required String prenom,
-    required String telephone,
-    required String age,
-  }) async {
+  Future<void> updateUser(
+      {required String nom,
+      required String prenom,
+      required String telephone,
+      required String email,
+      required String age,
+      String? deleteOldImage}) async {
     emit(UpdateUserLoadingState());
 
     if (imageCompress != null) {
-      await updateProfileImg();
+      await updateProfileImg(deleteOldImage: deleteOldImage);
     }
     Map<String, dynamic> _model = {
       "nom": nom,
       "prenom": prenom,
+      "email": email,
       "telephone": telephone,
       "age": age,
       if (linkProfileImg != null) "photo": linkProfileImg
@@ -64,11 +43,10 @@ class ProfileCubit extends Cubit<ProfileState> {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        userDataModel = DataUserModel.fromJson(jsonResponse);
+        DataUserModel model = DataUserModel.fromJson(jsonResponse);
 
         print('badalt info user');
-        print(userDataModel!.email);
-        emit(UpdateUserStateGood());
+        emit(UpdateUserStateGood(model: model));
       } else {
         print(value.body);
       }
@@ -98,8 +76,8 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   String? linkProfileImg;
-  Future<void> updateProfileImg() async {
-    await deleteOldImageFirebase();
+  Future<void> updateProfileImg({required String? deleteOldImage}) async {
+    await deleteOldImageFirebase(deleteOldImage: deleteOldImage);
     await firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(imageCompress!.path).pathSegments.last}')
@@ -115,10 +93,10 @@ class ProfileCubit extends Cubit<ProfileState> {
     });
   }
 
-  Future<void> deleteOldImageFirebase() async {
-    if (userDataModel?.photo != '') {
+  Future<void> deleteOldImageFirebase({required String? deleteOldImage}) async {
+    if (deleteOldImage != null) {
       await firebase_storage.FirebaseStorage.instance
-          .refFromURL(userDataModel!.photo!)
+          .refFromURL(deleteOldImage)
           .delete()
           .then((_) {
         print('Old image deleted successfully');
