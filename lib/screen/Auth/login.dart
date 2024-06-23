@@ -7,7 +7,7 @@ import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/Auth/register_user.dart';
-import 'package:mosque/screen/userScreens/home/home.dart';
+import 'package:mosque/screen/userScreens/home/home_screen.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -151,7 +151,7 @@ class Login extends StatelessWidget {
                                 context: context, page: const HomeAdmin());
                           } else if (PATH == Loginuser) {
                             navigatAndFinish(
-                                context: context, page: const HomeUser());
+                                context: context, page: const HomeScreen());
                           }
                           showToast(
                               msg: 'Hi ${state.model.data!.nom!}',

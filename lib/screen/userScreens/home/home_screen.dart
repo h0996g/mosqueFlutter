@@ -104,30 +104,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           const Spacer(),
                           Column(
                             children: [
-                              if (state is GetMyInformationLoading)
-                                const Center(child: CircularProgressIndicator())
-                              else
-                                InkWell(
-                                  onTap: () {
-                                    navigatAndReturn(
-                                        context: context,
-                                        page: const ProfileUser());
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 35,
-                                    backgroundImage: HomeUserCubit.get(context)
-                                                .userDataModel!
-                                                .photo !=
-                                            null
-                                        ? NetworkImage(
-                                            HomeUserCubit.get(context)
-                                                .userDataModel!
-                                                .photo!)
-                                        : const AssetImage(
-                                                'assets/images/user.png')
-                                            as ImageProvider<Object>,
-                                  ),
-                                ),
+                              state is GetMyInformationLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : InkWell(
+                                      onTap: () {
+                                        navigatAndReturn(
+                                            context: context,
+                                            page: const ProfileUser());
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 35,
+                                        backgroundImage: HomeUserCubit.get(
+                                                        context)
+                                                    .userDataModel!
+                                                    .photo !=
+                                                null
+                                            ? NetworkImage(
+                                                HomeUserCubit.get(context)
+                                                    .userDataModel!
+                                                    .photo!)
+                                            : const AssetImage(
+                                                    'assets/images/user.png')
+                                                as ImageProvider<Object>,
+                                      ),
+                                    ),
                             ],
                           ),
                         ],

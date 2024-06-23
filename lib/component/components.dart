@@ -154,6 +154,36 @@ SizedBox defaultSubmit({
   );
 }
 
+Widget defaultSubmit3({
+  required String text,
+  required VoidCallback onPressed,
+  double fontSize = 16,
+  Color textColor = Colors.white,
+  Color borderColor = Colors.grey,
+  double borderRadius = 5,
+  EdgeInsetsGeometry padding =
+      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+}) {
+  return SizedBox(
+    width: double.infinity,
+    child: OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: Colors.grey[500],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+        ),
+        padding: padding,
+        side: BorderSide(color: borderColor),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(color: textColor, fontSize: fontSize),
+      ),
+    ),
+  );
+}
+
 void navigatAndReturn({required context, required page}) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
 

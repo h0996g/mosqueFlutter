@@ -4,6 +4,7 @@ import 'package:mosque/component/components.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/userScreens/home/home.dart';
+import 'package:mosque/screen/userScreens/home/home_screen.dart';
 
 class RegisterUser extends StatelessWidget {
   RegisterUser({super.key});
@@ -159,7 +160,7 @@ class RegisterUser extends StatelessWidget {
                         listener: (BuildContext context, AuthState state) {
                           if (state is RegisterStateGood) {
                             navigatAndFinish(
-                                context: context, page: const HomeUser());
+                                context: context, page: const HomeScreen());
                             showToast(
                                 msg: 'Hi ${state.model.data!.nom!}',
                                 state: ToastStates.success);

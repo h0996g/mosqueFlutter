@@ -1,5 +1,5 @@
 // const URLHTTP = '192.168.1.23:3000';
-const URLHTTP = '192.168.1.31:3000';
+const URLHTTP = '192.168.94.68:3000';
 // const URLHTTP = '10.0.2.2:3000';
 
 const Loginuser = '/api/user/login';

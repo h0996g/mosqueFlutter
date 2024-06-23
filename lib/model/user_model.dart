@@ -24,6 +24,7 @@ class UserModel {
 class DataUserModel {
   DataUserModel({
     this.id,
+    this.username,
     this.nom,
     this.prenom,
     this.email,
@@ -37,10 +38,11 @@ class DataUserModel {
   });
 
   String? id;
+  String? username;
   String? nom;
   String? prenom;
   String? email;
-  int? telephone;
+  String? telephone;
   int? age;
   String? photo;
   List<dynamic>? commants;
@@ -50,6 +52,7 @@ class DataUserModel {
 
   DataUserModel.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
+    username = json['username'];
     nom = json['nom'];
     prenom = json['prenom'];
     email = json['email'];
@@ -65,6 +68,7 @@ class DataUserModel {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['_id'] = id;
+    // _data['username'] = username;
     _data['nom'] = nom;
     _data['prenom'] = prenom;
     _data['email'] = email;

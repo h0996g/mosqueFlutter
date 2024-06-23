@@ -198,26 +198,23 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     const SizedBox(
                       height: 50,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: defaultSubmit2(
-                          text: 'Update',
-                          background: Colors.grey,
-                          onPressed: () {
-                            if (formkey.currentState!.validate()) {
-                              // if (state is LodinUpdateResponsableState) {
-                              //   return null;
-                              // }
-                              ProfileCubit.get(context).updateUser(
-                                nom: _nomController.text,
-                                prenom: _prenomController.text,
-                                email: _emailController.text,
-                                telephone: _telephoneController.text,
-                                age: _ageController.text,
-                              );
-                            }
-                          }),
-                    ),
+                    defaultSubmit3(
+                        text: 'Update',
+                        // background: Colors.grey,
+                        onPressed: () {
+                          if (formkey.currentState!.validate()) {
+                            // if (state is LodinUpdateResponsableState) {
+                            //   return null;
+                            // }
+                            ProfileCubit.get(context).updateUser(
+                              nom: _nomController.text,
+                              prenom: _prenomController.text,
+                              email: _emailController.text,
+                              telephone: _telephoneController.text,
+                              age: _ageController.text,
+                            );
+                          }
+                        }),
                   ]),
                 ),
               ),

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mosque/const/colors.dart';
-import 'package:mosque/screen/userScreens/home_screen.dart';
+import 'package:mosque/screen/userScreens/home/home_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

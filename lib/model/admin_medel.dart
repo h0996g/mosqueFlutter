@@ -28,7 +28,7 @@ class DataAdminModel {
   String? email;
   int? age;
   String? photo;
-  int? telephone;
+  String? telephone;
   List<dynamic>? commants;
 
   String? createdAt;
