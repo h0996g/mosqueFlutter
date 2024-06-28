@@ -4,7 +4,7 @@ class SectionModel {
   final String photo;
   final String name;
   final String description;
-  final List<LessonModel> lessons;
+  final List<String> lesson;
   final DateTime createdAt;
   final DateTime updatedAt;
   final int v;
@@ -15,7 +15,7 @@ class SectionModel {
     required this.photo,
     required this.name,
     required this.description,
-    required this.lessons,
+    required this.lesson,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
@@ -28,56 +28,25 @@ class SectionModel {
       photo: json['photo'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
-      lessons: (json['lesson'] as List)
-          .map((lessonJson) => LessonModel.fromJson(lessonJson))
-          .toList(),
+      lesson:
+          (json['lesson'] as List<dynamic>).map((e) => e as String).toList(),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       v: json['__v'] as int,
     );
   }
-}
 
-class LessonModel {
-  final String id;
-  final String section;
-  final String title;
-  final String photo;
-  final String urlVideo;
-  final String description;
-  final List<dynamic> quize;
-  final List<dynamic> comments;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final int v;
-
-  LessonModel({
-    required this.id,
-    required this.section,
-    required this.title,
-    required this.photo,
-    required this.urlVideo,
-    required this.description,
-    required this.quize,
-    required this.comments,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
-  });
-
-  factory LessonModel.fromJson(Map<String, dynamic> json) {
-    return LessonModel(
-      id: json['_id'] as String,
-      section: json['section'] as String,
-      title: json['title'] as String,
-      photo: json['photo'] as String,
-      urlVideo: json['urlVideo'] as String,
-      description: json['description'] as String,
-      quize: json['quize'] as List<dynamic>,
-      comments: json['commants'] as List<dynamic>,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-      v: json['__v'] as int,
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'admin': admin,
+      'photo': photo,
+      'name': name,
+      'description': description,
+      'lesson': lesson,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      '__v': v,
+    };
   }
 }

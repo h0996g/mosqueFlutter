@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:mosque/component/category.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/firebase_options.dart';
 import 'package:mosque/helper/cachhelper.dart';
@@ -12,8 +11,8 @@ import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/Auth/login.dart';
+import 'package:mosque/screen/userScreens/category/cubit/category_cubit.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
-import 'package:mosque/screen/userScreens/home/home.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mosque/screen/welcome_screen.dart';
@@ -65,6 +64,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: ((context) => HomeUserCubit()),
+        ),
+        BlocProvider(
+          create: ((context) => CategoryCubit()),
         ),
       ],
       child: MaterialApp(

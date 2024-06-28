@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/appbar.dart';
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     homeUserCubit = HomeUserCubit.get(context);
     homeUserCubit.getMyInfo();
+
     super.initState();
   }
 
@@ -60,22 +62,22 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       body: SafeArea(
-        child: BlocConsumer<HomeUserCubit, HomeUserState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
-          builder: (context, state) {
-            return ListView(
-              children: [
-                const CustomeAppBar(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    children: [
-                      Row(
+        child: ListView(
+          children: [
+            const CustomeAppBar(),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                children: [
+                  BlocConsumer<HomeUserCubit, HomeUserState>(
+                    listener: (context, state) {
+                      // TODO: implement listener
+                    },
+                    builder: (context, state) {
+                      return Row(
                         children: [
                           const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,65 +122,68 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .userDataModel!
                                                     .photo !=
                                                 null
-                                            ? NetworkImage(
+                                            ? CachedNetworkImageProvider(
                                                 HomeUserCubit.get(context)
                                                     .userDataModel!
-                                                    .photo!)
+                                                    .photo!,
+                                              )
                                             : const AssetImage(
                                                     'assets/images/user.png')
-                                                as ImageProvider<Object>,
+                                                as ImageProvider,
                                       ),
                                     ),
                             ],
                           ),
                         ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      //sorting
-                      const Sorting(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      //category list
+                      );
+                    },
+                  ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Categories",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {},
-                            child: const Text(
-                              "See All",
-                              style: TextStyle(fontSize: 16, color: kblue),
-                            ),
-                          ),
-                        ],
-                      ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  //sorting
+                  const Sorting(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  //category list
 
-                      //now we create model of our images and colors which we will use in our app
-                      const SizedBox(
-                        height: 20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Categories",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      //we can not use gridview inside column
-                      //use shrinkwrap and physical scroll
-                      const CategoryList(),
-                      const SizedBox(
-                        height: 20,
+                      InkWell(
+                        onTap: () {},
+                        child: const Text(
+                          "See All",
+                          style: TextStyle(fontSize: 16, color: kblue),
+                        ),
                       ),
                     ],
                   ),
-                )
-              ],
-            );
-          },
+
+                  //now we create model of our images and colors which we will use in our app
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  //we can not use gridview inside column
+                  //use shrinkwrap and physical scroll
+
+                  const CategoryList(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

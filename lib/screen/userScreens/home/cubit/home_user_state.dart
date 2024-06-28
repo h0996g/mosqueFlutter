@@ -18,3 +18,13 @@ final class ErrorState extends HomeUserState {
 }
 
 final class GetMyInformationStateBad extends HomeUserState {}
+
+final class GetAllSectionLoading extends HomeUserState {}
+
+final class GetAllSectionStateGood extends HomeUserState {
+  final List<SectionModel> model;
+
+  GetAllSectionStateGood({required this.model});
+}
+
+final class GetAllSectionStateBad extends HomeUserState {}

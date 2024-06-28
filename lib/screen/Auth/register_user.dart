@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
-import 'package:mosque/screen/userScreens/home/home.dart';
 import 'package:mosque/screen/userScreens/home/home_screen.dart';
 
 class RegisterUser extends StatelessWidget {

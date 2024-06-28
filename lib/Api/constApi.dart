@@ -16,6 +16,9 @@ const RESETPASSWORDADMIN = '/api/admin/resetpassword';
 const VERIFYJOUEURCODE = '/api/users/verifytoken';
 const VERIFYADMINCODE = '/api/admins/verifytoken';
 
+//----------------------Section---------------------
+const GETALLSECTION = '/api/sections';
+
 const Loginadmin = '/api/admin/login';
 const getJouerById = '/api/user/';
 String PATH = Loginuser;
