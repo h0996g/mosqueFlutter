@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/widgets/lesson_card.dart';
 import 'package:mosque/const/colors.dart';
-import 'package:mosque/const/icons.dart';
-import 'package:mosque/model/lesson.dart';
+import 'package:mosque/model/section_model.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 
 class LessonScreen extends StatefulWidget {
-  const LessonScreen({super.key});
+  final String idSection;
+
+  const LessonScreen({super.key, required this.idSection});
 
   @override
   _LessonScreenState createState() => _LessonScreenState();
 }
 
 class _LessonScreenState extends State<LessonScreen> {
+  LessonCubit lessonCubit = LessonCubit();
+
   int _selectedTag = 0;
 
   void changeTab(int index) {
@@ -28,29 +33,8 @@ class _LessonScreenState extends State<LessonScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController(
-      initialVideoId: 'pB7uZzu2dLI', // YouTube video ID
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-      ),
-    )..addListener(() {
-        if (!_controller.value.isFullScreen) {
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-              overlays: SystemUiOverlay.values);
-        }
-      });
-
-    player = YoutubePlayer(
-      controller: _controller,
-      showVideoProgressIndicator: true,
-      onReady: () {
-        print('Player is ready.');
-      },
-      onEnded: (data) {
-        _controller.load('5qap5aO4i9A'); // Example of loading another video
-      },
-    );
+    lessonCubit = LessonCubit.get(context);
+    lessonCubit.getSectionById(id: widget.idSection);
   }
 
   @override
@@ -61,111 +45,152 @@ class _LessonScreenState extends State<LessonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayerBuilder(
-      player: player,
-      builder: (context, player) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('YouTube Player'),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-            child: Column(
-              children: <Widget>[
-                // some widgets
-                player,
-                const SizedBox(
-                  height: 15,
+    return BlocConsumer<LessonCubit, LessonState>(
+      listener: (context, state) {
+        if (state is GetSectionByIdStateGood) {
+          // print(state.model.lessons.map((e) => e['urlVideo']));
+          _controller = YoutubePlayerController(
+            initialVideoId:
+                state.model.lessonObjects!.first.urlVideo, // YouTube video ID
+            flags: const YoutubePlayerFlags(
+                autoPlay: false, mute: false, enableCaption: false),
+          )..addListener(() {
+              if (!_controller.value.isFullScreen) {
+                SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                    overlays: SystemUiOverlay.values);
+              }
+            });
+
+          player = YoutubePlayer(
+            controller: _controller,
+            showVideoProgressIndicator: true,
+            onReady: () {
+              print('Player is ready.');
+            },
+            onEnded: (data) {
+              _controller
+                  .load('5qap5aO4i9A'); // Example of loading another video
+            },
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is GetSectionByIdLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is GetSectionByIdStateBad) {
+          return const Center(
+            child: Text('Error'),
+          );
+        } else if (state is GetSectionByIdStateGood) {
+          return YoutubePlayerBuilder(
+            player: player,
+            builder: (context, player) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: const Text('YouTube Player'),
                 ),
-                const Text(
-                  "Futter Novice to Ninja",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10),
+                  child: Column(
+                    children: <Widget>[
+                      // some widgets
+                      player,
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        state.model.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      Text(
+                        state.model.lessonObjects!.first.description,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 3,
+                      ),
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.timer,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            " 72 Hours",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTabView(
+                        numberOfLessons: state.model.lessonObjects!.length,
+                        index: _selectedTag,
+                        changeTab: changeTab,
+                      ),
+                      _selectedTag == 0
+                          ? PlayList(
+                              lesson: state.model.lessonObjects!,
+                            )
+                          : Description(
+                              description: state.model.description,
+                            ),
+                    ],
                   ),
                 ),
-                const SizedBox(
-                  height: 3,
-                ),
-                const Text(
-                  "Created by DevWheels",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(
-                  height: 3,
-                ),
-                Row(
-                  children: [
-                    Image.asset(
-                      icFeaturedOutlined,
-                      height: 20,
-                    ),
-                    const Text(
-                      " 4.8",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    const Icon(
-                      Icons.timer,
-                      color: Colors.grey,
-                    ),
-                    const Text(
-                      " 72 Hours",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const Spacer(),
-                    const Text(
-                      " \$40",
-                      style: TextStyle(
-                        color: kPrimaryColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                CustomTabView(
-                  index: _selectedTag,
-                  changeTab: changeTab,
-                ),
-                _selectedTag == 0 ? const PlayList() : const Description(),
-              ],
-            ),
-          ),
-        );
+              );
+            },
+          );
+        } else {
+          return const Center(
+            child: Text('Error'),
+          );
+        }
       },
     );
   }
 }
 
 class CustomTabView extends StatefulWidget {
+  final int numberOfLessons;
   final Function(int) changeTab;
   final int index;
-  const CustomTabView({Key? key, required this.changeTab, required this.index})
-      : super(key: key);
+  const CustomTabView(
+      {super.key,
+      required this.changeTab,
+      required this.index,
+      required this.numberOfLessons});
 
   @override
   State<CustomTabView> createState() => _CustomTabViewState();
 }
 
 class _CustomTabViewState extends State<CustomTabView> {
-  final List<String> _tags = ["Playlist (22)", "Description"];
+  late List<String> _tags;
+
+  @override
+  void initState() {
+    super.initState();
+    _tags = ["Playlist (${widget.numberOfLessons})", "Description"];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,8 +235,11 @@ class _CustomTabViewState extends State<CustomTabView> {
   }
 }
 
+// ignore: must_be_immutable
 class PlayList extends StatelessWidget {
-  const PlayList({super.key});
+  final List<Lesson> lesson;
+  List<bool> isPlaying = [true, false, false, false, false, false];
+  PlayList({super.key, required this.lesson});
 
   @override
   Widget build(BuildContext context) {
@@ -224,9 +252,16 @@ class PlayList extends StatelessWidget {
         },
         padding: const EdgeInsets.only(top: 20, bottom: 40),
         shrinkWrap: true,
-        itemCount: lessonList.length,
+        itemCount: lesson.length,
         itemBuilder: (_, index) {
-          return LessonCard(lesson: lessonList[index]);
+          bool isPlaying = this.isPlaying[index];
+          // bool isCompleted = false;
+          // if (index == 0) {
+          //   isCompleted = true;
+          // }
+
+          return LessonCard(
+              lesson: lesson[index], isPlaying: isPlaying, isCompleted: false);
         },
       ),
     );
@@ -234,14 +269,12 @@ class PlayList extends StatelessWidget {
 }
 
 class Description extends StatelessWidget {
-  const Description({super.key});
+  final String description;
+  const Description({super.key, required this.description});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(top: 20.0),
-      child: Text(
-          "Build Flutter iOS and Android Apps with a Single Codebase: Learn Google's Flutter Mobile Development Framework & Dart"),
-    );
+    return Padding(
+        padding: const EdgeInsets.only(top: 20.0), child: Text(description));
   }
 }

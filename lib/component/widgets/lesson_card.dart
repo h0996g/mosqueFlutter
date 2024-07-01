@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:mosque/model/lesson.dart';
+import 'package:mosque/model/section_model.dart';
 
 class LessonCard extends StatelessWidget {
   final Lesson lesson;
+  final bool isPlaying;
+  final bool isCompleted;
 
-  const LessonCard({Key? key, required this.lesson}) : super(key: key);
+  const LessonCard(
+      {super.key,
+      required this.lesson,
+      required this.isPlaying,
+      required this.isCompleted});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(
-        lesson.isPlaying ? Icons.play_arrow : Icons.play_circle_outline,
+        isPlaying ? Icons.play_arrow : Icons.play_circle_outline,
         size: 30,
       ),
       title: Text(
-        lesson.name,
+        lesson.title,
         style: const TextStyle(fontSize: 16),
       ),
       subtitle: Text(
@@ -22,8 +28,8 @@ class LessonCard extends StatelessWidget {
         style: const TextStyle(fontSize: 12),
       ),
       trailing: Icon(
-        lesson.isCompleted ? Icons.check_circle : Icons.lock,
-        color: lesson.isCompleted ? Colors.green : null,
+        isCompleted ? Icons.check_circle : Icons.lock,
+        color: isCompleted ? Colors.green : null,
         size: 24,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 10),

@@ -11,17 +11,16 @@ part 'lesson_state.dart';
 class LessonCubit extends Cubit<LessonState> {
   LessonCubit() : super(LessonInitial());
   static LessonCubit get(context) => BlocProvider.of(context);
-  Future<void> getSectionById() async {
-    List<SectionModel> sectionModel = [];
+  Future<void> getSectionById({required String id}) async {
     emit(GetSectionByIdLoading());
-    await Httplar.httpget(path: GETSECTIONBYID).then((value) {
+    await Httplar.httpget(path: GETSECTIONBYID + id).then((value) {
       if (value.statusCode == 200) {
-        var jsonResponse = convert.jsonDecode(value.body) as List;
-        sectionModel =
-            jsonResponse.map((e) => SectionModel.fromJson(e)).toList();
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        SectionModel sectionModel = SectionModel.fromJson(jsonResponse);
         emit(GetSectionByIdStateGood(model: sectionModel));
 
-        print(sectionModel.first.name);
+        // print(sectionModel.lessonObjects?.length);
       } else if (value.statusCode == 401) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

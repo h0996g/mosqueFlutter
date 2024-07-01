@@ -13,6 +13,7 @@ import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/Auth/login.dart';
 import 'package:mosque/screen/userScreens/category/cubit/category_cubit.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
+import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mosque/screen/welcome_screen.dart';
@@ -67,6 +68,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: ((context) => CategoryCubit()),
+        ),
+        BlocProvider(
+          create: ((context) => LessonCubit()),
         ),
       ],
       child: MaterialApp(

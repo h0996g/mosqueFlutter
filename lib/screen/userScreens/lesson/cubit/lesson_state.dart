@@ -13,7 +13,7 @@ final class ErrorState extends LessonState {
 final class GetSectionByIdLoading extends LessonState {}
 
 final class GetSectionByIdStateGood extends LessonState {
-  final List<SectionModel> model;
+  final SectionModel model;
 
   GetSectionByIdStateGood({required this.model});
 }

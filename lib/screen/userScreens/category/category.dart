@@ -61,6 +61,7 @@ class _CategoryListState extends State<CategoryList> {
             ),
             itemBuilder: (context, index) => CategoryCard(
               sectionModel: state.model[index],
+              idSection: state.model[index].id,
             ),
           );
         } else {
@@ -126,10 +127,9 @@ class ShimmerCategoryCard extends StatelessWidget {
 }
 
 class CategoryCard extends StatelessWidget {
-  const CategoryCard({
-    super.key,
-    required this.sectionModel,
-  });
+  final String idSection;
+  const CategoryCard(
+      {super.key, required this.sectionModel, required this.idSection});
   final SectionModel sectionModel;
 
   @override
@@ -138,7 +138,10 @@ class CategoryCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const LessonScreen()),
+          MaterialPageRoute(
+              builder: (context) => LessonScreen(
+                    idSection: idSection,
+                  )),
         );
       },
       child: Container(
@@ -182,7 +185,7 @@ class CategoryCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "${sectionModel.lessons.length} lessons",
+                    "${sectionModel.lessonIds?.length} lessons",
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
