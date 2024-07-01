@@ -6,12 +6,14 @@ import 'package:mosque/const/icons.dart';
 import 'package:mosque/model/lesson.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class DetailsScreen extends StatefulWidget {
+class LessonScreen extends StatefulWidget {
+  const LessonScreen({super.key});
+
   @override
-  _DetailsScreenState createState() => _DetailsScreenState();
+  _LessonScreenState createState() => _LessonScreenState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> {
+class _LessonScreenState extends State<LessonScreen> {
   int _selectedTag = 0;
 
   void changeTab(int index) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mosque/component/playlist.dart';
+import 'package:mosque/component/lessonDetails.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/userScreens/category/cubit/category_cubit.dart';
 import 'package:shimmer/shimmer.dart';
@@ -138,7 +138,7 @@ class CategoryCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailsScreen()),
+          MaterialPageRoute(builder: (context) => const LessonScreen()),
         );
       },
       child: Container(
@@ -182,7 +182,7 @@ class CategoryCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "${sectionModel.lesson.length} lessons",
+                    "${sectionModel.lessons.length} lessons",
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.grey,

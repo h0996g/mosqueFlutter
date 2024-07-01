@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/appbar.dart';
-import 'package:mosque/component/category.dart';
+import 'package:mosque/screen/userScreens/category/category.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/sorting.dart';
 import 'package:mosque/const/colors.dart';
@@ -73,9 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   BlocConsumer<HomeUserCubit, HomeUserState>(
-                    listener: (context, state) {
-                      // TODO: implement listener
-                    },
+                    listener: (context, state) {},
                     builder: (context, state) {
                       return Row(
                         children: [
