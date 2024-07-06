@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/widgets/lesson_card.dart';
 import 'package:mosque/const/colors.dart';
 import 'package:mosque/model/section_model.dart';
+import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 
@@ -45,9 +46,11 @@ class _LessonScreenState extends State<LessonScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SectionModel? model;
     return BlocConsumer<LessonCubit, LessonState>(
       listener: (context, state) {
         if (state is GetSectionByIdStateGood) {
+          model = state.model;
           // print(state.model.lessons.map((e) => e['urlVideo']));
           _controller = YoutubePlayerController(
             initialVideoId:
@@ -83,7 +86,7 @@ class _LessonScreenState extends State<LessonScreen> {
           return const Center(
             child: Text('Error'),
           );
-        } else if (state is GetSectionByIdStateGood) {
+        } else {
           return YoutubePlayerBuilder(
             player: player,
             builder: (context, player) {
@@ -102,7 +105,7 @@ class _LessonScreenState extends State<LessonScreen> {
                         height: 15,
                       ),
                       Text(
-                        state.model.name,
+                        model?.name ?? '',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
@@ -112,7 +115,7 @@ class _LessonScreenState extends State<LessonScreen> {
                         height: 3,
                       ),
                       Text(
-                        state.model.lessonObjects!.first.description,
+                        model?.lessonObjects!.first.description ?? "",
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
@@ -142,26 +145,23 @@ class _LessonScreenState extends State<LessonScreen> {
                         height: 15,
                       ),
                       CustomTabView(
-                        numberOfLessons: state.model.lessonObjects!.length,
+                        numberOfLessons: model?.lessonObjects!.length ?? 0,
                         index: _selectedTag,
                         changeTab: changeTab,
                       ),
                       _selectedTag == 0
                           ? PlayList(
-                              lesson: state.model.lessonObjects!,
+                              lesson: model?.lessonObjects! ?? [],
+                              idSection: widget.idSection,
                             )
                           : Description(
-                              description: state.model.description,
+                              description: model?.description ?? "",
                             ),
                     ],
                   ),
                 ),
               );
             },
-          );
-        } else {
-          return const Center(
-            child: Text('Error'),
           );
         }
       },
@@ -236,13 +236,55 @@ class _CustomTabViewState extends State<CustomTabView> {
 }
 
 // ignore: must_be_immutable
-class PlayList extends StatelessWidget {
+class PlayList extends StatefulWidget {
+  final String idSection;
   final List<Lesson> lesson;
+
+  PlayList({super.key, required this.lesson, required this.idSection});
+
+  @override
+  State<PlayList> createState() => _PlayListState();
+}
+
+class _PlayListState extends State<PlayList> {
   List<bool> isPlaying = [true, false, false, false, false, false];
-  PlayList({super.key, required this.lesson});
+  // List<bool> isCompleted = [false, false, false, false, false, false];
+  bool isSameSection(String idSection) {
+    HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
+    // homeUserCubit.getMyInfo();
+    for (var element in homeUserCubit.userDataModel!.sectionProgress!) {
+      if (element.section == idSection) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool isCompletedlesson(Lesson lesson, String idSection) {
+    HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
+    // homeUserCubit.getMyInfo();
+    for (var element in homeUserCubit.userDataModel!.sectionProgress!) {
+      if (element.section == idSection) {
+        for (var element in element.completedLessons!) {
+          if (element.id == lesson.id) {
+            // isCompleted[widget.lesson.indexOf(lesson)] = true;
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    var isThisSection = isSameSection(widget.idSection);
+    print(widget.idSection);
     return Expanded(
       child: ListView.separated(
         separatorBuilder: (_, __) {
@@ -252,16 +294,28 @@ class PlayList extends StatelessWidget {
         },
         padding: const EdgeInsets.only(top: 20, bottom: 40),
         shrinkWrap: true,
-        itemCount: lesson.length,
+        itemCount: widget.lesson.length,
         itemBuilder: (_, index) {
           bool isPlaying = this.isPlaying[index];
-          // bool isCompleted = false;
-          // if (index == 0) {
-          //   isCompleted = true;
-          // }
 
-          return LessonCard(
-              lesson: lesson[index], isPlaying: isPlaying, isCompleted: false);
+          if (isThisSection) {
+            return InkWell(
+              onTap: () {},
+              child: LessonCard(
+                  lesson: widget.lesson[index],
+                  isPlaying: isPlaying,
+                  isCompleted: isCompletedlesson(
+                      widget.lesson[index], widget.idSection)),
+            );
+          } else {
+            return InkWell(
+              onTap: () {},
+              child: LessonCard(
+                  lesson: widget.lesson[index],
+                  isPlaying: isPlaying,
+                  isCompleted: false),
+            );
+          }
         },
       ),
     );

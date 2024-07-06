@@ -23,6 +23,8 @@ class HomeUserCubit extends Cubit<HomeUserState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         userDataModel = DataUserModel.fromJson(jsonResponse);
+        print(userDataModel!.sectionProgress!
+            .map((e) => e.completedLessons?.map((e) => e.score)));
         emit(GetMyInformationStateGood(model: userDataModel!));
       } else if (value.statusCode == 401) {
         var jsonResponse =

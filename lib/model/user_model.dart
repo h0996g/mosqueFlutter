@@ -32,6 +32,7 @@ class DataUserModel {
     this.age,
     this.photo,
     this.commants,
+    this.sectionProgress,
     this.createdAt,
     this.updatedAt,
     // required this._V,
@@ -46,6 +47,7 @@ class DataUserModel {
   int? age;
   String? photo;
   List<dynamic>? commants;
+  List<SectionProgress>? sectionProgress;
 
   String? createdAt;
   String? updatedAt;
@@ -60,7 +62,12 @@ class DataUserModel {
     age = json['age'];
     photo = json['photo'];
     commants = json['commants'];
-
+    if (json['sectionProgress'] != null) {
+      sectionProgress = <SectionProgress>[];
+      json['sectionProgress'].forEach((v) {
+        sectionProgress!.add(SectionProgress.fromJson(v));
+      });
+    }
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -77,8 +84,61 @@ class DataUserModel {
 
     _data['photo'] = photo;
     _data['commants'] = commants;
+    if (sectionProgress != null) {
+      _data['sectionProgress'] =
+          sectionProgress!.map((v) => v.toJson()).toList();
+    }
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
     return _data;
+  }
+}
+
+class SectionProgress {
+  String? section;
+  List<CompletedLesson>? completedLessons;
+  String? id;
+
+  SectionProgress({this.section, this.completedLessons, this.id});
+
+  SectionProgress.fromJson(Map<String, dynamic> json) {
+    section = json['section'];
+    if (json['completedLessons'] != null) {
+      completedLessons = <CompletedLesson>[];
+      json['completedLessons'].forEach((v) {
+        completedLessons!.add(CompletedLesson.fromJson(v));
+      });
+    }
+    id = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['section'] = section;
+    if (completedLessons != null) {
+      data['completedLessons'] =
+          completedLessons!.map((v) => v.toJson()).toList();
+    }
+    data['_id'] = id;
+    return data;
+  }
+}
+
+class CompletedLesson {
+  int? score;
+  String? id;
+
+  CompletedLesson({this.score, this.id});
+
+  CompletedLesson.fromJson(Map<String, dynamic> json) {
+    score = json['score'];
+    id = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
+    data['score'] = score;
+    data['_id'] = id;
+    return data;
   }
 }
