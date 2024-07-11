@@ -19,7 +19,7 @@ class LessonScreen extends StatefulWidget {
 
 class _LessonScreenState extends State<LessonScreen> {
   LessonCubit lessonCubit = LessonCubit();
-
+  int indexLesson = 0;
   int _selectedTag = 0;
 
   void changeTab(int index) {
@@ -27,6 +27,8 @@ class _LessonScreenState extends State<LessonScreen> {
       _selectedTag = index;
     });
   }
+
+  SectionModel? model;
 
   late YoutubePlayerController _controller;
   late YoutubePlayer player;
@@ -36,6 +38,29 @@ class _LessonScreenState extends State<LessonScreen> {
     super.initState();
     lessonCubit = LessonCubit.get(context);
     lessonCubit.getSectionById(id: widget.idSection);
+    _controller = YoutubePlayerController(
+      initialVideoId:
+          // LessonCubit.get(context).urlVideo, // YouTube video ID
+          'pB7uZzu2dLI',
+      flags: const YoutubePlayerFlags(
+          autoPlay: false, mute: false, enableCaption: false),
+    )..addListener(() {
+        if (!_controller.value.isFullScreen) {
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+              overlays: SystemUiOverlay.values);
+        }
+      });
+
+    player = YoutubePlayer(
+      controller: _controller,
+      showVideoProgressIndicator: true,
+      onReady: () {
+        print('Player is ready.');
+      },
+      onEnded: (data) {
+        _controller.load('5qap5aO4i9A'); // Example of loading another video
+      },
+    );
   }
 
   @override
@@ -46,35 +71,10 @@ class _LessonScreenState extends State<LessonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SectionModel? model;
     return BlocConsumer<LessonCubit, LessonState>(
       listener: (context, state) {
         if (state is GetSectionByIdStateGood) {
           model = state.model;
-          // print(state.model.lessons.map((e) => e['urlVideo']));
-          _controller = YoutubePlayerController(
-            initialVideoId:
-                state.model.lessonObjects!.first.urlVideo, // YouTube video ID
-            flags: const YoutubePlayerFlags(
-                autoPlay: false, mute: false, enableCaption: false),
-          )..addListener(() {
-              if (!_controller.value.isFullScreen) {
-                SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-                    overlays: SystemUiOverlay.values);
-              }
-            });
-
-          player = YoutubePlayer(
-            controller: _controller,
-            showVideoProgressIndicator: true,
-            onReady: () {
-              print('Player is ready.');
-            },
-            onEnded: (data) {
-              _controller
-                  .load('5qap5aO4i9A'); // Example of loading another video
-            },
-          );
         }
       },
       builder: (context, state) {
@@ -115,7 +115,11 @@ class _LessonScreenState extends State<LessonScreen> {
                         height: 3,
                       ),
                       Text(
-                        model?.lessonObjects!.first.description ?? "",
+                        model
+                                ?.lessonObjects![
+                                    LessonCubit.get(context).indexLesson]
+                                .description ??
+                            '',
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
@@ -151,11 +155,13 @@ class _LessonScreenState extends State<LessonScreen> {
                       ),
                       _selectedTag == 0
                           ? PlayList(
+                              indexLesson: indexLesson,
+                              controller: _controller,
                               lesson: model?.lessonObjects! ?? [],
                               idSection: widget.idSection,
                             )
                           : Description(
-                              description: model?.description ?? "",
+                              description: model?.description ?? '',
                             ),
                     ],
                   ),
@@ -239,8 +245,15 @@ class _CustomTabViewState extends State<CustomTabView> {
 class PlayList extends StatefulWidget {
   final String idSection;
   final List<Lesson> lesson;
+  int indexLesson;
+  YoutubePlayerController controller;
 
-  PlayList({super.key, required this.lesson, required this.idSection});
+  PlayList(
+      {super.key,
+      required this.lesson,
+      required this.idSection,
+      required this.controller,
+      required this.indexLesson});
 
   @override
   State<PlayList> createState() => _PlayListState();
@@ -248,10 +261,8 @@ class PlayList extends StatefulWidget {
 
 class _PlayListState extends State<PlayList> {
   List<bool> isPlaying = [true, false, false, false, false, false];
-  // List<bool> isCompleted = [false, false, false, false, false, false];
   bool isSameSection(String idSection) {
     HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
-    // homeUserCubit.getMyInfo();
     for (var element in homeUserCubit.userDataModel!.sectionProgress!) {
       if (element.section == idSection) {
         return true;
@@ -282,6 +293,12 @@ class _PlayListState extends State<PlayList> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var isThisSection = isSameSection(widget.idSection);
     print(widget.idSection);
@@ -300,22 +317,20 @@ class _PlayListState extends State<PlayList> {
 
           if (isThisSection) {
             return InkWell(
-              onTap: () {},
+              onTap: () {
+                LessonCubit.get(context).changeIndexLesson(index: index);
+
+                // widget.controller
+                //     .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+              },
               child: LessonCard(
                   lesson: widget.lesson[index],
                   isPlaying: isPlaying,
                   isCompleted: isCompletedlesson(
                       widget.lesson[index], widget.idSection)),
             );
-          } else {
-            return InkWell(
-              onTap: () {},
-              child: LessonCard(
-                  lesson: widget.lesson[index],
-                  isPlaying: isPlaying,
-                  isCompleted: false),
-            );
           }
+          return null;
         },
       ),
     );

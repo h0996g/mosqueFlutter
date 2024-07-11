@@ -19,3 +19,7 @@ final class GetSectionByIdStateGood extends LessonState {
 }
 
 final class GetSectionByIdStateBad extends LessonState {}
+
+final class ChangeUrlVideoState extends LessonState {}
+
+final class changeIndexLessonState extends LessonState {}

@@ -11,6 +11,8 @@ part 'lesson_state.dart';
 class LessonCubit extends Cubit<LessonState> {
   LessonCubit() : super(LessonInitial());
   static LessonCubit get(context) => BlocProvider.of(context);
+  String urlVideo = '';
+  int indexLesson = 0;
   Future<void> getSectionById({required String id}) async {
     emit(GetSectionByIdLoading());
     await Httplar.httpget(path: GETSECTIONBYID + id).then((value) {
@@ -18,6 +20,8 @@ class LessonCubit extends Cubit<LessonState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         SectionModel sectionModel = SectionModel.fromJson(jsonResponse);
+        urlVideo = sectionModel.lessonObjects!.first.urlVideo;
+        print(urlVideo);
         emit(GetSectionByIdStateGood(model: sectionModel));
 
         // print(sectionModel.lessonObjects?.length);
@@ -31,5 +35,15 @@ class LessonCubit extends Cubit<LessonState> {
       print(e.toString());
       emit(GetSectionByIdStateBad());
     });
+  }
+
+  Future<void> changeUrlVideo({required String url}) async {
+    urlVideo = url;
+    emit(ChangeUrlVideoState());
+  }
+
+  void changeIndexLesson({required int index}) {
+    indexLesson = index;
+    emit(changeIndexLessonState());
   }
 }
