@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
-
-import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 
 class ResultScreen extends StatefulWidget {
   final int score;
@@ -114,19 +111,17 @@ class _ResultScreenState extends State<ResultScreen>
             ),
             const SizedBox(height: 48),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (widget.score / widget.totalQuestions >= 0.5) {
-                  LessonCubit.get(context)
+                  await HomeUserCubit.get(context)
                       .updateLessonCompletionStatus(
                     idlesson: widget.idLesson,
                     idSection: widget.idSection,
                     score: (widget.score / widget.totalQuestions * 100).toInt(),
                   )
-                      .then((value) {
-                    HomeUserCubit.get(context).getMyInfo().then((value) {
-                      widget.onQuizCompleted();
-                      Navigator.pop(context);
-                    });
+                      .then((value) async {
+                    widget.onQuizCompleted();
+                    Navigator.pop(context);
                   });
                 } else {
                   widget.onQuizCompleted();

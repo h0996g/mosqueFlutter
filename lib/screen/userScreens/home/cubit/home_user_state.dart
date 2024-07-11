@@ -28,3 +28,9 @@ final class GetAllSectionStateGood extends HomeUserState {
 }
 
 final class GetAllSectionStateBad extends HomeUserState {}
+
+final class UpdateLessonCompletionStatusLoading extends HomeUserState {}
+
+final class UpdateLessonCompletionStateGood extends HomeUserState {}
+
+final class UpdateLessonCompletionStateBad extends HomeUserState {}

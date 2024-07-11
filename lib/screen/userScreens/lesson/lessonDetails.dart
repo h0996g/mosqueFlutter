@@ -81,6 +81,12 @@ class _LessonScreenState extends State<LessonScreen> {
         }
       },
       builder: (context, state) {
+        // if (state is GetMyInformationLoading) {
+        //   return const Center(
+        //     child: CircularProgressIndicator(),
+        //   );
+        // }
+
         if (state is GetSectionByIdLoading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -263,7 +269,9 @@ class PlayList extends StatefulWidget {
 }
 
 class _PlayListState extends State<PlayList> {
+  int index = 0;
   List<bool> isPlaying = [true, false, false, false, false, false];
+  int score = 0;
   bool isSameSection(String idSection) {
     HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
     for (var element in homeUserCubit.userDataModel!.sectionProgress!) {
@@ -303,65 +311,72 @@ class _PlayListState extends State<PlayList> {
   @override
   Widget build(BuildContext context) {
     var isThisSection = isSameSection(widget.idSection);
-    print(widget.idSection);
-    return Expanded(
-      child: ListView.separated(
-        separatorBuilder: (_, __) {
-          return const SizedBox(
-            height: 20,
-          );
-        },
-        padding: const EdgeInsets.only(top: 20, bottom: 40),
-        shrinkWrap: true,
-        itemCount: widget.lesson.length,
-        itemBuilder: (_, index) {
-          bool isPlaying = this.isPlaying[index];
-          bool isSelected = index == LessonCubit.get(context).indexLesson;
-
-          if (isThisSection) {
-            return InkWell(
-              onTap: () {
-                if (isCompletedlesson(widget.lesson[index], widget.idSection)) {
-                  LessonCubit.get(context).changeIndexLesson(index: index);
-                  widget.controller
-                      .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
-                } else {
-                  if (isCompletedlesson(
-                      widget.lesson[index - 1], widget.idSection)) {
-                    showToast(msg: 'msg', state: ToastStates.success);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(
-                          lesson: widget.lesson[index],
-                          onQuizCompleted: (int score) async {
-                            if (score / widget.lesson[index].quize.length >
-                                0.5) {
-                              showToast(
-                                  msg:
-                                      '${score / widget.lesson[index].quize.length}',
-                                  state: ToastStates.success);
-                            }
-                          },
-                        ),
-                      ),
-                    );
-                  }
-                }
-              },
-              child: LessonCard(
-                lesson: widget.lesson[index],
-                isPlaying: isPlaying,
-                isCompleted: isCompletedlesson(
-                  widget.lesson[index],
-                  widget.idSection,
-                ),
-                isSelected: isSelected,
-              ),
+    return BlocListener<HomeUserCubit, HomeUserState>(
+      listener: (context, state) {
+        if (state is UpdateLessonCompletionStateGood) {
+          LessonCubit.get(context).changeIndexLesson(index: index);
+          widget.controller
+              .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+          setState(() {});
+        }
+      },
+      child: Expanded(
+        child: ListView.separated(
+          separatorBuilder: (_, __) {
+            return const SizedBox(
+              height: 20,
             );
-          }
-          return null;
-        },
+          },
+          padding: const EdgeInsets.only(top: 20, bottom: 40),
+          shrinkWrap: true,
+          itemCount: widget.lesson.length,
+          itemBuilder: (_, index) {
+            bool isPlaying = this.isPlaying[index];
+            bool isSelected = index == LessonCubit.get(context).indexLesson;
+
+            if (isThisSection) {
+              return InkWell(
+                onTap: () async {
+                  if (isCompletedlesson(
+                      widget.lesson[index], widget.idSection)) {
+                    LessonCubit.get(context).changeIndexLesson(index: index);
+                    widget.controller
+                        .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+                  } else {
+                    if (isCompletedlesson(
+                        widget.lesson[index - 1], widget.idSection)) {
+                      showToast(msg: 'msg', state: ToastStates.success);
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QuizScreen(
+                            lesson: widget.lesson[index],
+                            onQuizCompleted: (int score) async {
+                              if (score / widget.lesson[index].quize.length >=
+                                  0.5) {
+                                this.index = index;
+                              }
+                            },
+                          ),
+                        ),
+                      );
+                    }
+                  }
+                },
+                child: LessonCard(
+                  lesson: widget.lesson[index],
+                  isPlaying: isPlaying,
+                  isCompleted: isCompletedlesson(
+                    widget.lesson[index],
+                    widget.idSection,
+                  ),
+                  isSelected: isSelected,
+                ),
+              );
+            }
+            return null;
+          },
+        ),
       ),
     );
   }

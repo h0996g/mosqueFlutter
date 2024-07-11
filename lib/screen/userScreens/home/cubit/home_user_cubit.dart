@@ -37,4 +37,46 @@ class HomeUserCubit extends Cubit<HomeUserState> {
       emit(GetMyInformationStateBad());
     });
   }
+
+  Future<void> updateLessonCompletionStatus(
+      {required String idlesson,
+      required String idSection,
+      required int score}) async {
+    emit(UpdateLessonCompletionStatusLoading());
+    await Httplar.httpPost(path: COMPLETLESSONPROGRESS, data: {
+      "lessonId": idlesson,
+      "score": score,
+      "sectionId": idSection
+    }).then((value) {
+      if (value.statusCode == 200) {
+        dynamic jsonResponse = convert.jsonDecode(value.body);
+
+        if (jsonResponse is List) {
+          List<SectionProgress> sectionProgress =
+              jsonResponse.map((e) => SectionProgress.fromJson(e)).toList();
+          userDataModel!.sectionProgress = sectionProgress;
+        } else if (jsonResponse is Map<String, dynamic>) {
+          Map<String, dynamic> responseMap = jsonResponse;
+          if (responseMap.containsKey('sectionProgress')) {
+            userDataModel!.sectionProgress =
+                (responseMap['sectionProgress'] as List)
+                    .map((e) => SectionProgress.fromJson(e))
+                    .toList();
+          }
+        }
+
+        print(userDataModel!.sectionProgress!.first);
+        emit(UpdateLessonCompletionStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
+        print(error_model.message);
+        emit(ErrorState(model: error_model));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateLessonCompletionStateBad());
+    });
+  }
 }

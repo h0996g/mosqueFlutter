@@ -13,6 +13,7 @@ class LessonCubit extends Cubit<LessonState> {
   static LessonCubit get(context) => BlocProvider.of(context);
   String urlVideo = '';
   int indexLesson = 0;
+  // SectionModel? sectionModel;
   Future<void> getSectionById({required String id}) async {
     emit(GetSectionByIdLoading());
     await Httplar.httpget(path: GETSECTIONBYID + id).then((value) {
@@ -47,28 +48,28 @@ class LessonCubit extends Cubit<LessonState> {
     emit(changeIndexLessonState());
   }
 
-  Future<void> updateLessonCompletionStatus(
-      {required String idlesson,
-      required String idSection,
-      required int score}) async {
-    emit(UpdateLessonCompletionStatusLoading());
-    await Httplar.httpPost(path: COMPLETLESSONPROGRESS, data: {
-      "lessonId": idlesson,
-      "score": score,
-      "sectionId": idSection
-    }).then((value) {
-      if (value.statusCode == 200) {
-        emit(UpdateLessonCompletionStateGood());
-      } else {
-        var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
-        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
-        print(error_model.message);
-        emit(ErrorState(model: error_model));
-      }
-    }).catchError((e) {
-      print(e.toString());
-      emit(UpdateLessonCompletionStateBad());
-    });
-  }
+  // Future<void> updateLessonCompletionStatus(
+  //     {required String idlesson,
+  //     required String idSection,
+  //     required int score}) async {
+  //   emit(UpdateLessonCompletionStatusLoading());
+  //   await Httplar.httpPost(path: COMPLETLESSONPROGRESS, data: {
+  //     "lessonId": idlesson,
+  //     "score": score,
+  //     "sectionId": idSection
+  //   }).then((value) {
+  //     if (value.statusCode == 200) {
+  //       emit(UpdateLessonCompletionStateGood());
+  //     } else {
+  //       var jsonResponse =
+  //           convert.jsonDecode(value.body) as Map<String, dynamic>;
+  //       ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
+  //       print(error_model.message);
+  //       emit(ErrorState(model: error_model));
+  //     }
+  //   }).catchError((e) {
+  //     print(e.toString());
+  //     emit(UpdateLessonCompletionStateBad());
+  //   });
+  // }
 }

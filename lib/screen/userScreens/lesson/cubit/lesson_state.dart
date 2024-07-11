@@ -24,8 +24,8 @@ final class ChangeUrlVideoState extends LessonState {}
 
 final class changeIndexLessonState extends LessonState {}
 
-final class UpdateLessonCompletionStatusLoading extends LessonState {}
+// final class UpdateLessonCompletionStatusLoading extends LessonState {}
 
-final class UpdateLessonCompletionStateGood extends LessonState {}
+// final class UpdateLessonCompletionStateGood extends LessonState {}
 
-final class UpdateLessonCompletionStateBad extends LessonState {}
+// final class UpdateLessonCompletionStateBad extends LessonState {}
