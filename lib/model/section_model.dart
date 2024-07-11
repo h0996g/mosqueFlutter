@@ -61,7 +61,7 @@ class Lesson {
   final String urlVideo;
   final String description;
   final String duration;
-  final List<dynamic> quize;
+  final List<Quiz> quize;
   final List<dynamic> commants;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -83,6 +83,10 @@ class Lesson {
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
+    var quizeFromJson = json['quize'] as List;
+    List<Quiz> quizeList =
+        quizeFromJson.map((quizJson) => Quiz.fromJson(quizJson)).toList();
+
     return Lesson(
       id: json['_id'],
       section: json['section'],
@@ -91,11 +95,34 @@ class Lesson {
       urlVideo: json['urlVideo'],
       description: json['description'],
       duration: json['duration'],
-      quize: json['quize'],
+      quize: quizeList,
       commants: json['commants'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       v: json['__v'],
+    );
+  }
+}
+
+class Quiz {
+  final String question;
+  final List<int> correctAnswerIndex;
+  final List<String> options;
+  final String id;
+
+  Quiz({
+    required this.question,
+    required this.correctAnswerIndex,
+    required this.options,
+    required this.id,
+  });
+
+  factory Quiz.fromJson(Map<String, dynamic> json) {
+    return Quiz(
+      question: json['question'],
+      correctAnswerIndex: List<int>.from(json['correctAnswerIndex']),
+      options: List<String>.from(json['options']),
+      id: json['_id'],
     );
   }
 }

@@ -20,6 +20,8 @@ const VERIFYADMINCODE = '/api/admins/verifytoken';
 const GETALLSECTION = '/api/sections';
 const GETSECTIONBYID = '/api/section/';
 
+const COMPLETLESSONPROGRESS = '/api/lesson/complete';
+
 const Loginadmin = '/api/admin/login';
 const getJouerById = '/api/user/';
 String PATH = Loginuser;

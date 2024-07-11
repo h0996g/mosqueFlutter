@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/component/components.dart';
+import 'package:mosque/component/const.dart';
 import 'package:mosque/component/widgets/lesson_card.dart';
 import 'package:mosque/const/colors.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
+import 'package:mosque/screen/userScreens/lesson/quiz_screen.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 
@@ -294,7 +297,6 @@ class _PlayListState extends State<PlayList> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -314,20 +316,48 @@ class _PlayListState extends State<PlayList> {
         itemCount: widget.lesson.length,
         itemBuilder: (_, index) {
           bool isPlaying = this.isPlaying[index];
+          bool isSelected = index == LessonCubit.get(context).indexLesson;
 
           if (isThisSection) {
             return InkWell(
               onTap: () {
-                LessonCubit.get(context).changeIndexLesson(index: index);
-
-                // widget.controller
-                //     .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+                if (isCompletedlesson(widget.lesson[index], widget.idSection)) {
+                  LessonCubit.get(context).changeIndexLesson(index: index);
+                  widget.controller
+                      .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+                } else {
+                  if (isCompletedlesson(
+                      widget.lesson[index - 1], widget.idSection)) {
+                    showToast(msg: 'msg', state: ToastStates.success);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(
+                          lesson: widget.lesson[index],
+                          onQuizCompleted: (int score) async {
+                            if (score / widget.lesson[index].quize.length >
+                                0.5) {
+                              showToast(
+                                  msg:
+                                      '${score / widget.lesson[index].quize.length}',
+                                  state: ToastStates.success);
+                            }
+                          },
+                        ),
+                      ),
+                    );
+                  }
+                }
               },
               child: LessonCard(
-                  lesson: widget.lesson[index],
-                  isPlaying: isPlaying,
-                  isCompleted: isCompletedlesson(
-                      widget.lesson[index], widget.idSection)),
+                lesson: widget.lesson[index],
+                isPlaying: isPlaying,
+                isCompleted: isCompletedlesson(
+                  widget.lesson[index],
+                  widget.idSection,
+                ),
+                isSelected: isSelected,
+              ),
             );
           }
           return null;
