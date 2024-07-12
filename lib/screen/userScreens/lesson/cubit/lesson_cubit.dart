@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/Api/httplaravel.dart';
+import 'package:mosque/component/const.dart';
+import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/error_model.dart';
 import 'package:mosque/model/section_model.dart';
 import 'dart:convert' as convert;
@@ -21,7 +23,9 @@ class LessonCubit extends Cubit<LessonState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         SectionModel sectionModel = SectionModel.fromJson(jsonResponse);
-        urlVideo = sectionModel.lessonObjects!.first.urlVideo;
+        indexLesson = CachHelper.getData(key: sectionModel.id) ?? 0;
+        urlVideo = getYoutubeVideoId(
+            sectionModel.lessonObjects![indexLesson].urlVideo);
         print(urlVideo);
         emit(GetSectionByIdStateGood(model: sectionModel));
 

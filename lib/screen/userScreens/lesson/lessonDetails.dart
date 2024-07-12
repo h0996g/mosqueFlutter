@@ -5,6 +5,7 @@ import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/component/widgets/lesson_card.dart';
 import 'package:mosque/const/colors.dart';
+import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/screen/userScreens/lesson/quiz_screen.dart';
@@ -22,7 +23,7 @@ class LessonScreen extends StatefulWidget {
 
 class _LessonScreenState extends State<LessonScreen> {
   LessonCubit lessonCubit = LessonCubit();
-  int indexLesson = 0;
+  // int? indexLesson;
   int _selectedTag = 0;
 
   void changeTab(int index) {
@@ -39,31 +40,32 @@ class _LessonScreenState extends State<LessonScreen> {
   @override
   void initState() {
     super.initState();
-    lessonCubit = LessonCubit.get(context);
-    lessonCubit.getSectionById(id: widget.idSection);
-    _controller = YoutubePlayerController(
-      initialVideoId:
-          // LessonCubit.get(context).urlVideo, // YouTube video ID
-          'pB7uZzu2dLI',
-      flags: const YoutubePlayerFlags(
-          autoPlay: false, mute: false, enableCaption: false),
-    )..addListener(() {
-        if (!_controller.value.isFullScreen) {
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-              overlays: SystemUiOverlay.values);
-        }
-      });
+    // indexLesson = CachHelper.getData(key: widget.idSection) ?? 0;
 
-    player = YoutubePlayer(
-      controller: _controller,
-      showVideoProgressIndicator: true,
-      onReady: () {
-        print('Player is ready.');
-      },
-      onEnded: (data) {
-        _controller.load('5qap5aO4i9A'); // Example of loading another video
-      },
-    );
+    lessonCubit = LessonCubit.get(context);
+    lessonCubit.getSectionById(id: widget.idSection).then((value) {
+      _controller = YoutubePlayerController(
+        initialVideoId: LessonCubit.get(context).urlVideo, // YouTube video ID
+
+        flags: const YoutubePlayerFlags(
+            autoPlay: false, mute: false, enableCaption: false),
+      )..addListener(() {
+          if (!_controller.value.isFullScreen) {
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                overlays: SystemUiOverlay.values);
+          }
+        });
+      player = YoutubePlayer(
+        controller: _controller,
+        showVideoProgressIndicator: true,
+        onReady: () {
+          print('Player is ready.');
+        },
+        onEnded: (data) {
+          _controller.load('5qap5aO4i9A'); // Example of loading another video
+        },
+      );
+    });
   }
 
   @override
@@ -164,7 +166,7 @@ class _LessonScreenState extends State<LessonScreen> {
                       ),
                       _selectedTag == 0
                           ? PlayList(
-                              indexLesson: indexLesson,
+                              // indexLesson: !,
                               controller: _controller,
                               lesson: model?.lessonObjects! ?? [],
                               idSection: widget.idSection,
@@ -254,15 +256,16 @@ class _CustomTabViewState extends State<CustomTabView> {
 class PlayList extends StatefulWidget {
   final String idSection;
   final List<Lesson> lesson;
-  int indexLesson;
+  // int indexLesson;
   YoutubePlayerController controller;
 
-  PlayList(
-      {super.key,
-      required this.lesson,
-      required this.idSection,
-      required this.controller,
-      required this.indexLesson});
+  PlayList({
+    super.key,
+    required this.lesson,
+    required this.idSection,
+    required this.controller,
+    // required this.indexLesson
+  });
 
   @override
   State<PlayList> createState() => _PlayListState();
@@ -317,6 +320,8 @@ class _PlayListState extends State<PlayList> {
           LessonCubit.get(context).changeIndexLesson(index: index);
           widget.controller
               .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+          CachHelper.putcache(key: widget.idSection, value: index);
+
           setState(() {});
         }
       },
@@ -342,6 +347,7 @@ class _PlayListState extends State<PlayList> {
                     LessonCubit.get(context).changeIndexLesson(index: index);
                     widget.controller
                         .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+                    CachHelper.putcache(key: widget.idSection, value: index);
                   } else {
                     if (isCompletedlesson(
                         widget.lesson[index - 1], widget.idSection)) {
