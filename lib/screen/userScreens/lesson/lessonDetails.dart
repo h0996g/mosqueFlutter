@@ -9,7 +9,7 @@ import 'package:mosque/const/colors.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
-import 'package:mosque/screen/userScreens/lesson/quiz_screen.dart';
+import 'package:mosque/component/widgets/quiz_screen.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 
@@ -23,6 +23,16 @@ class LessonScreen extends StatefulWidget {
 }
 
 class _LessonScreenState extends State<LessonScreen> {
+  bool isFirstTimeSection(String idSection) {
+    HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
+    for (var element in homeUserCubit.userDataModel!.sectionProgress!) {
+      if (element.section == idSection) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   LessonCubit lessonCubit = LessonCubit();
   // int? indexLesson;
   int _selectedTag = 0;
@@ -81,9 +91,16 @@ class _LessonScreenState extends State<LessonScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LessonCubit, LessonState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is GetSectionByIdStateGood) {
           model = state.model;
+          if (!isFirstTimeSection(widget.idSection)) {
+            await HomeUserCubit.get(context).updateLessonCompletionStatus(
+              idlesson: model!.lessonObjects!.first.id,
+              idSection: widget.idSection,
+              score: 100,
+            );
+          }
         }
       },
       builder: (context, state) {
@@ -177,6 +194,18 @@ class _LessonScreenState extends State<LessonScreen> {
                                 idSection: widget.idSection,
                               )
                             : Description(
+                                lessonId: model
+                                        ?.lessonObjects![
+                                            LessonCubit.get(context)
+                                                .indexLesson]
+                                        .id ??
+                                    '',
+                                // comment: model
+                                //         ?.lessonObjects![
+                                //             LessonCubit.get(context)
+                                //                 .indexLesson]
+                                //         .comments ??
+                                //     [],
                                 pdfUrl: model
                                         ?.lessonObjects![
                                             LessonCubit.get(context)
@@ -401,12 +430,29 @@ class _PlayListState extends State<PlayList> {
   }
 }
 
-class Description extends StatelessWidget {
+class Description extends StatefulWidget {
   final String description;
   final String pdfUrl;
+  final String lessonId;
 
-  const Description(
-      {super.key, required this.description, required this.pdfUrl});
+  const Description({
+    super.key,
+    required this.description,
+    required this.pdfUrl,
+    required this.lessonId,
+  });
+
+  @override
+  State<Description> createState() => _DescriptionState();
+}
+
+class _DescriptionState extends State<Description> {
+  List<Comment> comments = [];
+  @override
+  void initState() {
+    LessonCubit.get(context).getComments(lessonID: widget.lessonId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -415,7 +461,7 @@ class Description extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            description,
+            widget.description,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
@@ -428,7 +474,7 @@ class Description extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PdfViewerPage(url: pdfUrl),
+                  builder: (context) => PdfViewerPage(url: widget.pdfUrl),
                 ),
               );
             },
@@ -456,7 +502,24 @@ class Description extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          const CommentSection(),
+          BlocConsumer<LessonCubit, LessonState>(
+            listener: (context, state) {
+              if (state is GetCommentsGood) {
+                comments = state.comments;
+              }
+            },
+            builder: (context, state) {
+              if (state is GetCommentsLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return CommentSection(
+                comments: comments,
+                lessonId: widget.lessonId,
+              );
+            },
+          ),
         ],
       ),
     );
@@ -464,7 +527,10 @@ class Description extends StatelessWidget {
 }
 
 class CommentSection extends StatefulWidget {
-  const CommentSection({super.key});
+  final List<Comment> comments;
+  final String lessonId;
+  const CommentSection(
+      {super.key, required this.comments, required this.lessonId});
 
   @override
   _CommentSectionState createState() => _CommentSectionState();
@@ -472,12 +538,17 @@ class CommentSection extends StatefulWidget {
 
 class _CommentSectionState extends State<CommentSection> {
   final TextEditingController _commentController = TextEditingController();
-  final List<String> _comments = [];
+  // final List<String> _comments = [];
 
   void _addComment() {
     if (_commentController.text.isNotEmpty) {
       setState(() {
-        _comments.add(_commentController.text);
+        // _comments.add(_commentController.text);
+        LessonCubit.get(context).addCommentToLesson(
+            lessinId: widget.lessonId,
+            comment: _commentController.text,
+            userID: HomeUserCubit.get(context).userDataModel!.id!,
+            onModel: 'User');
         _commentController.clear();
       });
     }
@@ -510,10 +581,10 @@ class _CommentSectionState extends State<CommentSection> {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: _comments.length,
+          itemCount: widget.comments.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(_comments[index]),
+              title: Text(widget.comments[index].comment),
             );
           },
         ),

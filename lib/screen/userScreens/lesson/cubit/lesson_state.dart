@@ -24,8 +24,18 @@ final class ChangeUrlVideoState extends LessonState {}
 
 final class changeIndexLessonState extends LessonState {}
 
-// final class UpdateLessonCompletionStatusLoading extends LessonState {}
+final class AddCommentToLessonLoading extends LessonState {}
 
-// final class UpdateLessonCompletionStateGood extends LessonState {}
+final class AddCommentToLessonStateGood extends LessonState {}
 
-// final class UpdateLessonCompletionStateBad extends LessonState {}
+final class AddCommentToLessonStateBad extends LessonState {}
+
+final class GetCommentsLoading extends LessonState {}
+
+final class GetCommentsGood extends LessonState {
+  final List<Comment> comments;
+
+  GetCommentsGood({required this.comments});
+}
+
+final class GetCommentsBad extends LessonState {}

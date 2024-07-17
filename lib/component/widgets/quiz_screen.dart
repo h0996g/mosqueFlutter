@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mosque/component/widgets/answer_card.dart';
 import 'package:mosque/component/widgets/next_button.dart';
 import 'package:mosque/model/section_model.dart';
-import 'package:mosque/screen/userScreens/lesson/result_screen.dart';
+import 'package:mosque/component/widgets/result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   final Lesson lesson;

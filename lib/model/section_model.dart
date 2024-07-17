@@ -63,7 +63,7 @@ class Lesson {
   final String? suplemmentPdf;
   final String duration;
   final List<Quiz> quize;
-  final List<dynamic> commants;
+  final List<Comment> comments;
   final DateTime createdAt;
   final DateTime updatedAt;
   final int v;
@@ -78,7 +78,7 @@ class Lesson {
     this.suplemmentPdf,
     required this.duration,
     required this.quize,
-    required this.commants,
+    required this.comments,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
@@ -88,7 +88,10 @@ class Lesson {
     var quizeFromJson = json['quize'] as List;
     List<Quiz> quizeList =
         quizeFromJson.map((quizJson) => Quiz.fromJson(quizJson)).toList();
-
+    var commentsFromJson = json['comments'] as List;
+    List<Comment> commentsList = commentsFromJson
+        .map((commentJson) => Comment.fromJson(commentJson))
+        .toList();
     return Lesson(
       id: json['_id'],
       section: json['section'],
@@ -99,7 +102,7 @@ class Lesson {
       suplemmentPdf: json['suplemmentPdf'],
       duration: json['duration'],
       quize: quizeList,
-      commants: json['commants'],
+      comments: commentsList,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       v: json['__v'],
@@ -126,6 +129,29 @@ class Quiz {
       correctAnswerIndex: List<int>.from(json['correctAnswerIndex']),
       options: List<String>.from(json['options']),
       id: json['_id'],
+    );
+  }
+}
+
+class Comment {
+  final String user;
+  final String onModel;
+  final String comment;
+  final String id;
+
+  Comment({
+    required this.user,
+    required this.onModel,
+    required this.comment,
+    required this.id,
+  });
+
+  factory Comment.fromJson(Map<String, dynamic> json) {
+    return Comment(
+      user: json['user'] as String,
+      onModel: json['onModel'] as String,
+      comment: json['comment'] as String,
+      id: json['_id'] as String,
     );
   }
 }

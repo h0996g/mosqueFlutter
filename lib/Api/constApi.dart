@@ -22,6 +22,8 @@ const GETALLSECTION = '/api/sections';
 const GETSECTIONBYID = '/api/section/';
 
 const COMPLETLESSONPROGRESS = '/api/lesson/complete';
+const ADDCOMMENTTOLESSON = '/api/lesson/comment/';
+const GETCOMMENTS = '/api/lesson/comments/';
 
 const Loginadmin = '/api/admin/login';
 const getJouerById = '/api/user/';
