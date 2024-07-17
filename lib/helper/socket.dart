@@ -1,18 +1,50 @@
+import 'dart:convert';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketService {
-  static IO.Socket? socket;
+  late IO.Socket socket;
 
-  void initSocket() {
-    socket = IO.io('http://192.168.1.20:3000',
-        IO.OptionBuilder().setTransports(['websocket']).build());
-    socket!.connect();
-    socket!.onConnect((_) {
-      print('Connected to WebSocket Server');
+  void connect() {
+    socket = IO.io('http://192.168.6.68:3000', <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': true,
     });
-    socket!.on('newComment', (data) {
-      // Handle the new comment
-      print('New comment received: $data');
+
+    socket.connect();
+
+    socket.onConnect((_) {
+      print('Connected to socket server');
+    });
+
+    socket.onDisconnect((_) {
+      print('Disconnected from socket server');
+    });
+  }
+
+  void joinLesson(String lessonId) {
+    print('Joining lesson $lessonId');
+    socket.emit('joinLesson', lessonId);
+  }
+
+  void leaveLesson(String lessonId) {
+    print('Leaving lesson $lessonId');
+    socket.emit('leaveLesson', lessonId);
+  }
+
+  void sendComment(
+      String lessonId, String comment, String userId, String onModel) {
+    socket.emit('newComment', {
+      'lessonId': lessonId,
+      'comment': comment,
+      'userId': userId,
+      'onModel': onModel,
+    });
+  }
+
+  void listenForNewComments(Function(dynamic) callback) {
+    socket.on('newComment', (data) {
+      final parsedData = data is String ? jsonDecode(data) : data;
+      callback(parsedData);
     });
   }
 }

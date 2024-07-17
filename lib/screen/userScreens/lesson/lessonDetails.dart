@@ -7,6 +7,7 @@ import 'package:mosque/component/widgets/lesson_card.dart';
 import 'package:mosque/component/widgets/pdf_view.dart';
 import 'package:mosque/const/colors.dart';
 import 'package:mosque/helper/cachhelper.dart';
+import 'package:mosque/helper/socket.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/component/widgets/quiz_screen.dart';
@@ -527,10 +528,12 @@ class _DescriptionState extends State<Description> {
 }
 
 class CommentSection extends StatefulWidget {
-  final List<Comment> comments;
   final String lessonId;
+  final List<Comment> comments;
+
   const CommentSection(
-      {super.key, required this.comments, required this.lessonId});
+      {Key? key, required this.lessonId, required this.comments})
+      : super(key: key);
 
   @override
   _CommentSectionState createState() => _CommentSectionState();
@@ -538,19 +541,56 @@ class CommentSection extends StatefulWidget {
 
 class _CommentSectionState extends State<CommentSection> {
   final TextEditingController _commentController = TextEditingController();
-  // final List<String> _comments = [];
+  final SocketService _socketService = SocketService();
+  late List<Comment> _comments;
+
+  @override
+  void initState() {
+    super.initState();
+    _comments = widget.comments;
+    _socketService.connect();
+    _socketService.joinLesson(widget.lessonId);
+    _socketService.listenForNewComments((data) {
+      setState(() {
+        _comments.add(Comment.fromJson(data['comment']));
+      });
+    });
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    _socketService.leaveLesson(widget.lessonId);
+    _socketService.socket.disconnect();
+    super.dispose();
+  }
 
   void _addComment() {
     if (_commentController.text.isNotEmpty) {
-      setState(() {
-        // _comments.add(_commentController.text);
-        LessonCubit.get(context).addCommentToLesson(
-            lessinId: widget.lessonId,
-            comment: _commentController.text,
-            userID: HomeUserCubit.get(context).userDataModel!.id!,
-            onModel: 'User');
-        _commentController.clear();
+      final comment = _commentController.text;
+      final userId = HomeUserCubit.get(context)
+          .userDataModel!
+          .id!; // Get the user ID from your user management
+      const onModel = 'User'; // or 'Admin'
+      LessonCubit.get(context)
+          .addCommentToLesson(
+              lessinId: widget.lessonId,
+              comment: comment,
+              userID: userId,
+              onModel: onModel)
+          .then((value) {
+        _socketService.sendComment(widget.lessonId, comment, userId, onModel);
       });
+
+      _commentController.clear();
     }
   }
 
@@ -581,10 +621,10 @@ class _CommentSectionState extends State<CommentSection> {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.comments.length,
+          itemCount: _comments.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(widget.comments[index].comment),
+              title: Text(_comments[index].comment),
             );
           },
         ),

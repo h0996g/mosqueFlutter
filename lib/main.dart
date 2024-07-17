@@ -6,7 +6,6 @@ import 'package:mosque/component/const.dart';
 import 'package:mosque/firebase_options.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/helper/observer.dart';
-import 'package:mosque/helper/socket.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
@@ -23,7 +22,6 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await CachHelper.init();
-  SocketService().initSocket(); 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

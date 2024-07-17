@@ -137,13 +137,13 @@ class Comment {
   final String user;
   final String onModel;
   final String comment;
-  final String id;
+  // final String id;
 
   Comment({
     required this.user,
     required this.onModel,
     required this.comment,
-    required this.id,
+    // required this.id,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
@@ -151,7 +151,7 @@ class Comment {
       user: json['user'] as String,
       onModel: json['onModel'] as String,
       comment: json['comment'] as String,
-      id: json['_id'] as String,
+      // id: json['_id'] as String,
     );
   }
 }
