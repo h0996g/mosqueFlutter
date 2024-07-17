@@ -60,6 +60,7 @@ class Lesson {
   final String photo;
   final String urlVideo;
   final String description;
+  final String? suplemmentPdf;
   final String duration;
   final List<Quiz> quize;
   final List<dynamic> commants;
@@ -74,6 +75,7 @@ class Lesson {
     required this.photo,
     required this.urlVideo,
     required this.description,
+    this.suplemmentPdf,
     required this.duration,
     required this.quize,
     required this.commants,
@@ -94,6 +96,7 @@ class Lesson {
       photo: json['photo'],
       urlVideo: json['urlVideo'],
       description: json['description'],
+      suplemmentPdf: json['suplemmentPdf'],
       duration: json['duration'],
       quize: quizeList,
       commants: json['commants'],

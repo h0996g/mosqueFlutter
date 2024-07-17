@@ -1,17 +1,5 @@
 import 'package:flutter/material.dart';
 
-/*
-  If (no options is chosen)
-    all answer cards should have default style
-    all buttons should be enabled
-  else
-    all button should be disabled
-    if (correct option is chosen)
-      answer should be highlighted as green
-    else
-      answer should be highlighted as red
-      correct answer should be highlighted as green
-*/
 class AnswerCard extends StatelessWidget {
   const AnswerCard({
     super.key,
@@ -37,19 +25,18 @@ class AnswerCard extends StatelessWidget {
         vertical: 10.0,
       ),
       child: selectedAnswerIndex != null
-          // if one option is chosen
           ? Container(
               height: 70,
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.white10,
+                color: Colors.grey[800],
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: isCorrectAnswer
                       ? Colors.green
                       : isWrongAnswer
                           ? Colors.red
-                          : Colors.white24,
+                          : Colors.grey[600]!,
                 ),
               ),
               child: Row(
@@ -59,6 +46,7 @@ class AnswerCard extends StatelessWidget {
                       question,
                       style: const TextStyle(
                         fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -71,15 +59,14 @@ class AnswerCard extends StatelessWidget {
                 ],
               ),
             )
-          // If no option is selected
           : Container(
               height: 70,
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.white10,
+                color: Colors.grey[800],
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: Colors.white24,
+                  color: Colors.grey[600]!,
                 ),
               ),
               child: Row(
@@ -89,6 +76,7 @@ class AnswerCard extends StatelessWidget {
                       question,
                       style: const TextStyle(
                         fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
                   ),

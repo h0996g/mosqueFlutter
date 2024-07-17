@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mosque/component/widgets/answer_card.dart';
 import 'package:mosque/component/widgets/next_button.dart';
@@ -22,6 +23,32 @@ class _QuizScreenState extends State<QuizScreen> {
   int? selectedAnswerIndex;
   int questionIndex = 0;
   int score = 0;
+  int remainingSeconds = 10;
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (remainingSeconds > 0) {
+        setState(() {
+          remainingSeconds--;
+        });
+      } else {
+        goToNextQuestion();
+      }
+    });
+  }
 
   void pickAnswer(int value) {
     selectedAnswerIndex = value;
@@ -33,9 +60,27 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   void goToNextQuestion() {
+    timer?.cancel();
     if (questionIndex < widget.lesson.quize.length - 1) {
       questionIndex++;
       selectedAnswerIndex = null;
+      remainingSeconds = 10;
+      startTimer();
+    } else {
+      // Last question, go to result screen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => ResultScreen(
+            idLesson: widget.lesson.id,
+            idSection: widget.lesson.section,
+            score: score,
+            totalQuestions: widget.lesson.quize.length,
+            onQuizCompleted: () {
+              widget.onQuizCompleted(score);
+            },
+          ),
+        ),
+      );
     }
     setState(() {});
   }
@@ -46,8 +91,22 @@ class _QuizScreenState extends State<QuizScreen> {
     bool isLastQuestion = questionIndex == widget.lesson.quize.length - 1;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Quiz'),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Quiz',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -58,8 +117,16 @@ class _QuizScreenState extends State<QuizScreen> {
               question.question,
               style: const TextStyle(
                 fontSize: 21,
+                color: Colors.white,
               ),
               textAlign: TextAlign.center,
+            ),
+            Text(
+              'Time remaining: $remainingSeconds seconds',
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
             ),
             ListView.builder(
               shrinkWrap: true,

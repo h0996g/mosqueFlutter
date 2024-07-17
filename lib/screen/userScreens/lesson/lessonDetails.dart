@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/component/widgets/lesson_card.dart';
+import 'package:mosque/component/widgets/pdf_view.dart';
 import 'package:mosque/const/colors.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/section_model.dart';
@@ -36,7 +37,6 @@ class _LessonScreenState extends State<LessonScreen> {
 
   late YoutubePlayerController _controller;
   late YoutubePlayer player;
-
   @override
   void initState() {
     super.initState();
@@ -48,7 +48,11 @@ class _LessonScreenState extends State<LessonScreen> {
         initialVideoId: LessonCubit.get(context).urlVideo, // YouTube video ID
 
         flags: const YoutubePlayerFlags(
-            autoPlay: false, mute: false, enableCaption: false),
+          autoPlay: false,
+          mute: false,
+          enableCaption: false,
+          // hideControls: true,
+        ),
       )..addListener(() {
           if (!_controller.value.isFullScreen) {
             SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -103,78 +107,91 @@ class _LessonScreenState extends State<LessonScreen> {
             builder: (context, player) {
               return Scaffold(
                 appBar: AppBar(
-                  title: const Text('YouTube Player'),
+                  title: const Text('YouTube Player '),
                 ),
-                body: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10),
-                  child: Column(
-                    children: <Widget>[
-                      // some widgets
-                      player,
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        model?.name ?? '',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18,
+                body: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10),
+                    child: Column(
+                      children: <Widget>[
+                        // some widgets
+                        player,
+                        const SizedBox(
+                          height: 15,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      Text(
-                        model
-                                ?.lessonObjects![
-                                    LessonCubit.get(context).indexLesson]
-                                .description ??
-                            '',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 3,
-                      ),
-                      const Row(
-                        children: [
-                          Icon(
-                            Icons.timer,
-                            color: Colors.grey,
+                        Text(
+                          model?.name ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
                           ),
-                          Text(
-                            " 72 Hours",
-                            style: TextStyle(
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          model
+                                  ?.lessonObjects![
+                                      LessonCubit.get(context).indexLesson]
+                                  .description ??
+                              '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.timer,
                               color: Colors.grey,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
                             ),
-                          ),
-                        ],
-                      ),
+                            Text(
+                              '  ${model?.lessonObjects![LessonCubit.get(context).indexLesson].duration} ',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
 
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      CustomTabView(
-                        numberOfLessons: model?.lessonObjects!.length ?? 0,
-                        index: _selectedTag,
-                        changeTab: changeTab,
-                      ),
-                      _selectedTag == 0
-                          ? PlayList(
-                              // indexLesson: !,
-                              controller: _controller,
-                              lesson: model?.lessonObjects! ?? [],
-                              idSection: widget.idSection,
-                            )
-                          : Description(
-                              description: model?.description ?? '',
-                            ),
-                    ],
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        CustomTabView(
+                          numberOfLessons: model?.lessonObjects!.length ?? 0,
+                          index: _selectedTag,
+                          changeTab: changeTab,
+                        ),
+                        _selectedTag == 0
+                            ? PlayList(
+                                // indexLesson: !,
+                                controller: _controller,
+                                lesson: model?.lessonObjects! ?? [],
+                                idSection: widget.idSection,
+                              )
+                            : Description(
+                                pdfUrl: model
+                                        ?.lessonObjects![
+                                            LessonCubit.get(context)
+                                                .indexLesson]
+                                        .suplemmentPdf ??
+                                    '',
+                                description: model
+                                        ?.lessonObjects![
+                                            LessonCubit.get(context)
+                                                .indexLesson]
+                                        .description ??
+                                    '',
+                              ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -206,7 +223,7 @@ class _CustomTabViewState extends State<CustomTabView> {
   @override
   void initState() {
     super.initState();
-    _tags = ["Playlist (${widget.numberOfLessons})", "Description"];
+    _tags = ["Playlist (${widget.numberOfLessons})", "More Info"];
   }
 
   @override
@@ -273,7 +290,7 @@ class PlayList extends StatefulWidget {
 
 class _PlayListState extends State<PlayList> {
   int index = 0;
-  List<bool> isPlaying = [true, false, false, false, false, false];
+  List<bool> isPlaying = [false, false, false, false, false, false];
   int score = 0;
   bool isSameSection(String idSection) {
     HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
@@ -313,7 +330,7 @@ class _PlayListState extends State<PlayList> {
 
   @override
   Widget build(BuildContext context) {
-    var isThisSection = isSameSection(widget.idSection);
+    // var isThisSection = isSameSection(widget.idSection);
     return BlocListener<HomeUserCubit, HomeUserState>(
       listener: (context, state) {
         if (state is UpdateLessonCompletionStateGood) {
@@ -325,64 +342,60 @@ class _PlayListState extends State<PlayList> {
           setState(() {});
         }
       },
-      child: Expanded(
-        child: ListView.separated(
-          separatorBuilder: (_, __) {
-            return const SizedBox(
-              height: 20,
-            );
-          },
-          padding: const EdgeInsets.only(top: 20, bottom: 40),
-          shrinkWrap: true,
-          itemCount: widget.lesson.length,
-          itemBuilder: (_, index) {
-            bool isPlaying = this.isPlaying[index];
-            bool isSelected = index == LessonCubit.get(context).indexLesson;
+      child: ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        separatorBuilder: (_, __) {
+          return const SizedBox(
+            height: 20,
+          );
+        },
+        padding: const EdgeInsets.only(top: 20, bottom: 40),
+        itemCount: widget.lesson.length,
+        itemBuilder: (_, index) {
+          bool isSelected = index == LessonCubit.get(context).indexLesson;
+          bool isPlaying = index == LessonCubit.get(context).indexLesson;
 
-            if (isThisSection) {
-              return InkWell(
-                onTap: () async {
-                  if (isCompletedlesson(
-                      widget.lesson[index], widget.idSection)) {
-                    LessonCubit.get(context).changeIndexLesson(index: index);
-                    widget.controller
-                        .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
-                    CachHelper.putcache(key: widget.idSection, value: index);
-                  } else {
-                    if (isCompletedlesson(
-                        widget.lesson[index - 1], widget.idSection)) {
-                      showToast(msg: 'msg', state: ToastStates.success);
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuizScreen(
-                            lesson: widget.lesson[index],
-                            onQuizCompleted: (int score) async {
-                              if (score / widget.lesson[index].quize.length >=
-                                  0.5) {
-                                this.index = index;
-                              }
-                            },
-                          ),
-                        ),
-                      );
-                    }
-                  }
-                },
-                child: LessonCard(
-                  lesson: widget.lesson[index],
-                  isPlaying: isPlaying,
-                  isCompleted: isCompletedlesson(
-                    widget.lesson[index],
-                    widget.idSection,
-                  ),
-                  isSelected: isSelected,
-                ),
-              );
-            }
-            return null;
-          },
-        ),
+          // if (isThisSection) {
+          return InkWell(
+            onTap: () async {
+              if (isCompletedlesson(widget.lesson[index], widget.idSection)) {
+                LessonCubit.get(context).changeIndexLesson(index: index);
+                widget.controller
+                    .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+                CachHelper.putcache(key: widget.idSection, value: index);
+              } else {
+                if (isCompletedlesson(
+                    widget.lesson[index - 1], widget.idSection)) {
+                  showToast(msg: 'msg', state: ToastStates.success);
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuizScreen(
+                        lesson: widget.lesson[index],
+                        onQuizCompleted: (int score) async {
+                          if (score / widget.lesson[index].quize.length >=
+                              0.5) {
+                            this.index = index;
+                          }
+                        },
+                      ),
+                    ),
+                  );
+                }
+              }
+            },
+            child: LessonCard(
+              lesson: widget.lesson[index],
+              isPlaying: isPlaying,
+              isCompleted: isCompletedlesson(
+                widget.lesson[index],
+                widget.idSection,
+              ),
+              isSelected: isSelected,
+            ),
+          );
+        },
       ),
     );
   }
@@ -390,11 +403,121 @@ class _PlayListState extends State<PlayList> {
 
 class Description extends StatelessWidget {
   final String description;
-  const Description({super.key, required this.description});
+  final String pdfUrl;
+
+  const Description(
+      {super.key, required this.description, required this.pdfUrl});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 20.0), child: Text(description));
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Column(
+        children: [
+          Text(
+            description,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PdfViewerPage(url: pdfUrl),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kPrimaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
+              ),
+            ),
+            icon: const Icon(
+              Icons.picture_as_pdf,
+              color: Colors.white,
+            ),
+            label: const Text(
+              'Supplement',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          const CommentSection(),
+        ],
+      ),
+    );
+  }
+}
+
+class CommentSection extends StatefulWidget {
+  const CommentSection({super.key});
+
+  @override
+  _CommentSectionState createState() => _CommentSectionState();
+}
+
+class _CommentSectionState extends State<CommentSection> {
+  final TextEditingController _commentController = TextEditingController();
+  final List<String> _comments = [];
+
+  void _addComment() {
+    if (_commentController.text.isNotEmpty) {
+      setState(() {
+        _comments.add(_commentController.text);
+        _commentController.clear();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Comments',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: _commentController,
+          decoration: InputDecoration(
+            hintText: 'Add a comment...',
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.send),
+              onPressed: _addComment,
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _comments.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(_comments[index]),
+            );
+          },
+        ),
+      ],
+    );
   }
 }
