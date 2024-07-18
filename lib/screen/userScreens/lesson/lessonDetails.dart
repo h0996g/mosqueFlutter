@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/component/widgets/lesson_card.dart';
 import 'package:mosque/component/widgets/pdf_view.dart';
@@ -24,9 +23,9 @@ class LessonScreen extends StatefulWidget {
 }
 
 class _LessonScreenState extends State<LessonScreen> {
+  HomeUserCubit? homeUserCubit;
   bool isFirstTimeSection(String idSection) {
-    HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
-    for (var element in homeUserCubit.userDataModel!.sectionProgress!) {
+    for (var element in homeUserCubit!.userDataModel!.sectionProgress!) {
       if (element.section == idSection) {
         return true;
       }
@@ -34,7 +33,7 @@ class _LessonScreenState extends State<LessonScreen> {
     return false;
   }
 
-  LessonCubit lessonCubit = LessonCubit();
+  LessonCubit? lessonCubit;
   // int? indexLesson;
   int _selectedTag = 0;
 
@@ -52,9 +51,9 @@ class _LessonScreenState extends State<LessonScreen> {
   void initState() {
     super.initState();
     // indexLesson = CachHelper.getData(key: widget.idSection) ?? 0;
-
+    homeUserCubit = HomeUserCubit.get(context);
     lessonCubit = LessonCubit.get(context);
-    lessonCubit.getSectionById(id: widget.idSection).then((value) {
+    lessonCubit?.getSectionById(id: widget.idSection).then((value) {
       _controller = YoutubePlayerController(
         initialVideoId: LessonCubit.get(context).urlVideo, // YouTube video ID
 
@@ -96,7 +95,7 @@ class _LessonScreenState extends State<LessonScreen> {
         if (state is GetSectionByIdStateGood) {
           model = state.model;
           if (!isFirstTimeSection(widget.idSection)) {
-            await HomeUserCubit.get(context).updateLessonCompletionStatus(
+            await homeUserCubit!.updateLessonCompletionStatus(
               idlesson: model!.lessonObjects!.first.id,
               idSection: widget.idSection,
               score: 100,
@@ -194,7 +193,7 @@ class _LessonScreenState extends State<LessonScreen> {
                                 lesson: model?.lessonObjects! ?? [],
                                 idSection: widget.idSection,
                               )
-                            : Description(
+                            : MorInfo(
                                 lessonId: model
                                         ?.lessonObjects![
                                             LessonCubit.get(context)
@@ -319,12 +318,13 @@ class PlayList extends StatefulWidget {
 }
 
 class _PlayListState extends State<PlayList> {
+  HomeUserCubit? homeUserCubit;
+
   int index = 0;
   List<bool> isPlaying = [false, false, false, false, false, false];
   int score = 0;
   bool isSameSection(String idSection) {
-    HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
-    for (var element in homeUserCubit.userDataModel!.sectionProgress!) {
+    for (var element in homeUserCubit!.userDataModel!.sectionProgress!) {
       if (element.section == idSection) {
         return true;
       }
@@ -333,9 +333,8 @@ class _PlayListState extends State<PlayList> {
   }
 
   bool isCompletedlesson(Lesson lesson, String idSection) {
-    HomeUserCubit homeUserCubit = HomeUserCubit.get(context);
     // homeUserCubit.getMyInfo();
-    for (var element in homeUserCubit.userDataModel!.sectionProgress!) {
+    for (var element in homeUserCubit!.userDataModel!.sectionProgress!) {
       if (element.section == idSection) {
         for (var element in element.completedLessons!) {
           if (element.id == lesson.id) {
@@ -350,6 +349,7 @@ class _PlayListState extends State<PlayList> {
 
   @override
   void initState() {
+    homeUserCubit = HomeUserCubit.get(context);
     super.initState();
   }
 
@@ -360,6 +360,7 @@ class _PlayListState extends State<PlayList> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.lesson.length);
     // var isThisSection = isSameSection(widget.idSection);
     return BlocListener<HomeUserCubit, HomeUserState>(
       listener: (context, state) {
@@ -397,7 +398,6 @@ class _PlayListState extends State<PlayList> {
               } else {
                 if (isCompletedlesson(
                     widget.lesson[index - 1], widget.idSection)) {
-                  showToast(msg: 'msg', state: ToastStates.success);
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -431,12 +431,12 @@ class _PlayListState extends State<PlayList> {
   }
 }
 
-class Description extends StatefulWidget {
+class MorInfo extends StatefulWidget {
   final String description;
   final String pdfUrl;
   final String lessonId;
 
-  const Description({
+  const MorInfo({
     super.key,
     required this.description,
     required this.pdfUrl,
@@ -444,10 +444,10 @@ class Description extends StatefulWidget {
   });
 
   @override
-  State<Description> createState() => _DescriptionState();
+  State<MorInfo> createState() => _MorInfoState();
 }
 
-class _DescriptionState extends State<Description> {
+class _MorInfoState extends State<MorInfo> {
   List<Comment> comments = [];
   @override
   void initState() {
@@ -543,12 +543,12 @@ class _CommentSectionState extends State<CommentSection> {
   final TextEditingController _commentController = TextEditingController();
   final SocketService _socketService = SocketService();
   late List<Comment> _comments;
-
+  HomeUserCubit? homeUserCubit;
   @override
   void initState() {
     super.initState();
+    homeUserCubit = HomeUserCubit.get(context);
     _comments = widget.comments;
-    _socketService.connect();
     _socketService.joinLesson(widget.lessonId);
     _socketService.listenForNewComments((data) {
       setState(() {
@@ -569,16 +569,15 @@ class _CommentSectionState extends State<CommentSection> {
   void dispose() {
     _commentController.dispose();
     _socketService.leaveLesson(widget.lessonId);
-    _socketService.socket.disconnect();
+    // SocketService.socket!.disconnect();
     super.dispose();
   }
 
   void _addComment() {
     if (_commentController.text.isNotEmpty) {
       final comment = _commentController.text;
-      final userId = HomeUserCubit.get(context)
-          .userDataModel!
-          .id!; // Get the user ID from your user management
+      final userId = homeUserCubit!
+          .userDataModel!.id!; // Get the user ID from your user management
       const onModel = 'User'; // or 'Admin'
       LessonCubit.get(context)
           .addCommentToLesson(

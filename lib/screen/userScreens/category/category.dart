@@ -15,12 +15,12 @@ class CategoryList extends StatefulWidget {
 }
 
 class _CategoryListState extends State<CategoryList> {
-  CategoryCubit categoryCubit = CategoryCubit();
+  CategoryCubit? categoryCubit;
 
   @override
   void initState() {
     categoryCubit = CategoryCubit.get(context);
-    categoryCubit.getAllSection();
+    categoryCubit?.getAllSection();
 
     super.initState();
   }

@@ -17,7 +17,7 @@ class LessonCubit extends Cubit<LessonState> {
   // SectionModel? sectionModel;
   Future<void> getSectionById({required String id}) async {
     emit(GetSectionByIdLoading());
-    await Httplar.httpget(path: GETSECTIONBYID + id).then((value) {
+    await Httplar.httpget(path: GETSECTIONBYID + id).then((value) async {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
@@ -25,7 +25,7 @@ class LessonCubit extends Cubit<LessonState> {
         indexLesson = CachHelper.getData(key: sectionModel.id) ?? 0;
         urlVideo = getYoutubeVideoId(
             sectionModel.lessonObjects![indexLesson].urlVideo);
-        print(urlVideo);
+        await Future.delayed(const Duration(milliseconds: 300));
         emit(GetSectionByIdStateGood(model: sectionModel));
 
         // print(sectionModel.lessonObjects?.length);

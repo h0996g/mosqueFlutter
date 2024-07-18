@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketService {
-  late IO.Socket socket;
+  static IO.Socket? socket;
 
   void connect() {
     socket = IO.io('http://192.168.6.68:3000', <String, dynamic>{
@@ -10,30 +10,30 @@ class SocketService {
       'autoConnect': true,
     });
 
-    socket.connect();
+    socket!.connect();
 
-    socket.onConnect((_) {
+    socket!.onConnect((_) {
       print('Connected to socket server');
     });
 
-    socket.onDisconnect((_) {
+    socket!.onDisconnect((_) {
       print('Disconnected from socket server');
     });
   }
 
   void joinLesson(String lessonId) {
     print('Joining lesson $lessonId');
-    socket.emit('joinLesson', lessonId);
+    socket!.emit('joinLesson', lessonId);
   }
 
   void leaveLesson(String lessonId) {
     print('Leaving lesson $lessonId');
-    socket.emit('leaveLesson', lessonId);
+    socket!.emit('leaveLesson', lessonId);
   }
 
   void sendComment(
       String lessonId, String comment, String userId, String onModel) {
-    socket.emit('newComment', {
+    socket!.emit('newComment', {
       'lessonId': lessonId,
       'comment': comment,
       'userId': userId,
@@ -42,7 +42,7 @@ class SocketService {
   }
 
   void listenForNewComments(Function(dynamic) callback) {
-    socket.on('newComment', (data) {
+    socket!.on('newComment', (data) {
       final parsedData = data is String ? jsonDecode(data) : data;
       callback(parsedData);
     });

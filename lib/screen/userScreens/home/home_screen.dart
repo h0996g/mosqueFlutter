@@ -18,11 +18,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  HomeUserCubit homeUserCubit = HomeUserCubit();
+  HomeUserCubit? homeUserCubit;
   @override
   void initState() {
     homeUserCubit = HomeUserCubit.get(context);
-    homeUserCubit.getMyInfo();
+    homeUserCubit?.getMyInfo();
 
     super.initState();
   }

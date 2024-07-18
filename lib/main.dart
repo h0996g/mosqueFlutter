@@ -6,6 +6,7 @@ import 'package:mosque/component/const.dart';
 import 'package:mosque/firebase_options.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/helper/observer.dart';
+import 'package:mosque/helper/socket.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
@@ -38,6 +39,8 @@ void main() async {
       startWidget = const HomeAdmin();
     }
   }
+  final SocketService _socketService = SocketService();
+  _socketService.connect();
   runApp(MyApp(
     startwidget: startWidget,
   ));
