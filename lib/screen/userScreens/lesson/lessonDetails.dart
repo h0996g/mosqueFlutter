@@ -373,60 +373,62 @@ class _PlayListState extends State<PlayList> {
           setState(() {});
         }
       },
-      child: ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        separatorBuilder: (_, __) {
-          return const SizedBox(
-            height: 20,
-          );
-        },
-        padding: const EdgeInsets.only(top: 20, bottom: 40),
-        itemCount: widget.lesson.length,
-        itemBuilder: (_, index) {
-          bool isSelected = index == LessonCubit.get(context).indexLesson;
-          bool isPlaying = index == LessonCubit.get(context).indexLesson;
+      child: SizedBox(
+        height: 400,
+        child: ListView.separated(
+          shrinkWrap: true,
+          separatorBuilder: (_, __) {
+            return const SizedBox(
+              height: 20,
+            );
+          },
+          padding: const EdgeInsets.only(top: 20, bottom: 40),
+          itemCount: widget.lesson.length,
+          itemBuilder: (_, index) {
+            bool isSelected = index == LessonCubit.get(context).indexLesson;
+            bool isPlaying = index == LessonCubit.get(context).indexLesson;
 
-          // if (isThisSection) {
-          return InkWell(
-            onTap: () async {
-              if (isCompletedlesson(widget.lesson[index], widget.idSection)) {
-                LessonCubit.get(context).changeIndexLesson(index: index);
-                widget.controller.load(
-                    getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
-                CachHelper.putcache(key: widget.idSection, value: index);
-              } else {
-                if (isCompletedlesson(
-                    widget.lesson[index - 1], widget.idSection)) {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => QuizScreen(
-                        sectionId: widget.idSection,
-                        lessonId: widget.lesson[index].id!,
-                        onQuizCompleted: (int score) async {
-                          if (score / widget.lesson[index].quize!.length >=
-                              0.5) {
-                            this.index = index;
-                          }
-                        },
+            // if (isThisSection) {
+            return InkWell(
+              onTap: () async {
+                if (isCompletedlesson(widget.lesson[index], widget.idSection)) {
+                  LessonCubit.get(context).changeIndexLesson(index: index);
+                  widget.controller.load(
+                      getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
+                  CachHelper.putcache(key: widget.idSection, value: index);
+                } else {
+                  if (isCompletedlesson(
+                      widget.lesson[index - 1], widget.idSection)) {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(
+                          sectionId: widget.idSection,
+                          lessonId: widget.lesson[index].id!,
+                          onQuizCompleted: (int score) async {
+                            if (score / widget.lesson[index].quize!.length >=
+                                0.5) {
+                              this.index = index;
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 }
-              }
-            },
-            child: LessonCard(
-              lesson: widget.lesson[index],
-              isPlaying: isPlaying,
-              isCompleted: isCompletedlesson(
-                widget.lesson[index],
-                widget.idSection,
+              },
+              child: LessonCard(
+                lesson: widget.lesson[index],
+                isPlaying: isPlaying,
+                isCompleted: isCompletedlesson(
+                  widget.lesson[index],
+                  widget.idSection,
+                ),
+                isSelected: isSelected,
               ),
-              isSelected: isSelected,
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -545,6 +547,7 @@ class _CommentSectionState extends State<CommentSection> {
   final SocketService _socketService = SocketService();
   late List<Comment> _comments;
   HomeUserCubit? homeUserCubit;
+
   @override
   void initState() {
     super.initState();
@@ -552,15 +555,15 @@ class _CommentSectionState extends State<CommentSection> {
     _comments = widget.comments;
     _socketService.joinLesson(widget.lessonId);
     _socketService.listenForNewComments((data) {
+      print(data);
       setState(() {
-        _comments.add(Comment.fromJson(data['comment']));
+        _comments.add(Comment.fromJson(data));
       });
     });
   }
 
   @override
   void setState(VoidCallback fn) {
-    // TODO: implement setState
     if (mounted) {
       super.setState(fn);
     }
@@ -587,7 +590,8 @@ class _CommentSectionState extends State<CommentSection> {
               userID: userId,
               onModel: onModel)
           .then((value) {
-        _socketService.sendComment(widget.lessonId, comment, userId, onModel);
+        _socketService.sendComment(widget.lessonId, comment, userId, onModel,
+            homeUserCubit!.userDataModel!.username!);
       });
 
       _commentController.clear();
@@ -607,26 +611,73 @@ class _CommentSectionState extends State<CommentSection> {
           ),
         ),
         const SizedBox(height: 10),
-        TextField(
-          controller: _commentController,
-          decoration: InputDecoration(
-            hintText: 'Add a comment...',
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.send),
-              onPressed: _addComment,
+        Row(
+          children: [
+            const SizedBox(width: 10),
+            Expanded(
+              child: TextField(
+                controller: _commentController,
+                decoration: InputDecoration(
+                  hintText: 'Add a comment...',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: _addComment,
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
         const SizedBox(height: 10),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: _comments.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(_comments[index].comment ?? ''),
-            );
-          },
+        Container(
+          height: 400,
+          child: ListView.builder(
+            shrinkWrap: true,
+            // physics: const NeverScrollableScrollPhysics(),
+            itemCount: _comments.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _comments[index].user?.username ?? 'Unknown User',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(_comments[index].comment ?? ''),
+                          const SizedBox(height: 5),
+                          Text(
+                            _comments[index].createdAt ?? '',
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (homeUserCubit!.userDataModel!.id ==
+                        _comments[index].user?.id)
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          // Delete the comment
+                        },
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ],
     );

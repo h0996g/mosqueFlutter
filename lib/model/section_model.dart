@@ -301,21 +301,47 @@ class Quiz {
 }
 
 class Comment {
-  final String? user;
+  final User? user;
   final String? onModel;
   final String? comment;
+  final String? id;
+  final String? createdAt;
 
   Comment({
     this.user,
     this.onModel,
     this.comment,
+    this.createdAt,
+    this.id,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
-      user: json['user'],
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
       onModel: json['onModel'],
       comment: json['comment'],
+      createdAt: json['createdAt'],
+      id: json['_id'],
+    );
+  }
+}
+
+class User {
+  final String? id;
+  final String? username;
+  final String? photo;
+
+  User({
+    this.id,
+    this.username,
+    this.photo,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['_id'],
+      username: json['username'],
+      photo: json['photo'],
     );
   }
 }

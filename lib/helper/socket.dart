@@ -31,18 +31,23 @@ class SocketService {
     socket!.emit('leaveLesson', lessonId);
   }
 
-  void sendComment(
-      String lessonId, String comment, String userId, String onModel) {
+  void sendComment(String lessonId, String comment, String userId,
+      String onModel, String username) {
     socket!.emit('newComment', {
       'lessonId': lessonId,
       'comment': comment,
-      'userId': userId,
+      'user': {
+        '_id': userId,
+        'username': username,
+      },
       'onModel': onModel,
+      'createdAt': DateTime.now().toIso8601String(),
     });
   }
 
   void listenForNewComments(Function(dynamic) callback) {
     socket!.on('newComment', (data) {
+      print(data);
       final parsedData = data is String ? jsonDecode(data) : data;
       callback(parsedData);
     });
