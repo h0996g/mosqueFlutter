@@ -96,7 +96,7 @@ class _LessonScreenState extends State<LessonScreen> {
           model = state.model;
           if (!isFirstTimeSection(widget.idSection)) {
             await homeUserCubit!.updateLessonCompletionStatus(
-              idlesson: model!.lessonObjects!.first.id,
+              idlesson: model!.lessonObjects!.first.id!,
               idSection: widget.idSection,
               score: 100,
             );
@@ -367,7 +367,7 @@ class _PlayListState extends State<PlayList> {
         if (state is UpdateLessonCompletionStateGood) {
           LessonCubit.get(context).changeIndexLesson(index: index);
           widget.controller
-              .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+              .load(getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
           CachHelper.putcache(key: widget.idSection, value: index);
 
           setState(() {});
@@ -392,8 +392,8 @@ class _PlayListState extends State<PlayList> {
             onTap: () async {
               if (isCompletedlesson(widget.lesson[index], widget.idSection)) {
                 LessonCubit.get(context).changeIndexLesson(index: index);
-                widget.controller
-                    .load(getYoutubeVideoId(widget.lesson[index].urlVideo));
+                widget.controller.load(
+                    getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
                 CachHelper.putcache(key: widget.idSection, value: index);
               } else {
                 if (isCompletedlesson(
@@ -402,9 +402,10 @@ class _PlayListState extends State<PlayList> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => QuizScreen(
-                        lesson: widget.lesson[index],
+                        sectionId: widget.idSection,
+                        lessonId: widget.lesson[index].id!,
                         onQuizCompleted: (int score) async {
-                          if (score / widget.lesson[index].quize.length >=
+                          if (score / widget.lesson[index].quize!.length >=
                               0.5) {
                             this.index = index;
                           }
@@ -623,7 +624,7 @@ class _CommentSectionState extends State<CommentSection> {
           itemCount: _comments.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(_comments[index].comment),
+              title: Text(_comments[index].comment ?? ''),
             );
           },
         ),

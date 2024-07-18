@@ -37,11 +37,11 @@ class LessonCard extends StatelessWidget {
           size: 30,
         ),
         title: Text(
-          lesson.title,
+          lesson.title ?? '',
           style: const TextStyle(fontSize: 16),
         ),
         subtitle: Text(
-          lesson.duration,
+          lesson.duration ?? '',
           style: const TextStyle(fontSize: 12),
         ),
         trailing: Icon(

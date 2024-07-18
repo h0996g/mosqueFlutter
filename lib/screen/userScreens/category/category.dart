@@ -61,7 +61,7 @@ class _CategoryListState extends State<CategoryList> {
             ),
             itemBuilder: (context, index) => CategoryCard(
               sectionModel: state.model[index],
-              idSection: state.model[index].id,
+              idSection: state.model[index].id!,
             ),
           );
         } else {
@@ -166,7 +166,7 @@ class CategoryCard extends StatelessWidget {
                   top: Radius.circular(15.0),
                 ),
                 child: Image.network(
-                  sectionModel.photo,
+                  sectionModel.photo ?? '',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -177,7 +177,7 @@ class CategoryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    sectionModel.name,
+                    sectionModel.name!,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

@@ -39,3 +39,13 @@ final class GetCommentsGood extends LessonState {
 }
 
 final class GetCommentsBad extends LessonState {}
+
+final class GetQuizLoading extends LessonState {}
+
+final class GetQuizGood extends LessonState {
+  final List<Quiz> quiz;
+
+  GetQuizGood({required this.quiz});
+}
+
+final class GetQuizBad extends LessonState {}

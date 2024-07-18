@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/Api/httplaravel.dart';
+import 'package:mosque/component/const.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/error_model.dart';
 import 'package:mosque/model/section_model.dart';
@@ -22,9 +23,9 @@ class LessonCubit extends Cubit<LessonState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         SectionModel sectionModel = SectionModel.fromJson(jsonResponse);
-        indexLesson = CachHelper.getData(key: sectionModel.id) ?? 0;
+        indexLesson = CachHelper.getData(key: sectionModel.id!) ?? 0;
         urlVideo = getYoutubeVideoId(
-            sectionModel.lessonObjects![indexLesson].urlVideo);
+            sectionModel.lessonObjects![indexLesson].urlVideo ?? '');
         await Future.delayed(const Duration(milliseconds: 300));
         emit(GetSectionByIdStateGood(model: sectionModel));
 
@@ -39,11 +40,6 @@ class LessonCubit extends Cubit<LessonState> {
       print(e.toString());
       emit(GetSectionByIdStateBad());
     });
-  }
-
-  Future<void> changeUrlVideo({required String url}) async {
-    urlVideo = url;
-    emit(ChangeUrlVideoState());
   }
 
   void changeIndexLesson({required int index}) {
@@ -97,16 +93,23 @@ class LessonCubit extends Cubit<LessonState> {
     });
   }
 
-  String getYoutubeVideoId(String url) {
-    String videoId = '';
-    if (url.contains('youtube.com')) {
-      videoId = url.split('v=')[1];
-      if (videoId.contains('&')) {
-        videoId = videoId.split('&')[0];
+  Future<void> getQuiz({required lessonID}) async {
+    emit(GetQuizLoading());
+    await Httplar.httpget(path: GETQUIZ + lessonID).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(value.body) as List;
+        List<Quiz> quiz = jsonResponse.map((e) => Quiz.fromJson(e)).toList();
+
+        emit(GetQuizGood(quiz: quiz));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: error_model));
       }
-    } else if (url.contains('youtu.be')) {
-      videoId = url.split('.be/')[1];
-    }
-    return videoId;
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetQuizBad());
+    });
   }
 }
