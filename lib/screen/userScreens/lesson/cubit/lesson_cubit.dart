@@ -44,7 +44,7 @@ class LessonCubit extends Cubit<LessonState> {
 
   void changeIndexLesson({required int index}) {
     indexLesson = index;
-    emit(changeIndexLessonState());
+    emit(ChangeIndexLessonState());
   }
 
   Future<void> addCommentToLesson(

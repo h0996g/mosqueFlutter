@@ -22,7 +22,7 @@ final class GetSectionByIdStateBad extends LessonState {}
 
 final class ChangeUrlVideoState extends LessonState {}
 
-final class changeIndexLessonState extends LessonState {}
+final class ChangeIndexLessonState extends LessonState {}
 
 final class AddCommentToLessonLoading extends LessonState {}
 

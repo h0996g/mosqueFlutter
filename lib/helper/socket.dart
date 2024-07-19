@@ -47,7 +47,6 @@ class SocketService {
 
   void listenForNewComments(Function(dynamic) callback) {
     socket!.on('newComment', (data) {
-      print(data);
       final parsedData = data is String ? jsonDecode(data) : data;
       callback(parsedData);
     });

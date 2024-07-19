@@ -672,7 +672,9 @@ class _CommentsItemsState extends State<CommentsItems> {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
+        border: widget.userID == widget.comments.user?.id
+            ? Border.all(color: Colors.grey.shade800)
+            : Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
