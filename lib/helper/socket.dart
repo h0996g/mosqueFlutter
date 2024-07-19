@@ -24,6 +24,7 @@ class SocketService {
   void joinLesson(String lessonId) {
     print('Joining lesson $lessonId');
     socket!.emit('joinLesson', lessonId);
+    socket!.off('newComment');
   }
 
   void leaveLesson(String lessonId) {

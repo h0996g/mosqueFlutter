@@ -322,7 +322,7 @@ class Comment {
       user: json['user'] != null ? User.fromJson(json['user']) : null,
       onModel: json['onModel'],
       comment: json['comment'],
-      isDeleted: json['isDeleted'],
+      isDeleted: json['isDeleted'] ?? false,
       createdAt: json['createdAt'],
       id: json['_id'],
     );

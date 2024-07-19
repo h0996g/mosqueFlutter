@@ -47,6 +47,7 @@ class LessonCubit extends Cubit<LessonState> {
     emit(ChangeIndexLessonState());
   }
 
+  String? newCommentId;
   Future<void> addCommentToLesson(
       {required String lessinId,
       required String comment,
@@ -59,6 +60,7 @@ class LessonCubit extends Cubit<LessonState> {
       "comment": comment,
     }).then((value) {
       if (value.statusCode == 201) {
+        newCommentId = convert.jsonDecode(value.body);
         emit(AddCommentToLessonStateGood());
       } else {
         var jsonResponse =

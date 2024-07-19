@@ -452,6 +452,7 @@ class MorInfo extends StatefulWidget {
 
 class _MorInfoState extends State<MorInfo> {
   List<Comment> comments = [];
+  String? newCommentId;
   @override
   void initState() {
     LessonCubit.get(context).getComments(lessonID: widget.lessonId);
@@ -534,9 +535,11 @@ class CommentSection extends StatefulWidget {
   final String lessonId;
   final List<Comment> comments;
 
-  const CommentSection(
-      {Key? key, required this.lessonId, required this.comments})
-      : super(key: key);
+  const CommentSection({
+    super.key,
+    required this.lessonId,
+    required this.comments,
+  });
 
   @override
   _CommentSectionState createState() => _CommentSectionState();
@@ -555,6 +558,8 @@ class _CommentSectionState extends State<CommentSection> {
     _comments = widget.comments;
     _socketService.joinLesson(widget.lessonId);
     _socketService.listenForNewComments((data) {
+      print(data);
+      data['_id'] = LessonCubit.get(context).newCommentId;
       print(data);
       setState(() {
         _comments.add(Comment.fromJson(data));

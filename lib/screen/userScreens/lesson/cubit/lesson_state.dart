@@ -26,7 +26,9 @@ final class ChangeIndexLessonState extends LessonState {}
 
 final class AddCommentToLessonLoading extends LessonState {}
 
-final class AddCommentToLessonStateGood extends LessonState {}
+final class AddCommentToLessonStateGood extends LessonState {
+  AddCommentToLessonStateGood();
+}
 
 final class AddCommentToLessonStateBad extends LessonState {}
 
