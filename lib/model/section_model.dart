@@ -305,12 +305,14 @@ class Comment {
   final String? onModel;
   final String? comment;
   final String? id;
+  final bool? isDeleted;
   final String? createdAt;
 
   Comment({
     this.user,
     this.onModel,
     this.comment,
+    this.isDeleted,
     this.createdAt,
     this.id,
   });
@@ -320,6 +322,7 @@ class Comment {
       user: json['user'] != null ? User.fromJson(json['user']) : null,
       onModel: json['onModel'],
       comment: json['comment'],
+      isDeleted: json['isDeleted'],
       createdAt: json['createdAt'],
       id: json['_id'],
     );

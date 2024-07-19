@@ -53,7 +53,7 @@ class LessonCubit extends Cubit<LessonState> {
       required String userID,
       required String onModel}) async {
     emit(AddCommentToLessonLoading());
-    await Httplar.httpPut(path: ADDCOMMENTTOLESSON + lessinId, data: {
+    await Httplar.httpPost(path: ADDCOMMENTTOLESSON + lessinId, data: {
       "user": userID,
       "onModel": onModel,
       "comment": comment,
@@ -64,6 +64,7 @@ class LessonCubit extends Cubit<LessonState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
+        print(jsonResponse);
         emit(ErrorState(model: error_model));
       }
     }).catchError((e) {
@@ -110,6 +111,26 @@ class LessonCubit extends Cubit<LessonState> {
     }).catchError((e) {
       print(e.toString());
       emit(GetQuizBad());
+    });
+  }
+
+  Future<void> deleteComment(
+      {required String lessonID, required String commentID}) async {
+    emit(DeleteCommentLoading());
+    await Httplar.httpPut(
+        path: DELETECOMMENT + lessonID,
+        data: {'commentId': commentID}).then((value) {
+      if (value.statusCode == 200) {
+        emit(DeleteCommentGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: error_model));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteCommentBad());
     });
   }
 }

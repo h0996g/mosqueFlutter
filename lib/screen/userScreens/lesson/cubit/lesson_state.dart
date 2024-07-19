@@ -49,3 +49,9 @@ final class GetQuizGood extends LessonState {
 }
 
 final class GetQuizBad extends LessonState {}
+
+final class DeleteCommentLoading extends LessonState {}
+
+final class DeleteCommentGood extends LessonState {}
+
+final class DeleteCommentBad extends LessonState {}
