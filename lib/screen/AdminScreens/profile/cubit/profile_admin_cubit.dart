@@ -20,7 +20,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
   ProfileAdminCubit() : super(ProfileAdminInitial());
 
   static ProfileAdminCubit get(context) => BlocProvider.of(context);
-  void resetValue() {
+  void resetValues() {
     imageCompress = null;
     linkProfileImg = null;
     isHidden = {

@@ -13,6 +13,12 @@ part 'lesson_state.dart';
 class LessonCubit extends Cubit<LessonState> {
   LessonCubit() : super(LessonInitial());
   static LessonCubit get(context) => BlocProvider.of(context);
+  void resetValues() {
+    urlVideo = '';
+    indexLesson = 0;
+    newCommentId = '';
+  }
+
   String urlVideo = '';
   int indexLesson = 0;
   // SectionModel? sectionModel;

@@ -18,6 +18,10 @@ class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitial());
 
   static ProfileCubit get(context) => BlocProvider.of(context);
+  void resetValues() {
+    imageCompress = null;
+    linkProfileImg = null;
+  }
 
   Future<void> updateUser(
       {required String nom,

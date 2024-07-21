@@ -13,7 +13,7 @@ class HomeAdminCubit extends Cubit<HomeAdminState> {
   HomeAdminCubit() : super(HomeAdminInitial());
   static HomeAdminCubit get(context) => BlocProvider.of(context);
 
-  void resetValue() {
+  void resetValues() {
     selectedIndex = 0;
     adminModel = null;
   }

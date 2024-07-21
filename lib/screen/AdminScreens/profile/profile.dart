@@ -243,7 +243,8 @@ class ProfileAdmin extends StatelessWidget {
             onTap: () async {
               navigatAndFinish(context: context, page: Login());
               CachHelper.removdata(key: "TOKEN");
-              HomeAdminCubit.get(context).resetValue();
+              HomeAdminCubit.get(context).resetValues();
+              ProfileAdminCubit.get(context).resetValues();
               showToast(msg: "Disconnect", state: ToastStates.error);
             },
           ),

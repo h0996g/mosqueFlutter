@@ -13,6 +13,9 @@ part 'home_user_state.dart';
 class HomeUserCubit extends Cubit<HomeUserState> {
   HomeUserCubit() : super(HomeUserInitial());
   static HomeUserCubit get(context) => BlocProvider.of(context);
+  void resetValues() {
+    userDataModel = null;
+  }
 
   DataUserModel? userDataModel;
 
