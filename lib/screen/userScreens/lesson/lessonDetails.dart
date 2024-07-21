@@ -362,7 +362,7 @@ class _PlayListState extends State<PlayList> {
           LessonCubit.get(context).changeIndexLesson(index: index);
           widget.controller
               .load(getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
-          CachHelper.putcache(key: widget.idSection, value: index);
+          CachHelper.putcache(key: '${widget.idSection}user', value: index);
 
           setState(() {});
         }
@@ -389,7 +389,8 @@ class _PlayListState extends State<PlayList> {
                   LessonCubit.get(context).changeIndexLesson(index: index);
                   widget.controller.load(
                       getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
-                  CachHelper.putcache(key: widget.idSection, value: index);
+                  CachHelper.putcache(
+                      key: "${widget.idSection}user", value: index);
                 } else {
                   if (isCompletedlesson(
                       widget.lesson[index - 1], widget.idSection)) {

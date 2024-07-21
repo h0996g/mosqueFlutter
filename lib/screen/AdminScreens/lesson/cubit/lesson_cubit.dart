@@ -30,7 +30,7 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         SectionModel sectionModel = SectionModel.fromJson(jsonResponse);
-        indexLesson = CachHelper.getData(key: sectionModel.id!) ?? 0;
+        indexLesson = CachHelper.getData(key: '${sectionModel.id!}admin') ?? 0;
         urlVideo = getYoutubeVideoId(
             sectionModel.lessonObjects![indexLesson].urlVideo ?? '');
         await Future.delayed(const Duration(milliseconds: 300));

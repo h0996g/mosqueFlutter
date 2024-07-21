@@ -12,6 +12,7 @@ import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/lesson/add_lesson.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
+// ignore: depend_on_referenced_packages
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class LessonAdminScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class LessonAdminScreen extends StatefulWidget {
   const LessonAdminScreen({super.key, required this.idSection});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LessonAdminScreenState createState() => _LessonAdminScreenState();
 }
 
@@ -85,6 +87,7 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
   @override
   void dispose() {
     _controller.dispose();
+
     super.dispose();
   }
 
@@ -310,7 +313,7 @@ class PlayList extends StatefulWidget {
 }
 
 class _PlayListState extends State<PlayList> {
-  int index = 0;
+  // int index = 0;
   List<bool> isPlaying = [false, false, false, false, false, false];
 
   @override
@@ -348,7 +351,8 @@ class _PlayListState extends State<PlayList> {
               LessonAdminCubit.get(context).changeIndexLesson(index: index);
               widget.controller
                   .load(getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
-              CachHelper.putcache(key: widget.idSection, value: index);
+              CachHelper.putcache(
+                  key: '${widget.idSection}admin', value: index);
             },
             child: LessonCardAdmin(
               lesson: widget.lesson[index],
@@ -471,6 +475,7 @@ class CommentSection extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CommentSectionState createState() => _CommentSectionState();
 }
 
@@ -487,9 +492,7 @@ class _CommentSectionState extends State<CommentSection> {
     _comments = widget.comments;
     _socketService.joinLesson(widget.lessonId);
     _socketService.listenForNewComments((data) {
-      print(data);
       data['_id'] = LessonAdminCubit.get(context).newCommentId;
-      print(data);
       setState(() {
         _comments.add(Comment.fromJson(data));
       });
