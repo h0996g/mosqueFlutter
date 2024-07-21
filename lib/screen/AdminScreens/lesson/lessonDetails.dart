@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/component/widgets/lesson_card_admin.dart';
 import 'package:mosque/component/widgets/pdf_view.dart';
@@ -9,6 +10,7 @@ import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/helper/socket.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
+import 'package:mosque/screen/AdminScreens/lesson/add_lesson.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -108,6 +110,17 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
             player: player,
             builder: (context, player) {
               return Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    navigatAndReturn(
+                        context: context, page: AddNewLessonPage());
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.grey,
+                  ),
+                ),
                 appBar: AppBar(
                   title: const Text('YouTube Player '),
                 ),

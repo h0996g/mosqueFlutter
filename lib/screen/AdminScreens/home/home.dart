@@ -5,6 +5,7 @@ import 'package:mosque/component/appbar.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/const/colors.dart';
+import 'package:mosque/screen/AdminScreens/lesson/addSection.dart';
 import 'package:mosque/screen/AdminScreens/profile/profile.dart';
 
 import '../../../component/category/category.dart';
@@ -31,6 +32,16 @@ class _HomeAdminState extends State<HomeAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        onPressed: () {
+          navigatAndReturn(context: context, page: const AddSectionScreen());
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.grey,
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
