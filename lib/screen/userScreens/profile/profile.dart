@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -244,28 +243,28 @@ class ProfileUser extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home),
+            leading: const Icon(Icons.home),
             title: Text('home', style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndFinish(context: context, page: const HomeScreen());
             },
           ),
           ListTile(
-            leading: Icon(Icons.edit),
+            leading: const Icon(Icons.edit),
             title: Text('modify_profile', style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndReturn(context: context, page: UpdateUserForm());
             },
           ),
           ListTile(
-            leading: Icon(Icons.lock),
+            leading: const Icon(Icons.lock),
             title: Text('modify_password', style: GoogleFonts.poppins()),
             onTap: () {
               // navigatAndReturn(context: context, page: UpdateMdpForm());
             },
           ),
           ListTile(
-            leading: Icon(Icons.translate),
+            leading: const Icon(Icons.translate),
             title: Text('change_language', style: GoogleFonts.poppins()),
             onTap: () {
               showDialog(
@@ -300,7 +299,7 @@ class ProfileUser extends StatelessWidget {
           ListTile(
             textColor: Colors.red,
             iconColor: Colors.red,
-            leading: Icon(Icons.exit_to_app),
+            leading: const Icon(Icons.exit_to_app),
             title: Text('logout', style: GoogleFonts.poppins()),
             onTap: () async {
               navigatAndFinish(context: context, page: Login());
@@ -309,7 +308,7 @@ class ProfileUser extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.contact_support),
+            leading: const Icon(Icons.contact_support),
             title: Text('contact_us', style: GoogleFonts.poppins()),
             onTap: () {
               // Navigator.push(

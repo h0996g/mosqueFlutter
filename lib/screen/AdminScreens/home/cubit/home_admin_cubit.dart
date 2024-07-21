@@ -4,13 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/Api/httplaravel.dart';
 import 'package:mosque/Model/admin_medel.dart';
-import 'package:mosque/screen/AdminScreens/annonce/annonce.dart';
-import 'package:mosque/screen/AdminScreens/reservation/reservation.dart';
 import 'dart:convert' as convert;
-
-import 'package:mosque/screen/AdminScreens/terrains/terrains.dart';
-import 'package:mosque/screen/AdminScreens/tournoi/tournoi.dart';
-
 import '../../../../model/error_model.dart';
 
 part 'home_admin_state.dart';
@@ -18,12 +12,11 @@ part 'home_admin_state.dart';
 class HomeAdminCubit extends Cubit<HomeAdminState> {
   HomeAdminCubit() : super(HomeAdminInitial());
   static HomeAdminCubit get(context) => BlocProvider.of(context);
-  final List<Widget> body = [
-    const Terrains(),
-    const Reservation(),
-    const Annonce(),
-    const Tournoi()
-  ];
+
+  void resetValue() {
+    selectedIndex = 0;
+    adminModel = null;
+  }
 
   int selectedIndex = 0;
   void changeIndexNavBar(int index) {
@@ -32,12 +25,6 @@ class HomeAdminCubit extends Cubit<HomeAdminState> {
   }
 
   DataAdminModel? adminModel;
-
-  // setAdminModel(DataAdminModel adminModel) {
-  //   this.adminModel = adminModel;
-  //   emit(UpdateAdminModelVariable());
-  // }
-
   Future<void> getMyInfo() async {
     emit(GetMyInformationLoading());
     await Httplar.httpget(path: GETMYINFORMATIONADMIN).then((value) {

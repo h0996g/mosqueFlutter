@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/screen/userScreens/lesson/lessonDetails.dart';
 import 'package:mosque/model/section_model.dart';
-import 'package:mosque/screen/userScreens/category/cubit/category_cubit.dart';
+import 'package:mosque/component/category/cubit/category_cubit.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CategoryList extends StatefulWidget {
+  final bool isAdmin;
   const CategoryList({
     super.key,
+    required this.isAdmin,
   });
 
   @override
@@ -60,6 +62,7 @@ class _CategoryListState extends State<CategoryList> {
               mainAxisSpacing: 10,
             ),
             itemBuilder: (context, index) => CategoryCard(
+              isAdmin: widget.isAdmin,
               sectionModel: state.model[index],
               idSection: state.model[index].id!,
             ),
@@ -128,21 +131,27 @@ class ShimmerCategoryCard extends StatelessWidget {
 
 class CategoryCard extends StatelessWidget {
   final String idSection;
+  final bool isAdmin;
   const CategoryCard(
-      {super.key, required this.sectionModel, required this.idSection});
+      {super.key,
+      required this.sectionModel,
+      required this.idSection,
+      required this.isAdmin});
   final SectionModel sectionModel;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LessonScreen(
-                    idSection: idSection,
-                  )),
-        );
+        if (!isAdmin) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LessonScreen(
+                      idSection: idSection,
+                    )),
+          );
+        } else {}
       },
       child: Container(
         decoration: BoxDecoration(

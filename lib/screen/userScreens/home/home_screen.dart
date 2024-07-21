@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/appbar.dart';
-import 'package:mosque/screen/userScreens/category/category.dart';
+import 'package:mosque/component/category/category.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/sorting.dart';
 import 'package:mosque/const/colors.dart';
@@ -174,7 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   //we can not use gridview inside column
                   //use shrinkwrap and physical scroll
 
-                  const CategoryList(),
+                  const CategoryList(
+                    isAdmin: false,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
