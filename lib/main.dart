@@ -9,6 +9,7 @@ import 'package:mosque/helper/observer.dart';
 import 'package:mosque/helper/socket.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
+import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/Auth/login.dart';
@@ -74,6 +75,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: ((context) => LessonCubit()),
+        ),
+        BlocProvider(
+          create: ((context) => LessonAdminCubit()),
         ),
       ],
       child: MaterialApp(

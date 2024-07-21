@@ -70,7 +70,7 @@ class ProfileAdmin extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    '${adminModel.nom!} ${adminModel.prenom!}',
+                    adminModel.username!,
                     style: GoogleFonts.poppins(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

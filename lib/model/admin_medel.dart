@@ -23,6 +23,7 @@ class AdminModel {
 
 class DataAdminModel {
   String? id;
+  String? username;
   String? nom;
   String? prenom;
   String? email;
@@ -37,6 +38,7 @@ class DataAdminModel {
 
   DataAdminModel({
     this.id,
+    this.username,
     this.nom,
     this.prenom,
     this.email,
@@ -52,6 +54,7 @@ class DataAdminModel {
   factory DataAdminModel.fromJson(Map<String, dynamic> json) {
     return DataAdminModel(
       id: json['_id'],
+      username: json['username'],
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],

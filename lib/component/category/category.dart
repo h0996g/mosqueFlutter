@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/screen/AdminScreens/lesson/lessonDetails.dart';
 import 'package:mosque/screen/userScreens/lesson/lessonDetails.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/component/category/cubit/category_cubit.dart';
@@ -151,7 +152,15 @@ class CategoryCard extends StatelessWidget {
                       idSection: idSection,
                     )),
           );
-        } else {}
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LessonAdminScreen(
+                      idSection: idSection,
+                    )),
+          );
+        }
       },
       child: Container(
         decoration: BoxDecoration(

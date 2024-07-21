@@ -2,38 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/const.dart';
-import 'package:mosque/component/widgets/lesson_card.dart';
+import 'package:mosque/component/widgets/lesson_card_admin.dart';
 import 'package:mosque/component/widgets/pdf_view.dart';
 import 'package:mosque/const/colors.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/helper/socket.dart';
 import 'package:mosque/model/section_model.dart';
-import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
-import 'package:mosque/component/widgets/quiz_screen.dart';
+import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
+import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 
-class LessonScreen extends StatefulWidget {
+class LessonAdminScreen extends StatefulWidget {
   final String idSection;
 
-  const LessonScreen({super.key, required this.idSection});
+  const LessonAdminScreen({super.key, required this.idSection});
 
   @override
-  _LessonScreenState createState() => _LessonScreenState();
+  _LessonAdminScreenState createState() => _LessonAdminScreenState();
 }
 
-class _LessonScreenState extends State<LessonScreen> {
-  HomeUserCubit? homeUserCubit;
-  bool isFirstTimeSection(String idSection) {
-    for (var element in homeUserCubit!.userDataModel!.sectionProgress!) {
-      if (element.section == idSection) {
-        return true;
-      }
-    }
-    return false;
-  }
+class _LessonAdminScreenState extends State<LessonAdminScreen> {
+  HomeAdminCubit? homeAdminCubit;
+  // bool isFirstTimeSection(String idSection) {
+  //   for (var element in homeUserCubit!.userDataModel!.sectionProgress!) {
+  //     if (element.section == idSection) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
-  LessonCubit? lessonCubit;
+  LessonAdminCubit? lessonAdminCubit;
   // int? indexLesson;
   int _selectedTag = 0;
 
@@ -50,12 +49,11 @@ class _LessonScreenState extends State<LessonScreen> {
   @override
   void initState() {
     super.initState();
-    // indexLesson = CachHelper.getData(key: widget.idSection) ?? 0;
-    homeUserCubit = HomeUserCubit.get(context);
-    lessonCubit = LessonCubit.get(context);
-    lessonCubit?.getSectionById(id: widget.idSection).then((value) {
+    lessonAdminCubit = LessonAdminCubit.get(context);
+    lessonAdminCubit?.getSectionById(id: widget.idSection).then((value) {
       _controller = YoutubePlayerController(
-        initialVideoId: LessonCubit.get(context).urlVideo, // YouTube video ID
+        initialVideoId:
+            LessonAdminCubit.get(context).urlVideo, // YouTube video ID
 
         flags: const YoutubePlayerFlags(
           autoPlay: false,
@@ -90,26 +88,13 @@ class _LessonScreenState extends State<LessonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LessonCubit, LessonState>(
+    return BlocConsumer<LessonAdminCubit, LessonAdminState>(
       listener: (context, state) async {
         if (state is GetSectionByIdStateGood) {
           model = state.model;
-          if (!isFirstTimeSection(widget.idSection)) {
-            await homeUserCubit!.updateLessonCompletionStatus(
-              idlesson: model!.lessonObjects!.first.id!,
-              idSection: widget.idSection,
-              score: 100,
-            );
-          }
         }
       },
       builder: (context, state) {
-        // if (state is GetMyInformationLoading) {
-        //   return const Center(
-        //     child: CircularProgressIndicator(),
-        //   );
-        // }
-
         if (state is GetSectionByIdLoading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -150,7 +135,7 @@ class _LessonScreenState extends State<LessonScreen> {
                         Text(
                           model
                                   ?.lessonObjects![
-                                      LessonCubit.get(context).indexLesson]
+                                      LessonAdminCubit.get(context).indexLesson]
                                   .description ??
                               '',
                           style: const TextStyle(
@@ -168,7 +153,7 @@ class _LessonScreenState extends State<LessonScreen> {
                               color: Colors.grey,
                             ),
                             Text(
-                              '  ${model?.lessonObjects![LessonCubit.get(context).indexLesson].duration} ',
+                              '  ${model?.lessonObjects![LessonAdminCubit.get(context).indexLesson].duration} ',
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w500,
@@ -196,19 +181,19 @@ class _LessonScreenState extends State<LessonScreen> {
                             : MorInfo(
                                 lessonId: model
                                         ?.lessonObjects![
-                                            LessonCubit.get(context)
+                                            LessonAdminCubit.get(context)
                                                 .indexLesson]
                                         .id ??
                                     '',
                                 pdfUrl: model
                                         ?.lessonObjects![
-                                            LessonCubit.get(context)
+                                            LessonAdminCubit.get(context)
                                                 .indexLesson]
                                         .suplemmentPdf ??
                                     '',
                                 description: model
                                         ?.lessonObjects![
-                                            LessonCubit.get(context)
+                                            LessonAdminCubit.get(context)
                                                 .indexLesson]
                                         .description ??
                                     '',
@@ -312,38 +297,11 @@ class PlayList extends StatefulWidget {
 }
 
 class _PlayListState extends State<PlayList> {
-  HomeUserCubit? homeUserCubit;
-
   int index = 0;
   List<bool> isPlaying = [false, false, false, false, false, false];
-  int score = 0;
-  bool isSameSection(String idSection) {
-    for (var element in homeUserCubit!.userDataModel!.sectionProgress!) {
-      if (element.section == idSection) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  bool isCompletedlesson(Lesson lesson, String idSection) {
-    // homeUserCubit.getMyInfo();
-    for (var element in homeUserCubit!.userDataModel!.sectionProgress!) {
-      if (element.section == idSection) {
-        for (var element in element.completedLessons!) {
-          if (element.id == lesson.id) {
-            // isCompleted[widget.lesson.indexOf(lesson)] = true;
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
 
   @override
   void initState() {
-    homeUserCubit = HomeUserCubit.get(context);
     super.initState();
   }
 
@@ -356,73 +314,36 @@ class _PlayListState extends State<PlayList> {
   Widget build(BuildContext context) {
     // print(widget.lesson.length);
     // var isThisSection = isSameSection(widget.idSection);
-    return BlocListener<HomeUserCubit, HomeUserState>(
-      listener: (context, state) {
-        if (state is UpdateLessonCompletionStateGood) {
-          LessonCubit.get(context).changeIndexLesson(index: index);
-          widget.controller
-              .load(getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
-          CachHelper.putcache(key: widget.idSection, value: index);
+    return SizedBox(
+      height: 400,
+      child: ListView.separated(
+        shrinkWrap: true,
+        separatorBuilder: (_, __) {
+          return const SizedBox(
+            height: 20,
+          );
+        },
+        padding: const EdgeInsets.only(top: 20, bottom: 40),
+        itemCount: widget.lesson.length,
+        itemBuilder: (_, index) {
+          bool isSelected = index == LessonAdminCubit.get(context).indexLesson;
+          bool isPlaying = index == LessonAdminCubit.get(context).indexLesson;
 
-          setState(() {});
-        }
-      },
-      child: SizedBox(
-        height: 400,
-        child: ListView.separated(
-          shrinkWrap: true,
-          separatorBuilder: (_, __) {
-            return const SizedBox(
-              height: 20,
-            );
-          },
-          padding: const EdgeInsets.only(top: 20, bottom: 40),
-          itemCount: widget.lesson.length,
-          itemBuilder: (_, index) {
-            bool isSelected = index == LessonCubit.get(context).indexLesson;
-            bool isPlaying = index == LessonCubit.get(context).indexLesson;
-
-            // if (isThisSection) {
-            return InkWell(
-              onTap: () async {
-                if (isCompletedlesson(widget.lesson[index], widget.idSection)) {
-                  LessonCubit.get(context).changeIndexLesson(index: index);
-                  widget.controller.load(
-                      getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
-                  CachHelper.putcache(key: widget.idSection, value: index);
-                } else {
-                  if (isCompletedlesson(
-                      widget.lesson[index - 1], widget.idSection)) {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(
-                          sectionId: widget.idSection,
-                          lessonId: widget.lesson[index].id!,
-                          onQuizCompleted: (int score) async {
-                            if (score / widget.lesson[index].quize!.length >=
-                                0.5) {
-                              this.index = index;
-                            }
-                          },
-                        ),
-                      ),
-                    );
-                  }
-                }
-              },
-              child: LessonCard(
-                lesson: widget.lesson[index],
-                isPlaying: isPlaying,
-                isCompleted: isCompletedlesson(
-                  widget.lesson[index],
-                  widget.idSection,
-                ),
-                isSelected: isSelected,
-              ),
-            );
-          },
-        ),
+          // if (isThisSection) {
+          return InkWell(
+            onTap: () async {
+              LessonAdminCubit.get(context).changeIndexLesson(index: index);
+              widget.controller
+                  .load(getYoutubeVideoId(widget.lesson[index].urlVideo ?? ''));
+              CachHelper.putcache(key: widget.idSection, value: index);
+            },
+            child: LessonCardAdmin(
+              lesson: widget.lesson[index],
+              isPlaying: isPlaying,
+              isSelected: isSelected,
+            ),
+          );
+        },
       ),
     );
   }
@@ -449,7 +370,7 @@ class _MorInfoState extends State<MorInfo> {
   String? newCommentId;
   @override
   void initState() {
-    LessonCubit.get(context).getComments(lessonID: widget.lessonId);
+    LessonAdminCubit.get(context).getComments(lessonID: widget.lessonId);
     super.initState();
   }
 
@@ -501,7 +422,7 @@ class _MorInfoState extends State<MorInfo> {
             ),
           ),
           const SizedBox(height: 20),
-          BlocConsumer<LessonCubit, LessonState>(
+          BlocConsumer<LessonAdminCubit, LessonAdminState>(
             listener: (context, state) {
               if (state is GetCommentsGood) {
                 comments = state.comments;
@@ -513,6 +434,7 @@ class _MorInfoState extends State<MorInfo> {
                   child: CircularProgressIndicator(),
                 );
               }
+              // return Text('Comments');
               return CommentSection(
                 comments: comments,
                 lessonId: widget.lessonId,
@@ -543,17 +465,17 @@ class _CommentSectionState extends State<CommentSection> {
   final TextEditingController _commentController = TextEditingController();
   final SocketService _socketService = SocketService();
   late List<Comment> _comments;
-  HomeUserCubit? homeUserCubit;
+  HomeAdminCubit? homeAdminCubit;
 
   @override
   void initState() {
     super.initState();
-    homeUserCubit = HomeUserCubit.get(context);
+    homeAdminCubit = HomeAdminCubit.get(context);
     _comments = widget.comments;
     _socketService.joinLesson(widget.lessonId);
     _socketService.listenForNewComments((data) {
       print(data);
-      data['_id'] = LessonCubit.get(context).newCommentId;
+      data['_id'] = LessonAdminCubit.get(context).newCommentId;
       print(data);
       setState(() {
         _comments.add(Comment.fromJson(data));
@@ -579,10 +501,10 @@ class _CommentSectionState extends State<CommentSection> {
   void _addComment() {
     if (_commentController.text.isNotEmpty) {
       final comment = _commentController.text;
-      final userId = homeUserCubit!
-          .userDataModel!.id!; // Get the user ID from your user management
-      const onModel = 'User'; // or 'Admin'
-      LessonCubit.get(context)
+      final userId = homeAdminCubit!
+          .adminModel!.id!; // Get the user ID from your user management
+      const onModel = 'Admin'; // or 'Admin'
+      LessonAdminCubit.get(context)
           .addCommentToLesson(
               lessinId: widget.lessonId,
               comment: comment,
@@ -590,7 +512,7 @@ class _CommentSectionState extends State<CommentSection> {
               onModel: onModel)
           .then((value) {
         _socketService.sendComment(widget.lessonId, comment, userId, onModel,
-            homeUserCubit!.userDataModel!.username!);
+            homeAdminCubit!.adminModel!.username!);
       });
 
       _commentController.clear();
@@ -637,7 +559,7 @@ class _CommentSectionState extends State<CommentSection> {
             itemBuilder: (context, index) {
               return CommentsItems(
                 comments: _comments[index],
-                userID: homeUserCubit!.userDataModel!.id!,
+                userID: homeAdminCubit!.adminModel!.id!,
                 lessonID: widget.lessonId,
               );
             },
@@ -723,7 +645,7 @@ class _CommentsItemsState extends State<CommentsItems> {
                           ),
                           TextButton(
                             onPressed: () {
-                              LessonCubit.get(context)
+                              LessonAdminCubit.get(context)
                                   .deleteComment(
                                 lessonID: widget.lessonID,
                                 commentID: widget.comments.id!,
