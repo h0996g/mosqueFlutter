@@ -81,9 +81,9 @@ class ProfileAdmin extends StatelessWidget {
                   const SizedBox(height: 30),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: defaultSubmit3(
+                    child: defaultSubmit(
                       text: 'Edit Profile',
-                      onPressed: () {
+                      valid: () {
                         navigatAndReturn(
                           context: context,
                           page: const UpdateAdminForm(),

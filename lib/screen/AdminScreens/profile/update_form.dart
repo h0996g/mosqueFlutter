@@ -114,29 +114,31 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                 const SizedBox(
                   height: 30,
                 ),
-                defaultForm2(
+                defaultForm3(
                     controller: _nomController,
                     textInputAction: TextInputAction.next,
-                    label: 'Nom',
+                    labelText: 'Nom',
                     prefixIcon: const Icon(Icons.person),
-                    validator: (value) {
+                    valid: (value) {
                       if (value!.isEmpty) {
                         return "Name Must Be Not Empty";
                       }
-                    }),
+                    },
+                    context: context),
                 const SizedBox(
                   height: 20,
                 ),
-                defaultForm2(
+                defaultForm3(
                     controller: _prenomController,
                     textInputAction: TextInputAction.next,
-                    label: 'Prenom',
+                    labelText: 'Prenom',
                     prefixIcon: const Icon(
                       Icons.person,
                       color: Colors.transparent,
                     ),
                     type: TextInputType.text,
-                    validator: (value) {
+                    context: context,
+                    valid: (value) {
                       if (value!.isEmpty) {
                         return "Prenom Must Be Not Empty";
                       }
@@ -144,74 +146,73 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                 const SizedBox(
                   height: 20,
                 ),
-                defaultForm2(
+                defaultForm3(
                     controller: _ageController,
                     textInputAction: TextInputAction.next,
-                    label: 'age',
+                    labelText: 'age',
                     prefixIcon: const Icon(Icons.location_city),
                     type: TextInputType.text,
-                    validator: (value) {
+                    valid: (value) {
                       if (value!.isEmpty) {
                         return "age Must Be Not Empty";
                       }
-                    }),
+                    },
+                    context: context),
                 const SizedBox(
                   height: 20,
                 ),
-                defaultForm2(
+                defaultForm3(
                     controller: _telephoneController,
                     textInputAction: TextInputAction.next,
-                    label: 'Telephone',
+                    labelText: 'Telephone',
                     prefixIcon: const Icon(Icons.phone),
                     type: TextInputType.phone,
-                    validator: (value) {
+                    valid: (value) {
                       if (value!.isEmpty) {
                         return "Phone Must Be Not Empty";
                       }
-                    }),
+                    },
+                    context: context),
                 const SizedBox(
                   height: 50,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
-                    listener: (context, state) {
-                      if (state is UpdateAdminLoadingState) {
-                        canPop = false;
-                      } else {
-                        canPop = true;
-                      }
+                BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
+                  listener: (context, state) {
+                    if (state is UpdateAdminLoadingState) {
+                      canPop = false;
+                    } else {
+                      canPop = true;
+                    }
 
-                      if (state is UpdateAdminStateGood) {
-                        HomeAdminCubit.get(context).getMyInfo().then((value) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfileAdmin()),
-                            (route) => false,
-                          );
-                        });
-                      }
-                    },
-                    builder: (context, state) {
-                      return defaultSubmit2(
-                          text: 'Update',
-                          background: Colors.blueAccent,
-                          onPressed: () {
-                            if (formkey.currentState!.validate()) {
-                              if (state is UpdateAdminLoadingState) {
-                                return null;
-                              }
-                              ProfileAdminCubit.get(context).updateAdmin(
-                                  nom: _nomController.text,
-                                  prenom: _prenomController.text,
-                                  telephone: _telephoneController.text,
-                                  age: _ageController.text,
-                                  deleteOldImage: homeAdminCubit.photo);
+                    if (state is UpdateAdminStateGood) {
+                      HomeAdminCubit.get(context).getMyInfo().then((value) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfileAdmin()),
+                          (route) => false,
+                        );
+                      });
+                    }
+                  },
+                  builder: (context, state) {
+                    return defaultSubmit(
+                        text: 'Update',
+                        // background: Colors.blueAccent,
+                        valid: () {
+                          if (formkey.currentState!.validate()) {
+                            if (state is UpdateAdminLoadingState) {
+                              return null;
                             }
-                          });
-                    },
-                  ),
+                            ProfileAdminCubit.get(context).updateAdmin(
+                                nom: _nomController.text,
+                                prenom: _prenomController.text,
+                                telephone: _telephoneController.text,
+                                age: _ageController.text,
+                                deleteOldImage: homeAdminCubit.photo);
+                          }
+                        });
+                  },
                 ),
               ]),
             ),

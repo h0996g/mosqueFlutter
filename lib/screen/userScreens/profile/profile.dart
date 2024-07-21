@@ -139,9 +139,9 @@ class ProfileUser extends StatelessWidget {
                     // ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: defaultSubmit3(
+                      child: defaultSubmit(
                           text: 'Edit Profile',
-                          onPressed: () {
+                          valid: () {
                             navigatAndReturn(
                                 context: context, page: UpdateUserForm());
                           }),

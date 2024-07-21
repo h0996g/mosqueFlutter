@@ -126,29 +126,31 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     const SizedBox(
                       height: 30,
                     ),
-                    defaultForm2(
+                    defaultForm3(
                         controller: _nomController,
                         textInputAction: TextInputAction.next,
-                        label: 'Nom',
+                        labelText: 'Nom',
                         prefixIcon: const Icon(Icons.person),
-                        validator: (value) {
+                        valid: (value) {
                           if (value!.isEmpty) {
                             return "Name Must Be Not Empty";
                           }
-                        }),
+                        },
+                        context: context),
                     const SizedBox(
                       height: 20,
                     ),
-                    defaultForm2(
+                    defaultForm3(
                         controller: _prenomController,
                         textInputAction: TextInputAction.next,
-                        label: 'Prenom',
+                        labelText: 'Prenom',
                         prefixIcon: const Icon(
                           Icons.person,
                           color: Colors.transparent,
                         ),
                         type: TextInputType.text,
-                        validator: (value) {
+                        context: context,
+                        valid: (value) {
                           if (value!.isEmpty) {
                             return "Prenom Must Be Not Empty";
                           }
@@ -156,13 +158,14 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     const SizedBox(
                       height: 20,
                     ),
-                    defaultForm2(
+                    defaultForm3(
                         controller: _ageController,
                         textInputAction: TextInputAction.next,
-                        label: 'Age',
+                        labelText: 'Age',
                         prefixIcon: const Icon(Icons.countertops_outlined),
                         type: TextInputType.text,
-                        validator: (value) {
+                        context: context,
+                        valid: (value) {
                           if (value!.isEmpty) {
                             return "Age Must Be Not Empty";
                           }
@@ -170,13 +173,14 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     const SizedBox(
                       height: 20,
                     ),
-                    defaultForm2(
+                    defaultForm3(
                         controller: _emailController,
                         textInputAction: TextInputAction.next,
-                        label: 'Email',
+                        context: context,
+                        labelText: 'Email',
                         prefixIcon: const Icon(Icons.email_outlined),
                         type: TextInputType.text,
-                        validator: (value) {
+                        valid: (value) {
                           if (value!.isEmpty) {
                             return "Email Must Be Not Empty";
                           }
@@ -184,13 +188,14 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     const SizedBox(
                       height: 20,
                     ),
-                    defaultForm2(
+                    defaultForm3(
                         controller: _telephoneController,
                         textInputAction: TextInputAction.next,
-                        label: 'Telephone',
+                        labelText: 'Telephone',
                         prefixIcon: const Icon(Icons.phone),
                         type: TextInputType.phone,
-                        validator: (value) {
+                        context: context,
+                        valid: (value) {
                           if (value!.isEmpty) {
                             return "Phone Must Be Not Empty";
                           }
@@ -198,10 +203,10 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     const SizedBox(
                       height: 50,
                     ),
-                    defaultSubmit3(
+                    defaultSubmit(
                         text: 'Update',
                         // background: Colors.grey,
-                        onPressed: () {
+                        valid: () {
                           if (formkey.currentState!.validate()) {
                             // if (state is LodinUpdateResponsableState) {
                             //   return null;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/AdminScreens/lesson/lessonDetails.dart';
 import 'package:mosque/screen/userScreens/lesson/lessonDetails.dart';
 import 'package:mosque/model/section_model.dart';
@@ -24,7 +25,6 @@ class _CategoryListState extends State<CategoryList> {
   void initState() {
     categoryCubit = CategoryCubit.get(context);
     categoryCubit?.getAllSection();
-
     super.initState();
   }
 
@@ -62,10 +62,15 @@ class _CategoryListState extends State<CategoryList> {
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
-            itemBuilder: (context, index) => CategoryCard(
-              isAdmin: widget.isAdmin,
-              sectionModel: state.model[index],
-              idSection: state.model[index].id!,
+            itemBuilder: (context, index) => GestureDetector(
+              onLongPress: widget.isAdmin
+                  ? () => showDeleteDialog(context, state.model[index])
+                  : null,
+              child: CategoryCard(
+                isAdmin: widget.isAdmin,
+                sectionModel: state.model[index],
+                idSection: state.model[index].id!,
+              ),
             ),
           );
         } else {
@@ -133,12 +138,14 @@ class ShimmerCategoryCard extends StatelessWidget {
 class CategoryCard extends StatelessWidget {
   final String idSection;
   final bool isAdmin;
-  const CategoryCard(
-      {super.key,
-      required this.sectionModel,
-      required this.idSection,
-      required this.isAdmin});
   final SectionModel sectionModel;
+
+  const CategoryCard({
+    super.key,
+    required this.sectionModel,
+    required this.idSection,
+    required this.isAdmin,
+  });
 
   @override
   Widget build(BuildContext context) {

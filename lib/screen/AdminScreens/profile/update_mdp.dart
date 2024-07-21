@@ -166,47 +166,44 @@ class UpdateMdpForm extends StatelessWidget {
                 const SizedBox(
                   height: 50,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
-                    listener: (context, state) {
-                      if (state is UpdateMdpAdminLoadingState) {
-                        canPop = false;
-                      } else {
-                        canPop = true;
-                      }
-                      if (state is UpdateMdpAdminStateGood) {
-                        showToast(
-                            msg: "Password changed successfully",
-                            state: ToastStates.success);
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfileAdmin()),
-                          (route) => false,
-                        );
-                      } else if (state is UpdateMdpAdminStateBad) {
-                        showToast(
-                            msg: "Server crashed", state: ToastStates.error);
-                      } else if (state is ErrorState) {
-                        String errorMessage = state.errorModel.message!;
-                        showToast(msg: errorMessage, state: ToastStates.error);
-                      }
-                    },
-                    builder: (context, state) {
-                      return defaultSubmit2(
-                          text: 'Update',
-                          background: Colors.blueAccent,
-                          onPressed: () {
-                            if (formkey.currentState!.validate()) {
-                              ProfileAdminCubit.get(context).updateMdpAdmin(
-                                old: _oldController.text,
-                                newPassword: _new1Controller.text,
-                              );
-                            }
-                          });
-                    },
-                  ),
+                BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
+                  listener: (context, state) {
+                    if (state is UpdateMdpAdminLoadingState) {
+                      canPop = false;
+                    } else {
+                      canPop = true;
+                    }
+                    if (state is UpdateMdpAdminStateGood) {
+                      showToast(
+                          msg: "Password changed successfully",
+                          state: ToastStates.success);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfileAdmin()),
+                        (route) => false,
+                      );
+                    } else if (state is UpdateMdpAdminStateBad) {
+                      showToast(
+                          msg: "Server crashed", state: ToastStates.error);
+                    } else if (state is ErrorState) {
+                      String errorMessage = state.errorModel.message!;
+                      showToast(msg: errorMessage, state: ToastStates.error);
+                    }
+                  },
+                  builder: (context, state) {
+                    return defaultSubmit(
+                        text: 'Update',
+                        // background: Colors.blueAccent,
+                        valid: () {
+                          if (formkey.currentState!.validate()) {
+                            ProfileAdminCubit.get(context).updateMdpAdmin(
+                              old: _oldController.text,
+                              newPassword: _new1Controller.text,
+                            );
+                          }
+                        });
+                  },
                 ),
               ]),
             ),
