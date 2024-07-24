@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
+import 'package:mosque/component/dialog.dart';
+import 'package:mosque/component/widgets/LessonOptionsDialog.dart';
 import 'package:mosque/component/widgets/lesson_card_admin.dart';
 import 'package:mosque/component/widgets/pdf_view.dart';
 import 'package:mosque/const/colors.dart';
@@ -12,6 +14,7 @@ import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/lesson/add_lesson.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
+import 'package:mosque/screen/AdminScreens/lesson/quizAdmin.dart';
 // ignore: depend_on_referenced_packages
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -347,6 +350,9 @@ class _PlayListState extends State<PlayList> {
 
           // if (isThisSection) {
           return InkWell(
+            onLongPress: () {
+              _showLessonOptionsDialog(context, widget.lesson[index]);
+            },
             onTap: () async {
               LessonAdminCubit.get(context).changeIndexLesson(index: index);
               widget.controller
@@ -361,6 +367,62 @@ class _PlayListState extends State<PlayList> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  void _showLessonOptionsDialog(BuildContext context, Lesson lesson) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return LessonOptionsDialog(
+          lesson: lesson,
+          onShowQuiz: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => QuizEditorScreen(lessonId: lesson.id!),
+              ),
+            );
+          },
+          onEdit: () {
+            Navigator.of(context).pop();
+            // Implement edit functionality
+            print('Editing lesson: ${lesson.id}');
+          },
+          onDelete: () {
+            Navigator.of(context).pop();
+            _showDeleteConfirmationDialog(context, lesson);
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, Lesson lesson) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          title: 'Confirm Delete',
+          content: 'Are you sure you want to delete this lesson?',
+          onConfirm: () {
+            Navigator.of(context).pop();
+            // Implement the actual delete functionality here
+            print('Deleting lesson: ${lesson.id}');
+          },
+          onCancel: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
+  void _showQuizEditor(BuildContext context, Lesson lesson) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => QuizEditorScreen(lessonId: lesson.id!),
       ),
     );
   }

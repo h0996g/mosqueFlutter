@@ -140,6 +140,14 @@ class Quiz {
       id: json['_id'],
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'question': question,
+      'correctAnswerIndex': correctAnswerIndex,
+      'options': options,
+      '_id': id,
+    };
+  }
 }
 
 class Comment {

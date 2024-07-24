@@ -26,6 +26,7 @@ const ADDCOMMENTTOLESSON = '/api/lesson/comment/';
 const GETCOMMENTS = '/api/lesson/comments/';
 const GETQUIZ = '/api/lesson/quiz/';
 const DELETECOMMENT = '/api/lesson/comment/';
+const UPDATEQUIZ = '/api/lesson/quiz/';
 
 const Loginadmin = '/api/admin/login';
 const getJouerById = '/api/user/';

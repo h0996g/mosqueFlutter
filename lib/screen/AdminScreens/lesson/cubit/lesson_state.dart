@@ -57,3 +57,9 @@ final class DeleteCommentLoading extends LessonAdminState {}
 final class DeleteCommentGood extends LessonAdminState {}
 
 final class DeleteCommentBad extends LessonAdminState {}
+
+final class UpdateQuizLoading extends LessonAdminState {}
+
+final class UpdateQuizGood extends LessonAdminState {}
+
+final class UpdateQuizBad extends LessonAdminState {}

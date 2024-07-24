@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/firebase_options.dart';
@@ -81,24 +81,29 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        localizationsDelegates: const [
-          GlobalCupertinoLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        // supportedLocales: const [
-        //   Locale("fa", "IR"), // OR Locale('ar', 'AE') OR Other RTL locales
-        // ],
-        locale: const Locale(
-          "fr",
-          "FR",
-        ),
         debugShowCheckedModeBanner: false,
-        home:
+        home: startwidget,
+        theme: ThemeData(
+          useMaterial3: true,
 
-            // Onbording(),
-
-            startwidget,
+          cardColor: Colors.white,
+          // scaffoldBackgroundColor: Colors.grey,
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: const AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Colors.white,
+              statusBarIconBrightness: Brightness.dark,
+            ),
+            backgroundColor: Colors.blueAccent,
+            elevation: 0,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
+        ),
       ),
     );
   }
