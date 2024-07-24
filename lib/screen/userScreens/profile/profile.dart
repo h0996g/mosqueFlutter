@@ -8,6 +8,7 @@ import 'package:mosque/model/user_model.dart';
 import 'package:mosque/screen/Auth/login.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/screen/userScreens/home/home_screen.dart';
+import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/update_form.dart';
 
@@ -28,6 +29,7 @@ class ProfileUser extends StatelessWidget {
             leading: Builder(
               builder: (context) {
                 return IconButton(
+                  color: Colors.black,
                   icon: const Icon(Icons.menu),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
@@ -36,18 +38,18 @@ class ProfileUser extends StatelessWidget {
               },
             ),
             title: const Text('Profile'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    navigatAndFinish(context: context, page: Login());
-                    CachHelper.removdata(key: "TOKEN");
-                    showToast(msg: "Disconnect", state: ToastStates.error);
-                  },
-                  child: const Text(
-                    "Disconnect",
-                    style: TextStyle(color: Colors.red),
-                  ))
-            ],
+            // actions: [
+            //   TextButton(
+            //       onPressed: () {
+            //         navigatAndFinish(context: context, page: Login());
+            //         CachHelper.removdata(key: "TOKEN");
+            //         showToast(msg: "Disconnect", state: ToastStates.error);
+            //       },
+            //       child: const Text(
+            //         "Disconnect",
+            //         style: TextStyle(color: Colors.red),
+            //       ))
+            // ],
           ),
           drawer:
               _buildDrawer(context, HomeUserCubit.get(context).userDataModel!),
@@ -304,6 +306,9 @@ class ProfileUser extends StatelessWidget {
             onTap: () async {
               navigatAndFinish(context: context, page: Login());
               CachHelper.removdata(key: "TOKEN");
+              HomeUserCubit.get(context).resetValues();
+              LessonCubit.get(context).resetValues();
+              ProfileCubit.get(context).resetValues();
               showToast(msg: "Disconnect", state: ToastStates.error);
             },
           ),

@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
               statusBarColor: Colors.white,
               statusBarIconBrightness: Brightness.dark,
             ),
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Colors.white,
             elevation: 0,
             titleTextStyle: TextStyle(
               color: Colors.white,

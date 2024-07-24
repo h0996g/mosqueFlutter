@@ -128,96 +128,106 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
                   ),
                 ),
                 appBar: AppBar(
-                  title: const Text('YouTube Player '),
-                ),
+                    leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.black,
+                  ),
+                )),
                 body: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10),
-                    child: Column(
-                      children: <Widget>[
-                        // some widgets
-                        player,
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          model?.name ?? '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
+                      child: Column(
+                        children: <Widget>[
+                          // some widgets
+                          player,
+                          const SizedBox(
+                            height: 15,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          model
-                                  ?.lessonObjects![
-                                      LessonAdminCubit.get(context).indexLesson]
-                                  .description ??
-                              '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 3,
-                        ),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.timer,
-                              color: Colors.grey,
+                          Text(
+                            model?.name ?? '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
                             ),
-                            Text(
-                              '  ${model?.lessonObjects![LessonAdminCubit.get(context).indexLesson].duration} ',
-                              style: const TextStyle(
+                          ),
+                          const SizedBox(
+                            height: 3,
+                          ),
+                          Text(
+                            model
+                                    ?.lessonObjects![
+                                        LessonAdminCubit.get(context)
+                                            .indexLesson]
+                                    .description ??
+                                '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 3,
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.timer,
                                 color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
                               ),
-                            ),
-                          ],
-                        ),
+                              Text(
+                                '  ${model?.lessonObjects![LessonAdminCubit.get(context).indexLesson].duration} ',
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
 
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        CustomTabView(
-                          numberOfLessons: model?.lessonObjects!.length ?? 0,
-                          index: _selectedTag,
-                          changeTab: changeTab,
-                        ),
-                        _selectedTag == 0
-                            ? PlayList(
-                                // indexLesson: !,
-                                controller: _controller,
-                                lesson: model?.lessonObjects! ?? [],
-                                idSection: widget.idSection,
-                              )
-                            : MorInfo(
-                                lessonId: model
-                                        ?.lessonObjects![
-                                            LessonAdminCubit.get(context)
-                                                .indexLesson]
-                                        .id ??
-                                    '',
-                                pdfUrl: model
-                                        ?.lessonObjects![
-                                            LessonAdminCubit.get(context)
-                                                .indexLesson]
-                                        .suplemmentPdf ??
-                                    '',
-                                description: model
-                                        ?.lessonObjects![
-                                            LessonAdminCubit.get(context)
-                                                .indexLesson]
-                                        .description ??
-                                    '',
-                              ),
-                      ],
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          CustomTabView(
+                            numberOfLessons: model?.lessonObjects!.length ?? 0,
+                            index: _selectedTag,
+                            changeTab: changeTab,
+                          ),
+                          _selectedTag == 0
+                              ? PlayList(
+                                  // indexLesson: !,
+                                  controller: _controller,
+                                  lesson: model?.lessonObjects! ?? [],
+                                  idSection: widget.idSection,
+                                )
+                              : MorInfo(
+                                  lessonId: model
+                                          ?.lessonObjects![
+                                              LessonAdminCubit.get(context)
+                                                  .indexLesson]
+                                          .id ??
+                                      '',
+                                  pdfUrl: model
+                                          ?.lessonObjects![
+                                              LessonAdminCubit.get(context)
+                                                  .indexLesson]
+                                          .suplemmentPdf ??
+                                      '',
+                                  description: model
+                                          ?.lessonObjects![
+                                              LessonAdminCubit.get(context)
+                                                  .indexLesson]
+                                          .description ??
+                                      '',
+                                ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -234,6 +244,7 @@ class CustomTabView extends StatefulWidget {
   final int numberOfLessons;
   final Function(int) changeTab;
   final int index;
+
   const CustomTabView(
       {super.key,
       required this.changeTab,
@@ -256,34 +267,30 @@ class _CustomTabViewState extends State<CustomTabView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(12),
       width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.grey.shade200,
-      ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: _tags.asMap().entries.map((MapEntry map) {
+          bool isSelected = widget.index == map.key;
           return Expanded(
             child: GestureDetector(
               onTap: () {
                 widget.changeTab(map.key);
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 14),
                 decoration: BoxDecoration(
-                  color: widget.index == map.key
-                      ? kPrimaryColor
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(10),
+                  color: isSelected ? Colors.blueAccent : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
                   child: Text(
                     map.value,
                     style: TextStyle(
-                      color:
-                          widget.index == map.key ? Colors.white : Colors.black,
-                      fontWeight: FontWeight.bold,
+                      color: isSelected ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ),
                 ),

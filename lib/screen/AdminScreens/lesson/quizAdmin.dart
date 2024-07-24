@@ -31,9 +31,18 @@ class _QuizEditorScreenState extends State<QuizEditorScreen> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: const Text('Quiz Editor'),
+        // title: const Text('Quiz Editor'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            )),
         actions: [
           IconButton(
+            color: Colors.blue,
             icon: const Icon(Icons.save),
             onPressed: () {
               LessonAdminCubit.get(context)
@@ -281,10 +290,21 @@ class _QuestionEditScreenState extends State<QuestionEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.quiz.id == null ? 'Add Question' : 'Edit Question'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            )),
+        // title: Text(widget.quiz.id == null ? 'Add Question' : 'Edit Question'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),
+            color: Colors.blue,
+            icon: const Icon(
+              Icons.save,
+            ),
             onPressed: _saveQuestion,
           ),
         ],

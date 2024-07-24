@@ -31,6 +31,7 @@ class ProfileAdmin extends StatelessWidget {
           leading: Builder(
             builder: (context) {
               return IconButton(
+                color: Colors.black,
                 icon: const Icon(Icons.menu),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
@@ -39,19 +40,6 @@ class ProfileAdmin extends StatelessWidget {
             },
           ),
           title: const Text('Profile'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                navigatAndFinish(context: context, page: Login());
-                CachHelper.removdata(key: "TOKEN");
-                showToast(msg: "Disconnect", state: ToastStates.error);
-              },
-              child: const Text(
-                "Disconnect",
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
         ),
         drawer: _buildDrawer(context, adminModel),
         body: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
@@ -102,6 +90,7 @@ class ProfileAdmin extends StatelessWidget {
 
   Widget _buildProfileCard(BuildContext context, DataAdminModel adminModel) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(horizontal: 16),
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
