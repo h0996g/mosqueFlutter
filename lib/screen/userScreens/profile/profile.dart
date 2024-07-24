@@ -158,6 +158,7 @@ class ProfileUser extends StatelessWidget {
 
   Widget _buildProfileCard(BuildContext context, DataUserModel joueurModel) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(horizontal: 16),
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

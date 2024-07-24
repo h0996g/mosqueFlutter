@@ -217,6 +217,9 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                               email: _emailController.text,
                               telephone: _telephoneController.text,
                               age: _ageController.text,
+                              deleteOldImage: HomeUserCubit.get(context)
+                                  .userDataModel!
+                                  .photo,
                             );
                           }
                         }),

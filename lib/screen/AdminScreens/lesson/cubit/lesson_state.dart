@@ -63,3 +63,15 @@ final class UpdateQuizLoading extends LessonAdminState {}
 final class UpdateQuizGood extends LessonAdminState {}
 
 final class UpdateQuizBad extends LessonAdminState {}
+
+final class UpdateSectionLoading extends LessonAdminState {}
+
+final class UpdateSectionGood extends LessonAdminState {}
+
+final class UpdateSectionBad extends LessonAdminState {}
+
+final class ImagePickerSectionStateGood extends LessonAdminState {}
+
+final class ImagePickerSectionStateBad extends LessonAdminState {}
+
+final class UploadSectionImgAndGetUrlStateBad extends LessonAdminState {}

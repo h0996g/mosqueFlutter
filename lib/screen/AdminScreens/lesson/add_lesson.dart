@@ -126,50 +126,6 @@ class AddNewLessonPage extends StatelessWidget {
                 },
               ),
               SizedBox(height: screenHeight * 0.04),
-              // Container(
-              //   width: double.infinity,
-              //   height: 56, // Fixed height for consistency
-              //   decoration: BoxDecoration(
-              //     gradient: LinearGradient(
-              //       colors: [Colors.blue.shade400, Colors.blue.shade700],
-              //       begin: Alignment.centerLeft,
-              //       end: Alignment.centerRight,
-              //     ),
-              //     borderRadius: BorderRadius.circular(8),
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.blue.withOpacity(0.3),
-              //         spreadRadius: 1,
-              //         blurRadius: 4,
-              //         offset: const Offset(0, 2),
-              //       ),
-              //     ],
-              //   ),
-              //   child: Material(
-              //     color: Colors.transparent,
-              //     child: InkWell(
-              //       borderRadius: BorderRadius.circular(8),
-              //       onTap: () {
-              //         if (formKey.currentState!.validate()) {
-              //           // Implement lesson creation logic
-              //           print("Creating new lesson");
-              //           // You can add your lesson creation logic here
-              //         }
-              //       },
-              //       child: const Center(
-              //         child: Text(
-              //           "Create Lesson",
-              //           style: TextStyle(
-              //             color: Colors.white,
-              //             fontSize: 18,
-              //             fontWeight: FontWeight.bold,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
               buildSubmitButton(context, () {}, "Create Lesson"),
             ],
           ),

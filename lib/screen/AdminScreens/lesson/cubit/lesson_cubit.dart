@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/Api/httplaravel.dart';
@@ -7,6 +11,8 @@ import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/error_model.dart';
 import 'package:mosque/model/section_model.dart';
 import 'dart:convert' as convert;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as path;
 
 part 'lesson_state.dart';
 
@@ -160,5 +166,90 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       print(e.toString());
       emit(UpdateQuizBad());
     });
+  }
+
+  Future<void> updateSection({
+    required String sectionId,
+    required Map<String, dynamic> data,
+    String? deleteOldImage,
+  }) async {
+    emit(UpdateSectionLoading());
+    if (imageCompress != null) {
+      await updateSectionImg(
+        deleteOldImage: deleteOldImage,
+      );
+    }
+    if (linkProfileImg != null) {
+      data['photo'] = linkProfileImg;
+    }
+    await Httplar.httpPut(path: UPDATESECTION + sectionId, data: data)
+        .then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateSectionGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateSectionBad());
+    });
+  }
+
+  void resetImageSection() {
+    imageCompress = null;
+    linkProfileImg = null;
+  }
+
+  File? imageCompress;
+  Future<void> imagePickerSection(ImageSource source) async {
+    final ImagePicker _pickerProfile = ImagePicker();
+    await _pickerProfile.pickImage(source: source).then((value) async {
+      // imageProfile = value;
+      await FlutterImageCompress.compressAndGetFile(
+        File(value!.path).absolute.path,
+        '${File(value.path).path}.jpg',
+        quality: 90,
+      ).then((value) {
+        imageCompress = File(value!.path);
+        emit(ImagePickerSectionStateGood());
+      });
+    }).catchError((e) {
+      emit(ImagePickerSectionStateBad());
+    });
+  }
+
+  String? linkProfileImg;
+  Future<void> updateSectionImg({required String? deleteOldImage}) async {
+    await deleteOldImageFirebase(deleteOldImage: deleteOldImage);
+    String fileName = path.basenameWithoutExtension(imageCompress!.path);
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('section/$fileName')
+        .putFile(imageCompress!)
+        .then((p0) async {
+      await p0.ref.getDownloadURL().then((value) {
+        linkProfileImg = value;
+        print(linkProfileImg);
+        // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
+      }).catchError((e) {
+        emit(UploadSectionImgAndGetUrlStateBad());
+      });
+    });
+  }
+
+  Future<void> deleteOldImageFirebase({required String? deleteOldImage}) async {
+    if (deleteOldImage != null) {
+      await firebase_storage.FirebaseStorage.instance
+          .refFromURL(deleteOldImage)
+          .delete()
+          .then((_) {
+        print('Old image deleted successfully');
+      }).catchError((error) {
+        print('Failed to delete old image: $error');
+      });
+    }
   }
 }

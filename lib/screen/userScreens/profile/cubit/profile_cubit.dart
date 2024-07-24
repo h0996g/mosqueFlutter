@@ -33,7 +33,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(UpdateUserLoadingState());
 
     if (imageCompress != null) {
-      await updateProfileImg(deleteOldImage: deleteOldImage);
+      await updateProfileImg(
+        deleteOldImage: deleteOldImage,
+      );
     }
     Map<String, dynamic> _model = {
       "nom": nom,
