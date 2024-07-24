@@ -90,6 +90,7 @@ class MyApp extends StatelessWidget {
           // scaffoldBackgroundColor: Colors.grey,
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: const AppBarTheme(
+            surfaceTintColor: Colors.white,
             systemOverlayStyle: SystemUiOverlayStyle(
               statusBarColor: Colors.white,
               statusBarIconBrightness: Brightness.dark,

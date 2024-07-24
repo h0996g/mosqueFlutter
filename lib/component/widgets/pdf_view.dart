@@ -4,9 +4,10 @@ import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 class PdfViewerPage extends StatefulWidget {
   final String url;
 
-  PdfViewerPage({required this.url});
+  const PdfViewerPage({super.key, required this.url});
 
   @override
+  // ignore: library_private_types_in_public_api
   _PdfViewerPageState createState() => _PdfViewerPageState();
 }
 
@@ -15,8 +16,15 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("PDF Viewer"),
-      ),
+          leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: const Icon(
+          Icons.arrow_back_ios,
+          color: Colors.black,
+        ),
+      )),
       body: const PDF().fromUrl(
         widget.url,
         placeholder: (double progress) => Center(
