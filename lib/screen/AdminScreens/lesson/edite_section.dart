@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/model/section_model.dart';
 
-class AddSectionScreen extends StatefulWidget {
-  const AddSectionScreen({Key? key}) : super(key: key);
+class EditSectionPage extends StatefulWidget {
+  final SectionModel section;
+  const EditSectionPage({super.key, required this.section});
 
   @override
-  _AddSectionScreenState createState() => _AddSectionScreenState();
+  // ignore: library_private_types_in_public_api
+  _EditSectionPageState createState() => _EditSectionPageState();
 }
 
-class _AddSectionScreenState extends State<AddSectionScreen> {
+class _EditSectionPageState extends State<EditSectionPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String? _photoUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.text = widget.section.name ?? '';
+    _descriptionController.text = widget.section.description ?? '';
+    _photoUrl = widget.section.photo;
+  }
 
   @override
   void dispose() {
@@ -23,20 +34,12 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // Here you would typically call a method to add the section
-      // For example:
-      // HomeAdminCubit.get(context).addSection(
-      //   name: _nameController.text,
-      //   description: _descriptionController.text,
-      //   photo: _photoUrl,
-      // );
-
       print('Name: ${_nameController.text}');
       print('Description: ${_descriptionController.text}');
       print('Photo URL: $_photoUrl');
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Section added successfully')),
+        const SnackBar(content: Text('Section updated successfully')),
       );
 
       Navigator.pop(context);
@@ -53,15 +56,20 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
 
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(
-          Icons.arrow_back_ios,
-          color: Colors.black,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
         ),
-      )),
+        title:
+            const Text('Edit Section', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
             vertical: verticalPadding, horizontal: horizontalPadding),
@@ -71,12 +79,12 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Create a New Section',
+                'Edit Section',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               SizedBox(height: screenHeight * 0.02),
               Text(
-                "Fill in the details for your new section.",
+                "Update the details for your section.",
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               SizedBox(height: screenHeight * 0.04),
@@ -126,7 +134,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                 },
               ),
               SizedBox(height: screenHeight * 0.04),
-              buildSubmitButton(context, _submitForm, 'Add Section'),
+              buildSubmitButton(context, _submitForm, 'Update Section'),
             ],
           ),
         ),

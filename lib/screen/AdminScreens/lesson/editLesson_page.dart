@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:mosque/component/components.dart';
-// Import other necessary packages and files
+import 'package:mosque/model/section_model.dart';
 
-class AddNewLessonPage extends StatelessWidget {
-  AddNewLessonPage({Key? key}) : super(key: key);
+class EditLessonPage extends StatefulWidget {
+  final Lesson lesson;
+  const EditLessonPage({super.key, required this.lesson});
 
+  @override
+  State<EditLessonPage> createState() => _EditLessonPageState();
+}
+
+class _EditLessonPageState extends State<EditLessonPage> {
   final titleController = TextEditingController();
+
   final descriptionController = TextEditingController();
+
   final urlVideoController = TextEditingController();
+
   final durationController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    titleController.text = widget.lesson.title ?? '';
+    descriptionController.text = widget.lesson.description ?? '';
+    urlVideoController.text = widget.lesson.urlVideo ?? '';
+    durationController.text = widget.lesson.duration ?? '';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +39,16 @@ class AddNewLessonPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(
-          Icons.arrow_back_ios,
-          color: Colors.black,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
         ),
-      )),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
             vertical: verticalPadding, horizontal: horizontalPadding),
@@ -39,12 +58,12 @@ class AddNewLessonPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Create a New Lesson',
+                'Edit Lesson',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               SizedBox(height: screenHeight * 0.02),
               Text(
-                "Fill in the details for your new lesson.",
+                "Update the details of your lesson.",
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               SizedBox(height: screenHeight * 0.04),
@@ -121,56 +140,17 @@ class AddNewLessonPage extends StatelessWidget {
                 icon: Icons.upload_file,
                 label: "Upload Supplement PDF",
                 onPressed: () {
-                  // Implement photo upload logic
+                  // Implement PDF upload logic
                   print('Uploading lesson PDF...');
                 },
               ),
               SizedBox(height: screenHeight * 0.04),
-              // Container(
-              //   width: double.infinity,
-              //   height: 56, // Fixed height for consistency
-              //   decoration: BoxDecoration(
-              //     gradient: LinearGradient(
-              //       colors: [Colors.blue.shade400, Colors.blue.shade700],
-              //       begin: Alignment.centerLeft,
-              //       end: Alignment.centerRight,
-              //     ),
-              //     borderRadius: BorderRadius.circular(8),
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.blue.withOpacity(0.3),
-              //         spreadRadius: 1,
-              //         blurRadius: 4,
-              //         offset: const Offset(0, 2),
-              //       ),
-              //     ],
-              //   ),
-              //   child: Material(
-              //     color: Colors.transparent,
-              //     child: InkWell(
-              //       borderRadius: BorderRadius.circular(8),
-              //       onTap: () {
-              //         if (formKey.currentState!.validate()) {
-              //           // Implement lesson creation logic
-              //           print("Creating new lesson");
-              //           // You can add your lesson creation logic here
-              //         }
-              //       },
-              //       child: const Center(
-              //         child: Text(
-              //           "Create Lesson",
-              //           style: TextStyle(
-              //             color: Colors.white,
-              //             fontSize: 18,
-              //             fontWeight: FontWeight.bold,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
-              buildSubmitButton(context, () {}, "Create Lesson"),
+              buildSubmitButton(context, () {
+                if (formKey.currentState!.validate()) {
+                  // Implement lesson update logic
+                  print("Updating lesson");
+                }
+              }, "Update Lesson"),
             ],
           ),
         ),

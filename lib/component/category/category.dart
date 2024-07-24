@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mosque/component/components.dart';
+import 'package:mosque/screen/AdminScreens/lesson/edite_section.dart';
 import 'package:mosque/screen/AdminScreens/lesson/lessonDetails.dart';
 import 'package:mosque/screen/userScreens/lesson/lessonDetails.dart';
 import 'package:mosque/model/section_model.dart';
@@ -9,6 +9,7 @@ import 'package:shimmer/shimmer.dart';
 
 class CategoryList extends StatefulWidget {
   final bool isAdmin;
+
   const CategoryList({
     super.key,
     required this.isAdmin,
@@ -64,7 +65,7 @@ class _CategoryListState extends State<CategoryList> {
             ),
             itemBuilder: (context, index) => GestureDetector(
               onLongPress: widget.isAdmin
-                  ? () => showDeleteDialog(context, state.model[index])
+                  ? () => _showOptionsDialog(context, state.model[index])
                   : null,
               child: CategoryCard(
                 isAdmin: widget.isAdmin,
@@ -78,6 +79,72 @@ class _CategoryListState extends State<CategoryList> {
             child: Text('Error'),
           );
         }
+      },
+    );
+  }
+
+  void _showOptionsDialog(BuildContext context, SectionModel sectionModel) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Choose an option"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text("Edit"),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditSectionPage(
+                        section:
+                            sectionModel, // pass the relevant sectionModel here
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text("Delete"),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showDeleteConfirmDialog(context, sectionModel.id!);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmDialog(BuildContext context, String sectionId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Confirm Deletion"),
+          content: const Text("Are you sure you want to delete this lesson?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                // Call delete function here
+                print('Deleting lesson with id $sectionId');
+              },
+              child: const Text("Delete"),
+            ),
+          ],
+        );
       },
     );
   }

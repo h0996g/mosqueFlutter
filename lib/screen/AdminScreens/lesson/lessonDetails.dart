@@ -14,6 +14,7 @@ import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/lesson/add_lesson.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
+import 'package:mosque/screen/AdminScreens/lesson/editLesson_page.dart';
 import 'package:mosque/screen/AdminScreens/lesson/quizAdmin.dart';
 // ignore: depend_on_referenced_packages
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -394,7 +395,13 @@ class _PlayListState extends State<PlayList> {
           },
           onEdit: () {
             Navigator.of(context).pop();
-            // Implement edit functionality
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => EditLessonPage(
+                  lesson: lesson,
+                ),
+              ),
+            );
             print('Editing lesson: ${lesson.id}');
           },
           onDelete: () {
