@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 
 class ResultScreen extends StatefulWidget {
-  final int score;
+  final double scorePercentage;
   final String idSection;
   final String idLesson;
-  final int totalQuestions;
   final VoidCallback onQuizCompleted;
 
   const ResultScreen({
     super.key,
-    required this.score,
-    required this.totalQuestions,
+    required this.scorePercentage,
     required this.onQuizCompleted,
     required this.idSection,
     required this.idLesson,
@@ -33,9 +31,9 @@ class _ResultScreenState extends State<ResultScreen>
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    _animation =
-        Tween<double>(begin: 0, end: widget.score / widget.totalQuestions)
-            .animate(_controller);
+    _animation = Tween<double>(begin: 0, end: widget.scorePercentage / 100)
+        .animate(_controller);
+
     _controller.forward();
   }
 
@@ -97,9 +95,10 @@ class _ResultScreenState extends State<ResultScreen>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          '${widget.score} / ${widget.totalQuestions}',
+                          '${widget.scorePercentage}%',
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
                         ),
@@ -112,12 +111,12 @@ class _ResultScreenState extends State<ResultScreen>
             const SizedBox(height: 48),
             ElevatedButton(
               onPressed: () async {
-                if (widget.score / widget.totalQuestions >= 0.5) {
+                if (widget.scorePercentage / 100 >= 0.5) {
                   await HomeUserCubit.get(context)
                       .updateLessonCompletionStatus(
                     idlesson: widget.idLesson,
                     idSection: widget.idSection,
-                    score: (widget.score / widget.totalQuestions * 100).toInt(),
+                    score: widget.scorePercentage.toInt(),
                   )
                       .then((value) async {
                     widget.onQuizCompleted();

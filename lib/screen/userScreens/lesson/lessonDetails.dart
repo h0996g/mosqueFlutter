@@ -357,8 +357,6 @@ class _PlayListState extends State<PlayList> {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.lesson.length);
-    // var isThisSection = isSameSection(widget.idSection);
     return BlocListener<HomeUserCubit, HomeUserState>(
       listener: (context, state) {
         if (state is UpdateLessonCompletionStateGood) {
@@ -404,8 +402,7 @@ class _PlayListState extends State<PlayList> {
                           sectionId: widget.idSection,
                           lessonId: widget.lesson[index].id!,
                           onQuizCompleted: (int score) async {
-                            if (score / widget.lesson[index].quize!.length >=
-                                0.5) {
+                            if (score >= 0.5) {
                               this.index = index;
                             }
                           },

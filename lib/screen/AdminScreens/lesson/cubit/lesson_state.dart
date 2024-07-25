@@ -83,3 +83,9 @@ final class CreateSectionGood extends LessonAdminState {}
 final class CreateSectionBad extends LessonAdminState {}
 
 final class ResetImageSectionState extends LessonAdminState {}
+
+final class CreateLessonLoading extends LessonAdminState {}
+
+final class CreateLessonGood extends LessonAdminState {}
+
+final class CreateLessonBad extends LessonAdminState {}

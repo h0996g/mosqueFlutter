@@ -82,8 +82,7 @@ class _QuizScreenState extends State<QuizScreen> {
           builder: (_) => ResultScreen(
             idLesson: widget.lessonId,
             idSection: widget.sectionId,
-            score: score,
-            totalQuestions: quiz.length,
+            scorePercentage: (score / quiz.length) * 100,
             onQuizCompleted: () {
               widget.onQuizCompleted(score);
             },
@@ -99,32 +98,29 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
         backgroundColor: Colors.black,
-        title: const Text(
-          'Quiz',
-          style: TextStyle(color: Colors.white),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          backgroundColor: Colors.black,
+          title: const Text(
+            'Quiz',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
-      ),
-      body: BlocConsumer<LessonCubit, LessonState>(
-        listener: (context, state) {
+        body:
+            BlocConsumer<LessonCubit, LessonState>(listener: (context, state) {
           if (state is GetQuizGood) {
             quiz = state.quiz;
-            // question = quiz[questionIndex];
-            //  questionIndex == quiz.length - 1 = questionIndex == quiz.length - 1;
           }
-        },
-        builder: (context, state) {
+        }, builder: (context, state) {
           if (state is GetQuizLoading) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -133,82 +129,87 @@ class _QuizScreenState extends State<QuizScreen> {
             return const Center(
               child: Text('Error loading quiz'),
             );
-          } else if (state is GetQuizGood) {
-            return Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    quiz[questionIndex].question!,
-                    style: const TextStyle(
-                      fontSize: 21,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Time remaining: $remainingSeconds seconds',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: quiz[questionIndex].options!.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: selectedAnswerIndex == null
-                            ? () => pickAnswer(index)
-                            : null,
-                        child: AnswerCard(
-                          currentIndex: index,
-                          question: quiz[questionIndex].options![index],
-                          isSelected: selectedAnswerIndex == index,
-                          selectedAnswerIndex: selectedAnswerIndex,
-                          correctAnswerIndex:
-                              quiz[questionIndex].correctAnswerIndex!,
-                        ),
-                      );
-                    },
-                  ),
-                  // Next Button
-                  questionIndex == quiz.length - 1
-                      ? RectangularButton(
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (_) => ResultScreen(
-                                  idLesson: widget.lessonId,
-                                  idSection: widget.sectionId,
-                                  score: score,
-                                  totalQuestions: quiz.length,
-                                  onQuizCompleted: () {
-                                    widget.onQuizCompleted(score);
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                          label: 'Finish',
-                        )
-                      : RectangularButton(
-                          onPressed: selectedAnswerIndex != null
-                              ? goToNextQuestion
-                              : null,
-                          label: 'Next',
-                        ),
-                ],
-              ),
-            );
           } else {
-            return const Center(
-              child: Text('Error loading quiz'),
-            );
+            if (quiz.isEmpty) {
+              return ResultScreen(
+                idLesson: widget.lessonId,
+                idSection: widget.sectionId,
+                scorePercentage: (score / quiz.length) * 100,
+                onQuizCompleted: () {
+                  widget.onQuizCompleted(score);
+                },
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      quiz[questionIndex].question!,
+                      style: const TextStyle(
+                        fontSize: 21,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      'Time remaining: $remainingSeconds seconds',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: quiz[questionIndex].options!.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: selectedAnswerIndex == null
+                              ? () => pickAnswer(index)
+                              : null,
+                          child: AnswerCard(
+                            currentIndex: index,
+                            question: quiz[questionIndex].options![index],
+                            isSelected: selectedAnswerIndex == index,
+                            selectedAnswerIndex: selectedAnswerIndex,
+                            correctAnswerIndex:
+                                quiz[questionIndex].correctAnswerIndex!,
+                          ),
+                        );
+                      },
+                    ),
+                    // Next Button
+                    questionIndex == quiz.length - 1
+                        ? RectangularButton(
+                            onPressed: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (_) => ResultScreen(
+                                    idLesson: widget.lessonId,
+                                    idSection: widget.sectionId,
+                                    scorePercentage:
+                                        (score / quiz.length) * 100,
+                                    onQuizCompleted: () {
+                                      widget.onQuizCompleted(score);
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                            label: 'Finish',
+                          )
+                        : RectangularButton(
+                            onPressed: selectedAnswerIndex != null
+                                ? goToNextQuestion
+                                : null,
+                            label: 'Next',
+                          ),
+                  ],
+                ),
+              );
+            }
           }
-        },
-      ),
-    );
+        }));
   }
 }

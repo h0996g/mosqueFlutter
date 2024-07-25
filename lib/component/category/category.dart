@@ -123,33 +123,6 @@ class _CategoryListState extends State<CategoryList> {
       },
     );
   }
-
-  // void _showDeleteConfirmDialog(BuildContext context, String sectionId) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: const Text("Confirm Deletion"),
-  //         content: const Text("Are you sure you want to delete this lesson?"),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () => Navigator.pop(context),
-  //             child: const Text("Cancel"),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.pop(context);
-  //               // Call delete function here
-  //               showPasswordVerificationDialog(context, sectionId);
-  //               print('Deleting lesson with id $sectionId');
-  //             },
-  //             child: const Text("Delete"),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 }
 
 class ShimmerCategoryCard extends StatelessWidget {

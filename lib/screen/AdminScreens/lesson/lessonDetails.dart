@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/component/category/cubit/category_cubit.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/component/dialog.dart';
@@ -54,10 +55,7 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
 
   late YoutubePlayerController _controller;
   late YoutubePlayer player;
-  @override
-  void initState() {
-    super.initState();
-    lessonAdminCubit = LessonAdminCubit.get(context);
+  void _whenStartScreen() {
     lessonAdminCubit?.getSectionById(id: widget.idSection).then((value) {
       _controller = YoutubePlayerController(
         initialVideoId:
@@ -89,9 +87,15 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    lessonAdminCubit = LessonAdminCubit.get(context);
+    _whenStartScreen();
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
-
     super.dispose();
   }
 
@@ -101,39 +105,16 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
       listener: (context, state) async {
         if (state is GetSectionByIdStateGood) {
           model = state.model;
+        } else if (state is CreateLessonGood) {
+          _whenStartScreen();
+          CategoryCubit.get(context).getAllSection();
         }
       },
       builder: (context, state) {
-        if (state is GetSectionByIdLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is GetSectionByIdStateBad) {
-          return const Center(
-            child: Text('Error'),
-          );
-        } else if (state is GetSectionByIdStateGood &&
-            state.model.lessonObjects!.isEmpty) {
-          return AddNewLessonPage();
-        }
-        {
-          return YoutubePlayerBuilder(
-            player: player,
-            builder: (context, player) {
-              return Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  backgroundColor: Colors.white,
-                  onPressed: () {
-                    navigatAndReturn(
-                        context: context, page: AddNewLessonPage());
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.grey,
-                  ),
-                ),
-                appBar: AppBar(
-                    leading: IconButton(
+        if (state is GetSectionByIdLoading || state is CreateLessonLoading) {
+          return Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -141,105 +122,147 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
                     Icons.arrow_back_ios,
                     color: Colors.black,
                   ),
-                )),
-                body: SingleChildScrollView(
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10),
-                      child: Column(
-                        children: <Widget>[
-                          // some widgets
-                          player,
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            model?.name ?? '',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            model
-                                    ?.lessonObjects![
-                                        LessonAdminCubit.get(context)
-                                            .indexLesson]
-                                    .description ??
-                                '',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.timer,
-                                color: Colors.grey,
-                              ),
-                              Text(
-                                '  ${model?.lessonObjects![LessonAdminCubit.get(context).indexLesson].duration} ',
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
+                ),
+              ),
+              body: const Center(
+                child: CircularProgressIndicator(),
+              ));
+        } else if (state is GetSectionByIdStateBad) {
+          return const Center(
+            child: Text('Error'),
+          );
+        } else if (state is GetSectionByIdStateGood &&
+            state.model.lessonObjects!.isEmpty) {
+          return AddNewLessonPage(
+            sectionId: state.model.id!,
+          );
+        }
 
-                          const SizedBox(
-                            height: 15,
+        return YoutubePlayerBuilder(
+          player: player,
+          builder: (context, player) {
+            return Scaffold(
+              floatingActionButton: FloatingActionButton(
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  navigatAndReturn(
+                      context: context,
+                      page: AddNewLessonPage(
+                        sectionId: model!.id!,
+                      ));
+                },
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.grey,
+                ),
+              ),
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              body: SingleChildScrollView(
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10),
+                    child: Column(
+                      children: <Widget>[
+                        // some widgets
+                        player,
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          model?.name ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
                           ),
-                          CustomTabView(
-                            numberOfLessons: model?.lessonObjects!.length ?? 0,
-                            index: _selectedTag,
-                            changeTab: changeTab,
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          model
+                                  ?.lessonObjects![
+                                      LessonAdminCubit.get(context).indexLesson]
+                                  .description ??
+                              '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
-                          _selectedTag == 0
-                              ? PlayList(
-                                  // indexLesson: !,
-                                  controller: _controller,
-                                  lesson: model?.lessonObjects! ?? [],
-                                  idSection: widget.idSection,
-                                )
-                              : MorInfo(
-                                  lessonId: model
-                                          ?.lessonObjects![
-                                              LessonAdminCubit.get(context)
-                                                  .indexLesson]
-                                          .id ??
-                                      '',
-                                  pdfUrl: model
-                                          ?.lessonObjects![
-                                              LessonAdminCubit.get(context)
-                                                  .indexLesson]
-                                          .suplemmentPdf ??
-                                      '',
-                                  description: model
-                                          ?.lessonObjects![
-                                              LessonAdminCubit.get(context)
-                                                  .indexLesson]
-                                          .description ??
-                                      '',
-                                ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.timer,
+                              color: Colors.grey,
+                            ),
+                            Text(
+                              '  ${model?.lessonObjects![LessonAdminCubit.get(context).indexLesson].duration} ',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        CustomTabView(
+                          numberOfLessons: model?.lessonObjects!.length ?? 0,
+                          index: _selectedTag,
+                          changeTab: changeTab,
+                        ),
+                        _selectedTag == 0
+                            ? PlayList(
+                                // indexLesson: !,
+                                controller: _controller,
+                                lesson: model?.lessonObjects! ?? [],
+                                idSection: widget.idSection,
+                              )
+                            : MorInfo(
+                                lessonId: model
+                                        ?.lessonObjects![
+                                            LessonAdminCubit.get(context)
+                                                .indexLesson]
+                                        .id ??
+                                    '',
+                                pdfUrl: model
+                                        ?.lessonObjects![
+                                            LessonAdminCubit.get(context)
+                                                .indexLesson]
+                                        .suplemmentPdf ??
+                                    '',
+                                description: model
+                                        ?.lessonObjects![
+                                            LessonAdminCubit.get(context)
+                                                .indexLesson]
+                                        .description ??
+                                    '',
+                              ),
+                      ],
                     ),
                   ),
                 ),
-              );
-            },
-          );
-        }
+              ),
+            );
+          },
+        );
       },
     );
   }
@@ -434,14 +457,6 @@ class _PlayListState extends State<PlayList> {
           },
         );
       },
-    );
-  }
-
-  void _showQuizEditor(BuildContext context, Lesson lesson) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => QuizEditorScreen(lessonId: lesson.id!),
-      ),
     );
   }
 }
