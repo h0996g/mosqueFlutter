@@ -112,7 +112,11 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
           return const Center(
             child: Text('Error'),
           );
-        } else {
+        } else if (state is GetSectionByIdStateGood &&
+            state.model.lessonObjects!.isEmpty) {
+          return AddNewLessonPage();
+        }
+        {
           return YoutubePlayerBuilder(
             player: player,
             builder: (context, player) {

@@ -28,13 +28,18 @@ class SectionModel {
     List<String>? lessonIds;
 
     if (json['lesson'] is List) {
-      if (json['lesson'].isNotEmpty &&
-          json['lesson'][0] is Map<String, dynamic>) {
-        lessonObjects = (json['lesson'] as List)
-            .map((lessonJson) => Lesson.fromJson(lessonJson))
-            .toList();
-      } else if (json['lesson'].isNotEmpty && json['lesson'][0] is String) {
-        lessonIds = json['lesson'].cast<String>();
+      if (json['lesson'].isNotEmpty) {
+        if (json['lesson'][0] is Map<String, dynamic>) {
+          lessonObjects = (json['lesson'] as List)
+              .map((lessonJson) => Lesson.fromJson(lessonJson))
+              .toList();
+        } else if (json['lesson'][0] is String) {
+          lessonIds = json['lesson'].cast<String>();
+        }
+      } else {
+        // Handle the case where lesson is an empty list
+        lessonObjects = [];
+        lessonIds = [];
       }
     }
 

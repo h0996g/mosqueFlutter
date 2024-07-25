@@ -75,3 +75,11 @@ final class ImagePickerSectionStateGood extends LessonAdminState {}
 final class ImagePickerSectionStateBad extends LessonAdminState {}
 
 final class UploadSectionImgAndGetUrlStateBad extends LessonAdminState {}
+
+final class CreateSectionLoading extends LessonAdminState {}
+
+final class CreateSectionGood extends LessonAdminState {}
+
+final class CreateSectionBad extends LessonAdminState {}
+
+final class ResetImageSectionState extends LessonAdminState {}

@@ -35,6 +35,11 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         SectionModel sectionModel = SectionModel.fromJson(jsonResponse);
+        if (sectionModel.lessonObjects!.isEmpty) {
+          emit(GetSectionByIdStateGood(model: sectionModel));
+          return;
+        }
+
         indexLesson = CachHelper.getData(key: '${sectionModel.id!}admin') ?? 0;
         urlVideo = getYoutubeVideoId(
             sectionModel.lessonObjects![indexLesson].urlVideo ?? '');
@@ -49,6 +54,7 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
         emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
+      print(e.toString());
       emit(GetSectionByIdStateBad());
     });
   }
@@ -192,6 +198,7 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
   void resetImageSection() {
     imageCompress = null;
     linkProfileImg = null;
+    emit(ResetImageSectionState());
   }
 
   File? imageCompress;
@@ -241,5 +248,27 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
         print('Failed to delete old image: $error');
       });
     }
+  }
+
+  Future<void> createSection({required Map<String, dynamic> data}) async {
+    emit(CreateSectionLoading());
+    if (imageCompress != null) {
+      await updateSectionImg(deleteOldImage: null);
+    }
+    if (linkProfileImg != null) {
+      data['photo'] = linkProfileImg;
+    }
+    Httplar.httpPost(path: CREATESECTION, data: data).then((value) {
+      if (value.statusCode == 201) {
+        emit(CreateSectionGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
+      }
+    }).catchError((e) {
+      emit(CreateSectionBad());
+    });
   }
 }

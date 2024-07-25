@@ -5,7 +5,7 @@ import 'package:mosque/component/appbar.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/const/colors.dart';
-import 'package:mosque/screen/AdminScreens/lesson/addSection.dart';
+import 'package:mosque/screen/AdminScreens/lesson/add_section.dart';
 import 'package:mosque/screen/AdminScreens/profile/profile.dart';
 
 import '../../../component/category/category.dart';
@@ -176,12 +176,9 @@ class _HomeAdminState extends State<HomeAdmin> {
                     ],
                   ),
 
-                  //now we create model of our images and colors which we will use in our app
                   const SizedBox(
                     height: 20,
                   ),
-                  //we can not use gridview inside column
-                  //use shrinkwrap and physical scroll
 
                   const CategoryList(
                     isAdmin: true,

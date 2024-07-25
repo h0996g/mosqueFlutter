@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/AdminScreens/lesson/edite_section.dart';
 import 'package:mosque/screen/AdminScreens/lesson/lessonDetails.dart';
 import 'package:mosque/screen/userScreens/lesson/lessonDetails.dart';
@@ -113,7 +114,7 @@ class _CategoryListState extends State<CategoryList> {
                 title: const Text("Delete"),
                 onTap: () {
                   Navigator.pop(context);
-                  _showDeleteConfirmDialog(context, sectionModel.id!);
+                  showDeleteDialog(context, sectionModel);
                 },
               ),
             ],
@@ -123,31 +124,32 @@ class _CategoryListState extends State<CategoryList> {
     );
   }
 
-  void _showDeleteConfirmDialog(BuildContext context, String sectionId) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Confirm Deletion"),
-          content: const Text("Are you sure you want to delete this lesson?"),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                // Call delete function here
-                print('Deleting lesson with id $sectionId');
-              },
-              child: const Text("Delete"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showDeleteConfirmDialog(BuildContext context, String sectionId) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: const Text("Confirm Deletion"),
+  //         content: const Text("Are you sure you want to delete this lesson?"),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: const Text("Cancel"),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //               // Call delete function here
+  //               showPasswordVerificationDialog(context, sectionId);
+  //               print('Deleting lesson with id $sectionId');
+  //             },
+  //             child: const Text("Delete"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }
 
 class ShimmerCategoryCard extends StatelessWidget {
