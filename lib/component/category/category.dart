@@ -257,10 +257,17 @@ class CategoryCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(15.0),
                 ),
-                child: Image.network(
-                  sectionModel.photo ?? '',
-                  fit: BoxFit.cover,
-                ),
+                child: sectionModel.photo != null
+                    ? Image.network(
+                        sectionModel.photo ?? '',
+                        fit: BoxFit.cover,
+                      )
+                    : const Center(
+                        child: const Text(
+                          'No photo available',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
               ),
             ),
             Padding(

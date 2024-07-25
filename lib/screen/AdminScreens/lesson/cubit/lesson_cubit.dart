@@ -30,7 +30,6 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
   // SectionModel? sectionModel;
   Future<void> getSectionById({required String id}) async {
     emit(GetSectionByIdLoading());
-    print(id);
     await Httplar.httpget(path: GETSECTIONBYID + id).then((value) async {
       if (value.statusCode == 200) {
         var jsonResponse =
@@ -46,11 +45,10 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       } else if (value.statusCode == 401) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
-        emit(ErrorState(model: error_model));
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
-      print(e.toString());
       emit(GetSectionByIdStateBad());
     });
   }
@@ -78,12 +76,10 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
-        print(jsonResponse);
-        emit(ErrorState(model: error_model));
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
-      print(e.toString());
       emit(AddCommentToLessonStateBad());
     });
   }
@@ -100,11 +96,10 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
-        emit(ErrorState(model: error_model));
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
-      print(e.toString());
       emit(GetCommentsBad());
     });
   }
@@ -120,11 +115,10 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
-        emit(ErrorState(model: error_model));
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
-      print(e.toString());
       emit(GetQuizBad());
     });
   }
@@ -140,11 +134,10 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
-        emit(ErrorState(model: error_model));
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
-      print(e.toString());
       emit(DeleteCommentBad());
     });
   }
@@ -163,7 +156,6 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
         emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
-      print(e.toString());
       emit(UpdateQuizBad());
     });
   }
@@ -193,7 +185,6 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
         emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
-      print(e.toString());
       emit(UpdateSectionBad());
     });
   }
@@ -205,8 +196,8 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
 
   File? imageCompress;
   Future<void> imagePickerSection(ImageSource source) async {
-    final ImagePicker _pickerProfile = ImagePicker();
-    await _pickerProfile.pickImage(source: source).then((value) async {
+    final ImagePicker pickerPhoto = ImagePicker();
+    await pickerPhoto.pickImage(source: source).then((value) async {
       // imageProfile = value;
       await FlutterImageCompress.compressAndGetFile(
         File(value!.path).absolute.path,
@@ -232,7 +223,6 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
         .then((p0) async {
       await p0.ref.getDownloadURL().then((value) {
         linkProfileImg = value;
-        print(linkProfileImg);
         // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
       }).catchError((e) {
         emit(UploadSectionImgAndGetUrlStateBad());
