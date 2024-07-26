@@ -31,6 +31,7 @@ const UPDATELESSON = '/api/lesson/';
 const UPDATESECTION = 'api/section/';
 const CREATESECTION = '/api/section';
 const CREATELESSON = '/api/lesson';
+const DELETELESSON = '/api/lesson/';
 
 const Loginadmin = '/api/admin/login';
 const getJouerById = '/api/user/';

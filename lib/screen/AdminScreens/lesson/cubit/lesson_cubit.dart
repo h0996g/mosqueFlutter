@@ -287,4 +287,20 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       emit(CreateLessonBad());
     });
   }
+
+  Future<void> deleteLesson({required String lessonID}) async {
+    emit(DeleteLessonLoading());
+    await Httplar.httpdelete(path: DELETELESSON + lessonID).then((value) {
+      if (value.statusCode == 204) {
+        emit(DeleteLessonGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
+      }
+    }).catchError((e) {
+      emit(DeleteLessonBad());
+    });
+  }
 }

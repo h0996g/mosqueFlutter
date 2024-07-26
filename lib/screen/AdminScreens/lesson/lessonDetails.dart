@@ -108,10 +108,16 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
         } else if (state is CreateLessonGood) {
           _whenStartScreen();
           CategoryCubit.get(context).getAllSection();
+        } else if (state is DeleteLessonGood) {
+          CachHelper.removdata(key: '${widget.idSection}admin');
+          _whenStartScreen();
+          CategoryCubit.get(context).getAllSection();
         }
       },
       builder: (context, state) {
-        if (state is GetSectionByIdLoading || state is CreateLessonLoading) {
+        if (state is GetSectionByIdLoading ||
+            state is CreateLessonLoading ||
+            state is DeleteLessonLoading) {
           return Scaffold(
               appBar: AppBar(
                 leading: IconButton(
@@ -449,6 +455,7 @@ class _PlayListState extends State<PlayList> {
           content: 'Are you sure you want to delete this lesson?',
           onConfirm: () {
             Navigator.of(context).pop();
+            LessonAdminCubit.get(context).deleteLesson(lessonID: lesson.id!);
             // Implement the actual delete functionality here
             print('Deleting lesson: ${lesson.id}');
           },
