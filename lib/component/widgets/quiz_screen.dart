@@ -134,7 +134,7 @@ class _QuizScreenState extends State<QuizScreen> {
               return ResultScreen(
                 idLesson: widget.lessonId,
                 idSection: widget.sectionId,
-                scorePercentage: (score / quiz.length) * 100,
+                scorePercentage: 100,
                 onQuizCompleted: () {
                   widget.onQuizCompleted(score);
                 },
