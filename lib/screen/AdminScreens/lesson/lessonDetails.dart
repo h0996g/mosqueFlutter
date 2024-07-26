@@ -105,7 +105,7 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
       listener: (context, state) async {
         if (state is GetSectionByIdStateGood) {
           model = state.model;
-        } else if (state is CreateLessonGood) {
+        } else if (state is CreateLessonGood || state is UpdateLessonGood) {
           _whenStartScreen();
           CategoryCubit.get(context).getAllSection();
         } else if (state is DeleteLessonGood) {

@@ -148,6 +148,24 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
     });
   }
 
+  Future<void> updateLesson(
+      {required String lessonId, required Map<String, dynamic> data}) async {
+    emit(UpdateLessonLoading());
+    await Httplar.httpPut(path: UPDATELESSON + lessonId, data: data)
+        .then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateLessonGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
+      }
+    }).catchError((e) {
+      emit(UpdateLessonBad());
+    });
+  }
+
   Future<void> updateQuiz(
       {required String lessonId, required List<Quiz> quiz}) async {
     emit(UpdateQuizLoading());

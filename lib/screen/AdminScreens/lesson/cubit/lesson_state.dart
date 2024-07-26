@@ -95,3 +95,9 @@ final class DeleteLessonLoading extends LessonAdminState {}
 final class DeleteLessonGood extends LessonAdminState {}
 
 final class DeleteLessonBad extends LessonAdminState {}
+
+final class UpdateLessonLoading extends LessonAdminState {}
+
+final class UpdateLessonGood extends LessonAdminState {}
+
+final class UpdateLessonBad extends LessonAdminState {}
