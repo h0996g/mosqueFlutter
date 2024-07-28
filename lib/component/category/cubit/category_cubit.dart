@@ -30,11 +30,32 @@ class CategoryCubit extends Cubit<CategoryState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         ErrorModel error_model = ErrorModel.fromJson(jsonResponse);
-        emit(ErrorState(model: error_model));
+        emit(ErrorCategoryState(model: error_model));
       }
     }).catchError((e) {
       print(e.toString());
       emit(GetAllSectionStateBad());
+    });
+  }
+
+  Future<void> deleteSection(
+      {required String sectionId, required String mot_de_passe}) async {
+    emit(DeleteSectionLoading());
+    await Httplar.httpPost(
+        path: DELETESECTION + sectionId,
+        data: {"mot_de_passe": mot_de_passe}).then((value) {
+      if (value.statusCode == 204) {
+        emit(DeleteSectionGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorCategoryState(model: errorModel));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteSectionBad());
     });
   }
 }

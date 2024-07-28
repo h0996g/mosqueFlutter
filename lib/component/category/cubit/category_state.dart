@@ -5,9 +5,9 @@ sealed class CategoryState {}
 
 final class CategoryInitial extends CategoryState {}
 
-final class ErrorState extends CategoryState {
+final class ErrorCategoryState extends CategoryState {
   final ErrorModel model;
-  ErrorState({required this.model});
+  ErrorCategoryState({required this.model});
 }
 
 final class GetAllSectionLoading extends CategoryState {}
@@ -19,3 +19,9 @@ final class GetAllSectionStateGood extends CategoryState {
 }
 
 final class GetAllSectionStateBad extends CategoryState {}
+
+final class DeleteSectionLoading extends CategoryState {}
+
+final class DeleteSectionGood extends CategoryState {}
+
+final class DeleteSectionBad extends CategoryState {}

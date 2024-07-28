@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/AdminScreens/lesson/edite_section.dart';
 import 'package:mosque/screen/AdminScreens/lesson/lessonDetails.dart';
 import 'package:mosque/screen/userScreens/lesson/lessonDetails.dart';
@@ -10,7 +11,6 @@ import 'package:shimmer/shimmer.dart';
 
 class CategoryList extends StatefulWidget {
   final bool isAdmin;
-
   const CategoryList({
     super.key,
     required this.isAdmin,
@@ -22,6 +22,7 @@ class CategoryList extends StatefulWidget {
 
 class _CategoryListState extends State<CategoryList> {
   CategoryCubit? categoryCubit;
+  List<SectionModel> model = [];
 
   @override
   void initState() {
@@ -34,9 +35,25 @@ class _CategoryListState extends State<CategoryList> {
   Widget build(BuildContext context) {
     return BlocConsumer<CategoryCubit, CategoryState>(
       listener: (context, state) {
-        // TODO: implement listener
+        if (state is GetAllSectionStateGood) {
+          model = state.model;
+        } else if (state is DeleteSectionGood) {
+          CategoryCubit.get(context).getAllSection();
+          showToast(
+              msg: 'Section created successfully', state: ToastStates.success);
+        } else if (state is DeleteSectionBad) {
+          showToast(msg: 'Failed to create Delete', state: ToastStates.error);
+        } else if (state is ErrorCategoryState) {
+          showToast(
+              msg: state.model.message ?? 'error', state: ToastStates.error);
+        }
       },
       builder: (context, state) {
+        if (state is DeleteSectionLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         if (state is GetAllSectionLoading) {
           return GridView.builder(
             shrinkWrap: true,
@@ -51,12 +68,11 @@ class _CategoryListState extends State<CategoryList> {
             ),
             itemBuilder: (context, index) => const ShimmerCategoryCard(),
           );
-        }
-        if (state is GetAllSectionStateGood) {
+        } else {
           return GridView.builder(
             shrinkWrap: true,
             physics: const ScrollPhysics(),
-            itemCount: state.model.length,
+            itemCount: model.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: MediaQuery.of(context).size.width /
@@ -66,18 +82,14 @@ class _CategoryListState extends State<CategoryList> {
             ),
             itemBuilder: (context, index) => GestureDetector(
               onLongPress: widget.isAdmin
-                  ? () => _showOptionsDialog(context, state.model[index])
+                  ? () => _showOptionsDialog(context, model[index])
                   : null,
               child: CategoryCard(
                 isAdmin: widget.isAdmin,
-                sectionModel: state.model[index],
-                idSection: state.model[index].id!,
+                sectionModel: model[index],
+                idSection: model[index].id!,
               ),
             ),
-          );
-        } else {
-          return const Center(
-            child: Text('Error'),
           );
         }
       },
@@ -88,37 +100,47 @@ class _CategoryListState extends State<CategoryList> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text("Choose an option"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.edit),
-                title: const Text("Edit"),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditSectionPage(
-                        section:
-                            sectionModel, // pass the relevant sectionModel here
-                      ),
-                    ),
-                  );
-                },
+        return BlocConsumer<LessonAdminCubit, LessonAdminState>(
+          listener: (BuildContext context, LessonAdminState state) {},
+          builder: (context, state) {
+            if (state is DeleteSectionLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return AlertDialog(
+              title: const Text("Choose an option"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.edit),
+                    title: const Text("Edit"),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditSectionPage(
+                            section:
+                                sectionModel, // pass the relevant sectionModel here
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.delete),
+                    title: const Text("Delete"),
+                    onTap: () {
+                      Navigator.pop(context);
+                      showDeleteDialog(context, sectionModel);
+                    },
+                  ),
+                ],
               ),
-              ListTile(
-                leading: const Icon(Icons.delete),
-                title: const Text("Delete"),
-                onTap: () {
-                  Navigator.pop(context);
-                  showDeleteDialog(context, sectionModel);
-                },
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

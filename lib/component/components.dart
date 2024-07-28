@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mosque/component/category/cubit/category_cubit.dart';
 import 'package:mosque/component/dialog.dart';
 import 'package:mosque/model/section_model.dart';
 
@@ -243,6 +244,10 @@ void showPasswordVerificationDialog(
         onVerify: (password) {
           // Here you should implement the actual password verification
           // For now, we'll just print the password and call the delete function
+
+          CategoryCubit.get(context)
+              .deleteSection(sectionId: section.id!, mot_de_passe: password);
+
           print('Password entered: $password');
 
           // If password is correct, call the delete function
