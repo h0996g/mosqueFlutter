@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mosque/component/category/cubit/category_cubit.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/model/section_model.dart';
-import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 
 class EditSectionPage extends StatefulWidget {
   final SectionModel section;
@@ -22,12 +21,12 @@ class _EditSectionPageState extends State<EditSectionPage> {
   String? _photoUrl;
   String?
       _oldFirstPhotoUrl; // hadi awel photo kima nkon dkholt lel page bah kima neteka 3la icon remove yb9a url mkhabi hna wna7ih mn firebase
-  LessonAdminCubit? _cubit;
+  CategoryCubit? _cubit;
 
   @override
   void initState() {
     super.initState();
-    _cubit = LessonAdminCubit.get(context);
+    _cubit = CategoryCubit.get(context);
     _nameController.text = widget.section.name ?? '';
     _descriptionController.text = widget.section.description ?? '';
     _photoUrl = widget.section.photo;
@@ -49,7 +48,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
         'description': _descriptionController.text,
         'photo': _photoUrl,
       };
-      LessonAdminCubit.get(context).updateSection(
+      CategoryCubit.get(context).updateSection(
           data: updatedSection,
           sectionId: widget.section.id!,
           deleteOldImage: _oldFirstPhotoUrl);
@@ -75,7 +74,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          if (LessonAdminCubit.get(context).state is! UpdateSectionLoading) {
+          if (CategoryCubit.get(context).state is! UpdateSectionLoading) {
             Navigator.pop(context);
           }
         }
@@ -84,8 +83,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              if (LessonAdminCubit.get(context).state
-                  is! UpdateSectionLoading) {
+              if (CategoryCubit.get(context).state is! UpdateSectionLoading) {
                 Navigator.pop(context);
               }
             },
@@ -102,7 +100,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
               vertical: verticalPadding, horizontal: horizontalPadding),
-          child: BlocConsumer<LessonAdminCubit, LessonAdminState>(
+          child: BlocConsumer<CategoryCubit, CategoryState>(
             listener: (context, state) {
               if (state is UpdateSectionGood) {
                 CategoryCubit.get(context).getAllSection();

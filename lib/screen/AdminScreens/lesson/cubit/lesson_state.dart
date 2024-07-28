@@ -64,26 +64,6 @@ final class UpdateQuizGood extends LessonAdminState {}
 
 final class UpdateQuizBad extends LessonAdminState {}
 
-final class UpdateSectionLoading extends LessonAdminState {}
-
-final class UpdateSectionGood extends LessonAdminState {}
-
-final class UpdateSectionBad extends LessonAdminState {}
-
-final class ImagePickerSectionStateGood extends LessonAdminState {}
-
-final class ImagePickerSectionStateBad extends LessonAdminState {}
-
-final class UploadSectionImgAndGetUrlStateBad extends LessonAdminState {}
-
-final class CreateSectionLoading extends LessonAdminState {}
-
-final class CreateSectionGood extends LessonAdminState {}
-
-final class CreateSectionBad extends LessonAdminState {}
-
-final class ResetImageSectionState extends LessonAdminState {}
-
 final class CreateLessonLoading extends LessonAdminState {}
 
 final class CreateLessonGood extends LessonAdminState {}

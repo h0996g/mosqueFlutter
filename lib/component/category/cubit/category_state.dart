@@ -25,3 +25,23 @@ final class DeleteSectionLoading extends CategoryState {}
 final class DeleteSectionGood extends CategoryState {}
 
 final class DeleteSectionBad extends CategoryState {}
+
+final class ImagePickerSectionStateGood extends CategoryState {}
+
+final class ImagePickerSectionStateBad extends CategoryState {}
+
+final class UploadSectionImgAndGetUrlStateBad extends CategoryState {}
+
+final class UpdateSectionLoading extends CategoryState {}
+
+final class UpdateSectionGood extends CategoryState {}
+
+final class UpdateSectionBad extends CategoryState {}
+
+final class CreateSectionLoading extends CategoryState {}
+
+final class CreateSectionGood extends CategoryState {}
+
+final class CreateSectionBad extends CategoryState {}
+
+final class ResetImageSectionState extends CategoryState {}

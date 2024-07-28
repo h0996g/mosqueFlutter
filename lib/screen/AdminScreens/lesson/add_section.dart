@@ -4,7 +4,6 @@ import 'package:mosque/component/category/cubit/category_cubit.dart';
 import 'package:mosque/component/components.dart';
 import 'package:flutter/material.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
-import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 
 class AddSectionScreen extends StatefulWidget {
   const AddSectionScreen({super.key});
@@ -18,10 +17,10 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   // String? _photoUrl;
-  LessonAdminCubit? _cubit;
+  CategoryCubit? _cubit;
   @override
   void initState() {
-    _cubit = LessonAdminCubit.get(context);
+    _cubit = CategoryCubit.get(context);
     super.initState();
   }
 
@@ -60,7 +59,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          if (LessonAdminCubit.get(context).state is! CreateSectionLoading) {
+          if (CategoryCubit.get(context).state is! CreateSectionLoading) {
             Navigator.pop(context);
           }
         }
@@ -69,7 +68,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
         appBar: AppBar(
             leading: IconButton(
           onPressed: () {
-            if (LessonAdminCubit.get(context).state is! CreateSectionLoading) {
+            if (CategoryCubit.get(context).state is! CreateSectionLoading) {
               Navigator.pop(context);
             }
           },
@@ -83,7 +82,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
               vertical: verticalPadding, horizontal: horizontalPadding),
           child: Form(
             key: _formKey,
-            child: BlocConsumer<LessonAdminCubit, LessonAdminState>(
+            child: BlocConsumer<CategoryCubit, CategoryState>(
               listener: (context, state) {
                 if (state is CreateSectionGood) {
                   CategoryCubit.get(context).getAllSection();
