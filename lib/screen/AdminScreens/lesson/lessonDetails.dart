@@ -141,6 +141,7 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
             state.model.lessonObjects!.isEmpty) {
           return AddNewLessonPage(
             sectionId: state.model.id!,
+            isNavigate: false,
           );
         }
 
@@ -155,6 +156,7 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
                       context: context,
                       page: AddNewLessonPage(
                         sectionId: model!.id!,
+                        isNavigate: true,
                       ));
                 },
                 child: const Icon(

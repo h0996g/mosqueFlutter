@@ -81,3 +81,7 @@ final class UpdateLessonLoading extends LessonAdminState {}
 final class UpdateLessonGood extends LessonAdminState {}
 
 final class UpdateLessonBad extends LessonAdminState {}
+
+final class UploadPdfFileAndGetUrlStateBad extends LessonAdminState {}
+
+final class FilePdfPickerLessonStateBad extends LessonAdminState {}

@@ -1,35 +1,87 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 
-class AddNewLessonPage extends StatelessWidget {
+class AddNewLessonPage extends StatefulWidget {
   final String sectionId;
-  AddNewLessonPage({super.key, required this.sectionId});
+  final bool
+      isNavigate; // bh n3ref ida jit mn condition state or mn navigation bh ndir pop wla no
+  const AddNewLessonPage(
+      {super.key, required this.sectionId, required this.isNavigate});
+
+  @override
+  State<AddNewLessonPage> createState() => _AddNewLessonPageState();
+}
+
+class _AddNewLessonPageState extends State<AddNewLessonPage> {
+  late LessonAdminCubit _cubit;
+
+  File? pdfFile;
+
+  Future<void> pickPdfFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      pdfFile = File(result.files.single.path!);
+      print('PDF file selected: ${pdfFile!.path}');
+    } else {
+      // User canceled the picker
+      print('No file selected');
+    }
+  }
 
   final titleController = TextEditingController();
+
   final descriptionController = TextEditingController();
+
   final urlVideoController = TextEditingController();
+
   final durationController = TextEditingController();
-  final supplementPdfController = TextEditingController();
+
+  // final supplementPdfController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
+
   void _submitForm(context, LessonAdminCubit _cubit) {
     if (formKey.currentState!.validate()) {
       Map<String, dynamic> data = {
-        'section': sectionId,
+        'section': widget.sectionId,
         'title': titleController.text,
         'description': descriptionController.text,
         'urlVideo': urlVideoController.text,
         'duration': durationController.text,
-        'suplemmentPdf': supplementPdfController.text
+        // 'suplemmentPdf': supplementPdfController.text
       };
-      _cubit.createLesson(data: data);
+      _cubit.createLesson(data: data, pdfFile: pdfFile);
     }
   }
 
   @override
+  void initState() {
+    _cubit = LessonAdminCubit.get(context);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    urlVideoController.dispose();
+    durationController.dispose();
+    // supplementPdfController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _cubit = LessonAdminCubit.get(context);
     var screenSize = MediaQuery.of(context).size;
     var screenHeight = screenSize.height;
     var screenWidth = screenSize.width;
@@ -53,7 +105,9 @@ class AddNewLessonPage extends StatelessWidget {
         child: BlocConsumer<LessonAdminCubit, LessonAdminState>(
           listener: (context, state) {
             if (state is CreateLessonGood) {
-              Navigator.pop(context);
+              if (widget.isNavigate) {
+                Navigator.pop(context);
+              }
               showToast(
                   msg: 'Section created successfully',
                   state: ToastStates.success);
@@ -146,11 +200,13 @@ class AddNewLessonPage extends StatelessWidget {
                     labelText: "Duration",
                     textInputAction: TextInputAction.done,
                   ),
+                  if (pdfFile != null) Text(pdfFile!.path),
                   SizedBox(height: screenHeight * 0.02),
                   buildUploadButton(
                     icon: Icons.upload_file,
                     label: "Upload Supplement PDF",
                     onPressed: () {
+                      pickPdfFile();
                       // Implement photo upload logic
                       print('Uploading lesson PDF...');
                     },

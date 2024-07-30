@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mosque/Api/constApi.dart';
@@ -7,7 +9,8 @@ import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/error_model.dart';
 import 'package:mosque/model/section_model.dart';
 import 'dart:convert' as convert;
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as path;
 part 'lesson_state.dart';
 
 class LessonAdminCubit extends Cubit<LessonAdminState> {
@@ -142,6 +145,22 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
     });
   }
 
+  String? linkPdfFile;
+  Future<void> uploadPdfFile(File pdfFile) async {
+    String fileName = path.basename(pdfFile.path);
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('pdfs/$fileName')
+        .putFile(pdfFile)
+        .then((p0) async {
+      await p0.ref.getDownloadURL().then((value) {
+        linkPdfFile = value;
+      }).catchError((e) {
+        emit(UploadPdfFileAndGetUrlStateBad());
+      });
+    });
+  }
+
   Future<void> updateLesson(
       {required String lessonId, required Map<String, dynamic> data}) async {
     emit(UpdateLessonLoading());
@@ -178,8 +197,15 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
     });
   }
 
-  Future<void> createLesson({required Map<String, dynamic> data}) async {
+  Future<void> createLesson(
+      {required Map<String, dynamic> data, required File? pdfFile}) async {
     emit(CreateLessonLoading());
+    if (pdfFile != null) {
+      await uploadPdfFile(pdfFile);
+    }
+    if (linkPdfFile != null) {
+      data['suplemmentPdf'] = linkPdfFile;
+    }
     Httplar.httpPost(path: CREATELESSON, data: data).then((value) {
       if (value.statusCode == 201) {
         emit(CreateLessonGood());
@@ -209,4 +235,23 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       emit(DeleteLessonBad());
     });
   }
+
+  // File? pdfFile;
+
+  // Future<void> pickPdfFile() async {
+  //   await FilePicker.platform.pickFiles(
+  //     type: FileType.custom,
+  //     allowedExtensions: ['pdf'],
+  //   ).then((value) {
+  //     if (value != null && value.files.single.path != null) {
+  //       pdfFile = File(value.files.single.path!);
+  //       // emit(FilePdfPickerLessonStateGood());
+  //       print('PDF file selected: ${pdfFile!.path}');
+  //     } else {
+  //       print('No file selected');
+  //     }
+  //   }).catchError((e) {
+  //     emit(FilePdfPickerLessonStateBad());
+  //   });
+  // }
 }
