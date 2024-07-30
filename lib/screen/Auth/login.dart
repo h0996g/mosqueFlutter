@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
@@ -32,7 +33,7 @@ class Login extends StatelessWidget {
               children: [
                 SizedBox(height: screenHeight * 0.2),
                 Text(
-                  'Welcome back,',
+                  S.of(context).Welcome_back,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: screenHeight * 0.01),

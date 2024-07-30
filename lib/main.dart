@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/firebase_options.dart';
@@ -19,6 +20,8 @@ import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mosque/screen/welcome_screen.dart';
+
+import 'generated/l10n.dart';
 
 void main() async {
   Bloc.observer = MyBlocObserver();
@@ -81,7 +84,14 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        locale: const Locale('ar'),
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
         home: startwidget,
         theme: ThemeData(
           useMaterial3: true,
