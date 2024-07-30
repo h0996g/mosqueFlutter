@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
+import 'package:mosque/generated/l10n.dart';
 
 class QuizEditorScreen extends StatefulWidget {
   final String lessonId;
@@ -10,7 +11,6 @@ class QuizEditorScreen extends StatefulWidget {
   const QuizEditorScreen({super.key, required this.lessonId});
 
   @override
-  // ignore: library_private_types_in_public_api
   _QuizEditorScreenState createState() => _QuizEditorScreenState();
 }
 
@@ -31,7 +31,6 @@ class _QuizEditorScreenState extends State<QuizEditorScreen> {
         child: const Icon(Icons.add),
       ),
       appBar: AppBar(
-        // title: const Text('Quiz Editor'),
         leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -49,18 +48,22 @@ class _QuizEditorScreenState extends State<QuizEditorScreen> {
                   .updateQuiz(lessonId: widget.lessonId, quiz: quizQuestions)
                   .then((value) {
                 if (LessonAdminCubit.get(context).state is UpdateQuizGood) {
-                  print(quizQuestions.first.question);
                   showToast(
-                      msg: 'Quiz updated successfully',
+                      msg: S.of(context).quizUpdatedSuccessfully,
                       state: ToastStates.success);
                 } else {
                   showToast(
-                      msg: 'Error updating quiz', state: ToastStates.error);
+                      msg: S.of(context).errorUpdatingQuiz,
+                      state: ToastStates.error);
                 }
               });
             },
           ),
         ],
+        title: Text(
+          S.of(context).quizEditorTitle,
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: BlocConsumer<LessonAdminCubit, LessonAdminState>(
         listener: (context, state) {
@@ -128,12 +131,12 @@ class _QuizEditorScreenState extends State<QuizEditorScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Question'),
-        content: const Text('Are you sure you want to delete this question?'),
+        title: Text(S.of(context).deleteQuestionTitle),
+        content: Text(S.of(context).deleteQuestionContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(S.of(context).cancel),
           ),
           TextButton(
             onPressed: () {
@@ -143,7 +146,8 @@ class _QuizEditorScreenState extends State<QuizEditorScreen> {
               // TODO: Implement API call to delete question
               Navigator.of(context).pop();
             },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child:
+                Text(S.of(context).delete, style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -220,7 +224,7 @@ class QuestionCard extends StatelessWidget {
               children: [
                 OutlinedButton.icon(
                   icon: const Icon(Icons.edit, size: 20),
-                  label: const Text('Edit'),
+                  label: Text(S.of(context).editQuestion),
                   onPressed: onEdit,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.blueGrey,
@@ -235,7 +239,7 @@ class QuestionCard extends StatelessWidget {
                 const SizedBox(width: 14),
                 OutlinedButton.icon(
                   icon: const Icon(Icons.delete, size: 20),
-                  label: const Text('Delete'),
+                  label: Text(S.of(context).delete),
                   onPressed: onDelete,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.red,
@@ -260,8 +264,8 @@ class QuestionEditScreen extends StatefulWidget {
   final Quiz quiz;
   final Function(Quiz) onSave;
 
-  const QuestionEditScreen({Key? key, required this.quiz, required this.onSave})
-      : super(key: key);
+  const QuestionEditScreen(
+      {super.key, required this.quiz, required this.onSave});
 
   @override
   _QuestionEditScreenState createState() => _QuestionEditScreenState();
@@ -298,16 +302,19 @@ class _QuestionEditScreenState extends State<QuestionEditScreen> {
               Icons.arrow_back,
               color: Colors.black,
             )),
-        // title: Text(widget.quiz.id == null ? 'Add Question' : 'Edit Question'),
         actions: [
           IconButton(
             color: Colors.blue,
-            icon: const Icon(
-              Icons.save,
-            ),
+            icon: const Icon(Icons.save),
             onPressed: _saveQuestion,
           ),
         ],
+        title: Text(
+          widget.quiz.id == null
+              ? S.of(context).addQuestion
+              : S.of(context).editQuestion,
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -316,15 +323,15 @@ class _QuestionEditScreenState extends State<QuestionEditScreen> {
           children: [
             TextField(
               controller: _questionController,
-              decoration: const InputDecoration(
-                labelText: 'Question',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: S.of(context).question,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Options:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              S.of(context).options,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             ..._buildOptionFields(),
@@ -335,10 +342,9 @@ class _QuestionEditScreenState extends State<QuestionEditScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                // side: BorderSide(color: Theme.of(context).primaryColor),
               ),
-              child: const Text('Add Option',
-                  style: TextStyle(fontSize: 16, color: Colors.blue)),
+              child: Text(S.of(context).addOption,
+                  style: const TextStyle(fontSize: 16, color: Colors.blue)),
             )
           ],
         ),
@@ -356,7 +362,7 @@ class _QuestionEditScreenState extends State<QuestionEditScreen> {
               child: TextField(
                 controller: _optionControllers[index],
                 decoration: InputDecoration(
-                  labelText: 'Option ${index + 1}',
+                  labelText: '${S.of(context).option} ${index + 1}',
                   border: const OutlineInputBorder(),
                 ),
               ),

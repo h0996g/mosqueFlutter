@@ -10,6 +10,7 @@ import 'package:mosque/screen/AdminScreens/profile/profile.dart';
 
 import '../../../component/category/category.dart';
 import '../../../component/sorting.dart';
+import 'package:mosque/generated/l10n.dart'; // Import your localization file
 
 class HomeAdmin extends StatefulWidget {
   const HomeAdmin({super.key});
@@ -49,22 +50,22 @@ class _HomeAdminState extends State<HomeAdmin> {
             _selectedIndex = index;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home),
+            label: S.of(context).home, // Updated
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_rounded),
-            label: 'Favorite',
+            icon: const Icon(Icons.favorite_rounded),
+            label: S.of(context).favorite, // Updated
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Messages',
+            icon: const Icon(Icons.message),
+            label: S.of(context).messages, // Updated
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: const Icon(Icons.person),
+            label: S.of(context).profile, // Updated
           ),
         ],
         selectedItemColor: kpink,
@@ -86,26 +87,34 @@ class _HomeAdminState extends State<HomeAdmin> {
                     builder: (context, state) {
                       return Row(
                         children: [
-                          const Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Hi Owner!",
-                                style: TextStyle(
+                                S.of(context).hiTeacher, // Updated
+                                style: const TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10.0,
                               ),
-                              Text(
-                                "Today is a good day\nto learn something new!",
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  wordSpacing: 2.5,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                              Container(
+                                constraints: BoxConstraints(
+                                    maxWidth:
+                                        MediaQuery.of(context).size.width *
+                                            0.7),
+                                child: Text(
+                                  S.of(context).goodDayToLearn, // Updated
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.black54,
+                                    wordSpacing: 2.5,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -145,41 +154,37 @@ class _HomeAdminState extends State<HomeAdmin> {
                       );
                     },
                   ),
-
                   const SizedBox(
                     height: 20,
                   ),
-                  //sorting
+                  // sorting
                   const Sorting(),
                   const SizedBox(
                     height: 20,
                   ),
-                  //category list
-
+                  // category list
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Categories",
-                        style: TextStyle(
+                      Text(
+                        S.of(context).categories, // Updated
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       InkWell(
                         onTap: () {},
-                        child: const Text(
-                          "See All",
-                          style: TextStyle(fontSize: 16, color: kblue),
+                        child: Text(
+                          S.of(context).seeAll, // Updated
+                          style: const TextStyle(fontSize: 16, color: kblue),
                         ),
                       ),
                     ],
                   ),
-
                   const SizedBox(
                     height: 20,
                   ),
-
                   const CategoryList(
                     isAdmin: true,
                   ),
@@ -188,33 +193,10 @@ class _HomeAdminState extends State<HomeAdmin> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
-
-  // NavigationBarTheme navigationBar(BuildContext context) {
-  //   return NavigationBarTheme(
-  //       data: NavigationBarThemeData(
-  //         indicatorColor: Colors.blue[100],
-  //         labelTextStyle: MaterialStateProperty.all(
-  //           const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-  //         ),
-  //       ),
-  //       child: NavigationBar(
-  //         height: 70,
-  //         selectedIndex: HomeAdminCubit.get(context).selectedIndex,
-  //         onDestinationSelected: (index) =>
-  //             {HomeAdminCubit.get(context).changeIndexNavBar(index)},
-  //         destinations: const [
-  //           NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-  //           NavigationDestination(
-  //               icon: Icon(Icons.more_time_rounded), label: 'Reservation'),
-  //           NavigationDestination(icon: Icon(Icons.add), label: 'Annonce'),
-  //           NavigationDestination(icon: Icon(Icons.groups_2), label: 'tournoi'),
-  //         ],
-  //       ));
-  // }
 }

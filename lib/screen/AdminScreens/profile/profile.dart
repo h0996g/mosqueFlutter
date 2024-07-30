@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mosque/Model/admin_medel.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mosque/screen/AdminScreens/home/home.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/profile/update_form.dart';
@@ -39,7 +40,7 @@ class ProfileAdmin extends StatelessWidget {
               );
             },
           ),
-          title: const Text('Profile'),
+          title: Text(S.of(context).profile),
         ),
         drawer: _buildDrawer(context, adminModel),
         body: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
@@ -70,7 +71,7 @@ class ProfileAdmin extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: defaultSubmit(
-                      text: 'Edit Profile',
+                      text: S.of(context).editProfile,
                       valid: () {
                         navigatAndReturn(
                           context: context,
@@ -101,25 +102,25 @@ class ProfileAdmin extends StatelessWidget {
             _buildListTile(
               context,
               icon: Icons.person,
-              title: 'nom',
+              title: S.of(context).name,
               subtitle: adminModel.nom!,
             ),
             _buildListTile(
               context,
               icon: Icons.person,
-              title: 'prenom',
+              title: S.of(context).surname,
               subtitle: adminModel.prenom!,
             ),
             _buildListTile(
               context,
               icon: Icons.email_outlined,
-              title: 'email',
+              title: S.of(context).email,
               subtitle: adminModel.email!,
             ),
             _buildListTile(
               context,
               icon: Icons.phone,
-              title: 'phone',
+              title: S.of(context).phone,
               subtitle: adminModel.telephone!.toString(),
             ),
           ],
@@ -169,14 +170,15 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.home),
-            title: Text('home', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).home, style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndFinish(context: context, page: const HomeAdmin());
             },
           ),
           ListTile(
             leading: const Icon(Icons.edit),
-            title: Text('modify_profile', style: GoogleFonts.poppins()),
+            title:
+                Text(S.of(context).modifyProfile, style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndReturn(
                 context: context,
@@ -186,24 +188,28 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.lock),
-            title: Text('modify_password', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).modifyPassword,
+                style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndReturn(context: context, page: UpdateMdpForm());
             },
           ),
           ListTile(
             leading: const Icon(Icons.translate),
-            title: Text('change_language', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).changeLanguage,
+                style: GoogleFonts.poppins()),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('change_language', style: GoogleFonts.poppins()),
+                  title: Text(S.of(context).changeLanguage,
+                      style: GoogleFonts.poppins()),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: Text('french', style: GoogleFonts.poppins()),
+                        title: Text(S.of(context).french,
+                            style: GoogleFonts.poppins()),
                         onTap: () {
                           // MainCubit.get(context)
                           //     .changeLanguage(const Locale('fr'));
@@ -211,7 +217,8 @@ class ProfileAdmin extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('arabic', style: GoogleFonts.poppins()),
+                        title: Text(S.of(context).arabic,
+                            style: GoogleFonts.poppins()),
                         onTap: () {
                           // MainCubit.get(context)
                           //     .changeLanguage(const Locale('ar'));
@@ -228,18 +235,19 @@ class ProfileAdmin extends StatelessWidget {
             textColor: Colors.red,
             iconColor: Colors.red,
             leading: const Icon(Icons.exit_to_app),
-            title: Text('logout', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).logout, style: GoogleFonts.poppins()),
             onTap: () async {
               navigatAndFinish(context: context, page: Login());
               CachHelper.removdata(key: "TOKEN");
               HomeAdminCubit.get(context).resetValues();
               ProfileAdminCubit.get(context).resetValues();
-              showToast(msg: "Disconnect", state: ToastStates.error);
+              showToast(
+                  msg: S.of(context).disconnect, state: ToastStates.error);
             },
           ),
           ListTile(
             leading: const Icon(Icons.contact_support),
-            title: Text('contact_us', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).contactUs, style: GoogleFonts.poppins()),
             onTap: () {
               // Navigator.push(
               //   context,

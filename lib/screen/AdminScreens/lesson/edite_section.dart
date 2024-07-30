@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mosque/component/category/cubit/category_cubit.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/model/section_model.dart';
+import 'package:mosque/generated/l10n.dart'; // Import the generated localization file
 
 class EditSectionPage extends StatefulWidget {
   final SectionModel section;
@@ -19,8 +20,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String? _photoUrl;
-  String?
-      _oldFirstPhotoUrl; // hadi awel photo kima nkon dkholt lel page bah kima neteka 3la icon remove yb9a url mkhabi hna wna7ih mn firebase
+  String? _oldFirstPhotoUrl; // Store the old photo URL for deletion
   CategoryCubit? _cubit;
 
   @override
@@ -92,8 +92,8 @@ class _EditSectionPageState extends State<EditSectionPage> {
               color: Colors.black,
             ),
           ),
-          title:
-              const Text('Edit Section', style: TextStyle(color: Colors.black)),
+          title: Text(S.of(context).editSection,
+              style: const TextStyle(color: Colors.black)),
           backgroundColor: Colors.white,
           elevation: 0,
         ),
@@ -106,11 +106,11 @@ class _EditSectionPageState extends State<EditSectionPage> {
                 CategoryCubit.get(context).getAllSection();
                 Navigator.pop(context);
                 showToast(
-                    msg: 'Section updated successfully',
+                    msg: S.of(context).sectionUpdatedSuccess,
                     state: ToastStates.success);
               } else if (state is UpdateSectionBad) {
                 showToast(
-                    msg: 'Failed to update section. Please try again later.',
+                    msg: S.of(context).sectionUpdateFailed,
                     state: ToastStates.error);
               }
             },
@@ -121,12 +121,12 @@ class _EditSectionPageState extends State<EditSectionPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Edit Section',
+                      S.of(context).editSection,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
-                      "Update the details for your section.",
+                      S.of(context).updateSectionDetails,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     SizedBox(height: screenHeight * 0.04),
@@ -136,7 +136,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
                       type: TextInputType.text,
                       valid: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Section name must not be empty';
+                          return S.of(context).sectionNameEmptyError;
                         }
                         return null;
                       },
@@ -144,7 +144,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
                         Icons.title,
                         color: Colors.grey,
                       ),
-                      labelText: "Section Name",
+                      labelText: S.of(context).sectionName,
                       textInputAction: TextInputAction.next,
                     ),
                     SizedBox(height: screenHeight * 0.02),
@@ -154,7 +154,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
                       type: TextInputType.multiline,
                       valid: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Description must not be empty';
+                          return S.of(context).descriptionEmptyError;
                         }
                         return null;
                       },
@@ -162,7 +162,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
                         Icons.description,
                         color: Colors.grey,
                       ),
-                      labelText: "Description",
+                      labelText: S.of(context).description,
                       maxline: 3,
                       textInputAction: TextInputAction.newline,
                     ),
@@ -183,7 +183,6 @@ class _EditSectionPageState extends State<EditSectionPage> {
                                               ? Image.network(
                                                   _photoUrl!,
                                                   fit: BoxFit.cover,
-                                                  // width: double.infinity,
                                                 )
                                               : null)),
                               IconButton(
@@ -206,7 +205,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
                     SizedBox(height: screenHeight * 0.02),
                     buildUploadButton(
                       icon: Icons.photo,
-                      label: "Upload Section Photo",
+                      label: S.of(context).uploadSectionPhoto,
                       onPressed: () {
                         // Implement photo upload logic
                         _cubit!.imagePickerSection(ImageSource.gallery);
@@ -216,7 +215,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
                     state is UpdateSectionLoading
                         ? const Center(child: CircularProgressIndicator())
                         : buildSubmitButton(
-                            context, _submitForm, 'Update Section'),
+                            context, _submitForm, S.of(context).updateSection),
                   ],
                 ),
               );

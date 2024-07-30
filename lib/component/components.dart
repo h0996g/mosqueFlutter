@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mosque/component/category/cubit/category_cubit.dart';
 import 'package:mosque/component/dialog.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/model/section_model.dart';
 
 TextFormField defaultForm3(
@@ -221,8 +222,8 @@ void showDeleteDialog(BuildContext context, SectionModel section) {
     context: context,
     builder: (BuildContext context) {
       return CustomDialog(
-        title: 'Delete Section',
-        content: 'Are you sure you want to delete "${section.name}"?',
+        title: S.of(context).deleteSectionTitle,
+        content: S.of(context).deleteSectionContent(section.name!),
         onCancel: () {
           Navigator.of(context).pop();
         },

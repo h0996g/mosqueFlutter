@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosque/generated/l10n.dart';
 
 class CustomDialog extends StatelessWidget {
   final String title;
@@ -72,11 +73,11 @@ class CustomDialog extends StatelessWidget {
                     ),
                   ),
                   onPressed: onCancel,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
-                      'Cancel',
-                      style: TextStyle(
+                      S.of(context).cancel,
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16.0,
                       ),
@@ -94,11 +95,11 @@ class CustomDialog extends StatelessWidget {
                     ),
                   ),
                   onPressed: onConfirm,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
-                      'Delete',
-                      style: TextStyle(
+                      S.of(context).delete,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
                       ),
@@ -159,16 +160,16 @@ class _PasswordVerificationDialogState
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Text(
-            'Verify Password',
-            style: TextStyle(
+          Text(
+            S.of(context).verifyPassword,
+            style: const TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.w700,
             ),
           ),
-          const Text(
-            'Please enter your password to verify your identity.',
-            style: TextStyle(
+          Text(
+            S.of(context).enterPassword,
+            style: const TextStyle(
               fontSize: 16.0,
             ),
             textAlign: TextAlign.center,
@@ -178,7 +179,7 @@ class _PasswordVerificationDialogState
             controller: _passwordController,
             obscureText: !_isPasswordVisible,
             decoration: InputDecoration(
-              hintText: "Enter your password",
+              hintText: S.of(context).enterYourPassword,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -206,11 +207,11 @@ class _PasswordVerificationDialogState
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
-                      'Cancel',
-                      style: TextStyle(
+                      S.of(context).cancel,
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16.0,
                       ),
@@ -228,11 +229,11 @@ class _PasswordVerificationDialogState
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
-                      'Verify',
-                      style: TextStyle(
+                      S.of(context).verify,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16.0,
                       ),

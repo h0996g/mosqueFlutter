@@ -9,6 +9,7 @@ import 'package:mosque/component/widgets/LessonOptionsDialog.dart';
 import 'package:mosque/component/widgets/lesson_card_admin.dart';
 import 'package:mosque/component/widgets/pdf_view.dart';
 import 'package:mosque/const/colors.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/helper/socket.dart';
 import 'package:mosque/model/section_model.dart';
@@ -276,8 +277,9 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
   }
 }
 
-class CustomTabView extends StatefulWidget {
+class CustomTabView extends StatelessWidget {
   final int numberOfLessons;
+
   final Function(int) changeTab;
   final int index;
 
@@ -288,31 +290,23 @@ class CustomTabView extends StatefulWidget {
       required this.numberOfLessons});
 
   @override
-  State<CustomTabView> createState() => _CustomTabViewState();
-}
-
-class _CustomTabViewState extends State<CustomTabView> {
-  late List<String> _tags;
-
-  @override
-  void initState() {
-    super.initState();
-    _tags = ["Playlist (${widget.numberOfLessons})", "More Info"];
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final List<String> tags = [
+      "${S.of(context).playlist} ($numberOfLessons)",
+      S.of(context).moreInfo
+    ];
+
     return Container(
       padding: const EdgeInsets.all(12),
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _tags.asMap().entries.map((MapEntry map) {
-          bool isSelected = widget.index == map.key;
+        children: tags.asMap().entries.map((MapEntry map) {
+          bool isSelected = index == map.key;
           return Expanded(
             child: GestureDetector(
               onTap: () {
-                widget.changeTab(map.key);
+                changeTab(map.key);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 14),
@@ -453,8 +447,8 @@ class _PlayListState extends State<PlayList> {
       context: context,
       builder: (BuildContext context) {
         return CustomDialog(
-          title: 'Confirm Delete',
-          content: 'Are you sure you want to delete this lesson?',
+          title: S.of(context).confirmDelete,
+          content: S.of(context).deleteLessonConfirmation,
           onConfirm: () {
             Navigator.of(context).pop();
             LessonAdminCubit.get(context).deleteLesson(lessonID: lesson.id!);
@@ -533,9 +527,9 @@ class _MorInfoState extends State<MorInfo> {
               Icons.picture_as_pdf,
               color: Colors.white,
             ),
-            label: const Text(
-              'Supplement',
-              style: TextStyle(
+            label: Text(
+              S.of(context).supplement,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -644,9 +638,9 @@ class _CommentSectionState extends State<CommentSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Comments',
-          style: TextStyle(
+        Text(
+          S.of(context).comments,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -659,7 +653,7 @@ class _CommentSectionState extends State<CommentSection> {
               child: TextField(
                 controller: _commentController,
                 decoration: InputDecoration(
-                  hintText: 'Add a comment...',
+                  hintText: S.of(context).add_a_comment,
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.send),
                     onPressed: _addComment,
@@ -704,9 +698,11 @@ class CommentsItems extends StatefulWidget {
   @override
   State<CommentsItems> createState() => _CommentsItemsState();
 }
+// Import your localization file
 
 class _CommentsItemsState extends State<CommentsItems> {
   bool isDelete = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -727,12 +723,12 @@ class _CommentsItemsState extends State<CommentsItems> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.comments.user?.username ?? 'Unknown User',
+                  widget.comments.user?.username ?? S.of(context).unknown_user,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 widget.comments.isDeleted == true || isDelete == true
                     ? Text(
-                        'Comment Deleted',
+                        S.of(context).comment_deleted,
                         style: TextStyle(color: Colors.red[300]),
                       )
                     : Text(widget.comments.comment ?? ''),
@@ -753,15 +749,14 @@ class _CommentsItemsState extends State<CommentsItems> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text('Delete Comment'),
-                        content: const Text(
-                            'Are you sure you want to delete this comment?'),
+                        title: Text(S.of(context).delete_comment),
+                        content: Text(S.of(context).confirm_delete_comment),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: const Text('No'),
+                            child: Text(S.of(context).no),
                           ),
                           TextButton(
                             onPressed: () {
@@ -777,7 +772,7 @@ class _CommentsItemsState extends State<CommentsItems> {
                               });
                               Navigator.pop(context);
                             },
-                            child: const Text('Yes'),
+                            child: Text(S.of(context).yes),
                           ),
                         ],
                       );

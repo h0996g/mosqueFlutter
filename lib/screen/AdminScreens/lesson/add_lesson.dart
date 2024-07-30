@@ -4,14 +4,18 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/generated/l10n.dart'; // Import your localization file
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 
 class AddNewLessonPage extends StatefulWidget {
   final String sectionId;
-  final bool
-      isNavigate; // bh n3ref ida jit mn condition state or mn navigation bh ndir pop wla no
-  const AddNewLessonPage(
-      {super.key, required this.sectionId, required this.isNavigate});
+  final bool isNavigate;
+
+  const AddNewLessonPage({
+    Key? key,
+    required this.sectionId,
+    required this.isNavigate,
+  }) : super(key: key);
 
   @override
   State<AddNewLessonPage> createState() => _AddNewLessonPageState();
@@ -32,20 +36,14 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
       pdfFile = File(result.files.single.path!);
       print('PDF file selected: ${pdfFile!.path}');
     } else {
-      // User canceled the picker
       print('No file selected');
     }
   }
 
   final titleController = TextEditingController();
-
   final descriptionController = TextEditingController();
-
   final urlVideoController = TextEditingController();
-
   final durationController = TextEditingController();
-
-  // final supplementPdfController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -57,7 +55,6 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
         'description': descriptionController.text,
         'urlVideo': urlVideoController.text,
         'duration': durationController.text,
-        // 'suplemmentPdf': supplementPdfController.text
       };
       _cubit.createLesson(data: data, pdfFile: pdfFile);
     }
@@ -66,7 +63,6 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
   @override
   void initState() {
     _cubit = LessonAdminCubit.get(context);
-
     super.initState();
   }
 
@@ -76,7 +72,6 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
     descriptionController.dispose();
     urlVideoController.dispose();
     durationController.dispose();
-    // supplementPdfController.dispose();
     super.dispose();
   }
 
@@ -90,15 +85,16 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
 
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(
-          Icons.arrow_back_ios,
-          color: Colors.black,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
         ),
-      )),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
             vertical: verticalPadding, horizontal: horizontalPadding),
@@ -109,11 +105,14 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                 Navigator.pop(context);
               }
               showToast(
-                  msg: 'Section created successfully',
-                  state: ToastStates.success);
+                msg: S.of(context).lessonCreatedSuccess,
+                state: ToastStates.success,
+              );
             } else if (state is CreateLessonBad) {
               showToast(
-                  msg: 'Failed to create section', state: ToastStates.error);
+                msg: S.of(context).lessonCreationFailed,
+                state: ToastStates.error,
+              );
             }
           },
           builder: (context, state) {
@@ -123,12 +122,12 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Create a New Lesson',
+                    S.of(context).createNewLesson,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   Text(
-                    "Fill in the details for your new lesson.",
+                    S.of(context).fillInLessonDetails,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: screenHeight * 0.04),
@@ -138,14 +137,14 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                     type: TextInputType.text,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Title must not be empty';
+                        return S.of(context).titleEmptyError;
                       }
                     },
                     prefixIcon: const Icon(
                       Icons.title,
                       color: Colors.grey,
                     ),
-                    labelText: "Lesson Title",
+                    labelText: S.of(context).lessonTitle,
                     textInputAction: TextInputAction.next,
                   ),
                   SizedBox(height: screenHeight * 0.02),
@@ -155,14 +154,14 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                     type: TextInputType.multiline,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Description must not be empty';
+                        return S.of(context).descriptionEmptyError;
                       }
                     },
                     prefixIcon: const Icon(
                       Icons.description,
                       color: Colors.grey,
                     ),
-                    labelText: "Description",
+                    labelText: S.of(context).description,
                     maxline: 3,
                     textInputAction: TextInputAction.newline,
                   ),
@@ -173,14 +172,14 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                     type: TextInputType.url,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Video URL must not be empty';
+                        return S.of(context).videoUrlEmptyError;
                       }
                     },
                     prefixIcon: const Icon(
                       Icons.video_library,
                       color: Colors.grey,
                     ),
-                    labelText: "Video URL",
+                    labelText: S.of(context).videoUrl,
                     textInputAction: TextInputAction.next,
                   ),
                   SizedBox(height: screenHeight * 0.02),
@@ -190,34 +189,37 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                     type: TextInputType.text,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Duration must not be empty';
+                        return S.of(context).durationEmptyError;
                       }
                     },
                     prefixIcon: const Icon(
                       Icons.timer,
                       color: Colors.grey,
                     ),
-                    labelText: "Duration",
+                    labelText: S.of(context).duration,
                     textInputAction: TextInputAction.done,
                   ),
                   if (pdfFile != null) Text(pdfFile!.path),
                   SizedBox(height: screenHeight * 0.02),
                   buildUploadButton(
                     icon: Icons.upload_file,
-                    label: "Upload Supplement PDF",
+                    label: S.of(context).uploadSupplementPdf,
                     onPressed: () {
                       pickPdfFile();
-                      // Implement photo upload logic
-                      print('Uploading lesson PDF...');
+                      print(S.of(context).uploadingPdf);
                     },
                   ),
                   SizedBox(height: screenHeight * 0.04),
                   if (state is CreateLessonLoading)
                     const Center(child: CircularProgressIndicator())
                   else
-                    buildSubmitButton(context, () {
-                      _submitForm(context, _cubit);
-                    }, "Create Lesson"),
+                    buildSubmitButton(
+                      context,
+                      () {
+                        _submitForm(context, _cubit);
+                      },
+                      S.of(context).createLesson,
+                    ),
                 ],
               ),
             );

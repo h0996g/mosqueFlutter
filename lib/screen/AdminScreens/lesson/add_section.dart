@@ -4,6 +4,7 @@ import 'package:mosque/component/category/cubit/category_cubit.dart';
 import 'package:mosque/component/components.dart';
 import 'package:flutter/material.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
+import 'package:mosque/generated/l10n.dart'; // Import the generated localization file
 
 class AddSectionScreen extends StatefulWidget {
   const AddSectionScreen({super.key});
@@ -16,8 +17,8 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  // String? _photoUrl;
   CategoryCubit? _cubit;
+
   @override
   void initState() {
     _cubit = CategoryCubit.get(context);
@@ -88,11 +89,11 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                   CategoryCubit.get(context).getAllSection();
                   Navigator.pop(context);
                   showToast(
-                      msg: 'Section created successfully',
+                      msg: S.of(context).sectionCreatedSuccess,
                       state: ToastStates.success);
                 } else if (state is CreateSectionBad) {
                   showToast(
-                      msg: 'Failed to create section',
+                      msg: S.of(context).sectionCreationFailed,
                       state: ToastStates.error);
                 }
               },
@@ -101,12 +102,12 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Create a New Section',
+                      S.of(context).createNewSection,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
-                      "Fill in the details for your new section.",
+                      S.of(context).fillInSectionDetails,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     SizedBox(height: screenHeight * 0.04),
@@ -116,7 +117,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                       type: TextInputType.text,
                       valid: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Section name must not be empty';
+                          return S.of(context).sectionNameEmptyError;
                         }
                         return null;
                       },
@@ -124,7 +125,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                         Icons.title,
                         color: Colors.grey,
                       ),
-                      labelText: "Section Name",
+                      labelText: S.of(context).sectionName,
                       textInputAction: TextInputAction.next,
                     ),
                     SizedBox(height: screenHeight * 0.02),
@@ -134,7 +135,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                       type: TextInputType.multiline,
                       valid: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Description must not be empty';
+                          return S.of(context).descriptionEmptyError;
                         }
                         return null;
                       },
@@ -142,7 +143,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                         Icons.description,
                         color: Colors.grey,
                       ),
-                      labelText: "Description",
+                      labelText: S.of(context).description,
                       maxline: 3,
                       textInputAction: TextInputAction.newline,
                     ),
@@ -178,7 +179,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                     SizedBox(height: screenHeight * 0.02),
                     buildUploadButton(
                       icon: Icons.photo,
-                      label: "Upload Section Photo",
+                      label: S.of(context).uploadSectionPhoto,
                       onPressed: () {
                         _cubit!.imagePickerSection(ImageSource.gallery);
                       },
@@ -187,7 +188,8 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
                     if (state is CreateSectionLoading)
                       const Center(child: CircularProgressIndicator())
                     else
-                      buildSubmitButton(context, _submitForm, 'Add Section'),
+                      buildSubmitButton(
+                          context, _submitForm, S.of(context).addSection),
                   ],
                 );
               },

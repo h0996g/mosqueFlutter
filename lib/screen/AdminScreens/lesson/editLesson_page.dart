@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
+import 'package:mosque/generated/l10n.dart'; // Ensure this path matches your setup
 
 class EditLessonPage extends StatefulWidget {
   final Lesson lesson;
@@ -14,14 +15,11 @@ class EditLessonPage extends StatefulWidget {
 
 class _EditLessonPageState extends State<EditLessonPage> {
   final titleController = TextEditingController();
-
   final descriptionController = TextEditingController();
-
   final urlVideoController = TextEditingController();
-
   final durationController = TextEditingController();
-
   final formKey = GlobalKey<FormState>();
+
   void _submitForm() {
     if (formKey.currentState!.validate()) {
       Map<String, dynamic> updatedLesson = {
@@ -50,7 +48,6 @@ class _EditLessonPageState extends State<EditLessonPage> {
     descriptionController.dispose();
     urlVideoController.dispose();
     durationController.dispose();
-
     super.dispose();
   }
 
@@ -93,11 +90,11 @@ class _EditLessonPageState extends State<EditLessonPage> {
               if (state is UpdateLessonGood) {
                 Navigator.pop(context);
                 showToast(
-                    msg: 'Section updated successfully',
+                    msg: S.of(context).lessonUpdatedSuccess,
                     state: ToastStates.success);
               } else if (state is UpdateLessonBad) {
                 showToast(
-                    msg: 'Failed to update section. Please try again later.',
+                    msg: S.of(context).lessonUpdateFailed,
                     state: ToastStates.error);
               }
             },
@@ -108,12 +105,12 @@ class _EditLessonPageState extends State<EditLessonPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Edit Lesson',
+                      S.of(context).editLesson,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     SizedBox(height: screenHeight * 0.02),
                     Text(
-                      "Update the details of your lesson.",
+                      S.of(context).updateLessonDetails,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     SizedBox(height: screenHeight * 0.04),
@@ -123,14 +120,14 @@ class _EditLessonPageState extends State<EditLessonPage> {
                       type: TextInputType.text,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Title must not be empty';
+                          return S.of(context).titleEmptyError;
                         }
                       },
                       prefixIcon: const Icon(
                         Icons.title,
                         color: Colors.grey,
                       ),
-                      labelText: "Lesson Title",
+                      labelText: S.of(context).lessonTitle,
                       textInputAction: TextInputAction.next,
                     ),
                     SizedBox(height: screenHeight * 0.02),
@@ -140,14 +137,14 @@ class _EditLessonPageState extends State<EditLessonPage> {
                       type: TextInputType.multiline,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Description must not be empty';
+                          return S.of(context).descriptionEmptyError;
                         }
                       },
                       prefixIcon: const Icon(
                         Icons.description,
                         color: Colors.grey,
                       ),
-                      labelText: "Description",
+                      labelText: S.of(context).description,
                       maxline: 3,
                       textInputAction: TextInputAction.newline,
                     ),
@@ -158,14 +155,15 @@ class _EditLessonPageState extends State<EditLessonPage> {
                       type: TextInputType.url,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Video URL must not be empty';
+                          return S.of(context).videoURLEmptyError;
                         }
+                        return null;
                       },
                       prefixIcon: const Icon(
                         Icons.video_library,
                         color: Colors.grey,
                       ),
-                      labelText: "Video URL",
+                      labelText: S.of(context).videoURL,
                       textInputAction: TextInputAction.next,
                     ),
                     SizedBox(height: screenHeight * 0.02),
@@ -175,20 +173,21 @@ class _EditLessonPageState extends State<EditLessonPage> {
                       type: TextInputType.text,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Duration must not be empty';
+                          return S.of(context).durationEmptyError;
                         }
+                        return null;
                       },
                       prefixIcon: const Icon(
                         Icons.timer,
                         color: Colors.grey,
                       ),
-                      labelText: "Duration",
+                      labelText: S.of(context).duration,
                       textInputAction: TextInputAction.done,
                     ),
                     SizedBox(height: screenHeight * 0.02),
                     buildUploadButton(
                       icon: Icons.upload_file,
-                      label: "Upload Supplement PDF",
+                      label: S.of(context).uploadSupplementPDF,
                       onPressed: () {
                         // Implement PDF upload logic
                         print('Uploading lesson PDF...');
@@ -198,7 +197,8 @@ class _EditLessonPageState extends State<EditLessonPage> {
                     if (state is UpdateLessonLoading)
                       const Center(child: CircularProgressIndicator())
                     else
-                      buildSubmitButton(context, _submitForm, "Update Lesson"),
+                      buildSubmitButton(
+                          context, _submitForm, S.of(context).updateLesson),
                   ],
                 ),
               );

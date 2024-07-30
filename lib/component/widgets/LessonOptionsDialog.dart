@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/model/section_model.dart';
 
 class LessonOptionsDialog extends StatelessWidget {
@@ -26,24 +27,24 @@ class LessonOptionsDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Lesson Options',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              S.of(context).lessonOptionsTitle,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             ListTile(
               leading: const Icon(Icons.quiz),
-              title: const Text('Show Quiz'),
+              title: Text(S.of(context).showQuiz),
               onTap: onShowQuiz,
             ),
             ListTile(
               leading: const Icon(Icons.edit),
-              title: const Text('Edit Lesson'),
+              title: Text(S.of(context).editLesson),
               onTap: onEdit,
             ),
             ListTile(
               leading: const Icon(Icons.delete),
-              title: const Text('Delete Lesson'),
+              title: Text(S.of(context).deleteLesson),
               onTap: onDelete,
             ),
           ],

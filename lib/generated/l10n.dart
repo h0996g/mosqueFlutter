@@ -849,6 +849,786 @@ class S {
       args: [],
     );
   }
+
+  /// `Hi Teacher!`
+  String get hiTeacher {
+    return Intl.message(
+      'Hi Teacher!',
+      name: 'hiTeacher',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today is a great opportunity to impart wisdom and foster learning`
+  String get goodDayToLearn {
+    return Intl.message(
+      'Today is a great opportunity to impart wisdom and foster learning',
+      name: 'goodDayToLearn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create a New Lesson`
+  String get createNewLesson {
+    return Intl.message(
+      'Create a New Lesson',
+      name: 'createNewLesson',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fill in the details for your new lesson.`
+  String get fillInLessonDetails {
+    return Intl.message(
+      'Fill in the details for your new lesson.',
+      name: 'fillInLessonDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title must not be empty`
+  String get titleEmptyError {
+    return Intl.message(
+      'Title must not be empty',
+      name: 'titleEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description must not be empty`
+  String get descriptionEmptyError {
+    return Intl.message(
+      'Description must not be empty',
+      name: 'descriptionEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video URL must not be empty`
+  String get videoUrlEmptyError {
+    return Intl.message(
+      'Video URL must not be empty',
+      name: 'videoUrlEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duration must not be empty`
+  String get durationEmptyError {
+    return Intl.message(
+      'Duration must not be empty',
+      name: 'durationEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload Supplement PDF`
+  String get uploadSupplementPdf {
+    return Intl.message(
+      'Upload Supplement PDF',
+      name: 'uploadSupplementPdf',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uploading lesson PDF...`
+  String get uploadingPdf {
+    return Intl.message(
+      'Uploading lesson PDF...',
+      name: 'uploadingPdf',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Lesson`
+  String get createLesson {
+    return Intl.message(
+      'Create Lesson',
+      name: 'createLesson',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson created successfully`
+  String get lessonCreatedSuccess {
+    return Intl.message(
+      'Lesson created successfully',
+      name: 'lessonCreatedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to create lesson`
+  String get lessonCreationFailed {
+    return Intl.message(
+      'Failed to create lesson',
+      name: 'lessonCreationFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson Title`
+  String get lessonTitle {
+    return Intl.message(
+      'Lesson Title',
+      name: 'lessonTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message(
+      'Description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video URL`
+  String get videoUrl {
+    return Intl.message(
+      'Video URL',
+      name: 'videoUrl',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duration`
+  String get duration {
+    return Intl.message(
+      'Duration',
+      name: 'duration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create a New Section`
+  String get createNewSection {
+    return Intl.message(
+      'Create a New Section',
+      name: 'createNewSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fill in the details for your new section.`
+  String get fillInSectionDetails {
+    return Intl.message(
+      'Fill in the details for your new section.',
+      name: 'fillInSectionDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section name must not be empty`
+  String get sectionNameEmptyError {
+    return Intl.message(
+      'Section name must not be empty',
+      name: 'sectionNameEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload Section Photo`
+  String get uploadSectionPhoto {
+    return Intl.message(
+      'Upload Section Photo',
+      name: 'uploadSectionPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uploading section photo...`
+  String get uploadingPhoto {
+    return Intl.message(
+      'Uploading section photo...',
+      name: 'uploadingPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Section`
+  String get addSection {
+    return Intl.message(
+      'Add Section',
+      name: 'addSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section created successfully`
+  String get sectionCreatedSuccess {
+    return Intl.message(
+      'Section created successfully',
+      name: 'sectionCreatedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to create section`
+  String get sectionCreationFailed {
+    return Intl.message(
+      'Failed to create section',
+      name: 'sectionCreationFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section Name`
+  String get sectionName {
+    return Intl.message(
+      'Section Name',
+      name: 'sectionName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Section`
+  String get editSection {
+    return Intl.message(
+      'Edit Section',
+      name: 'editSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update the details for your section.`
+  String get updateSectionDetails {
+    return Intl.message(
+      'Update the details for your section.',
+      name: 'updateSectionDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Section`
+  String get updateSection {
+    return Intl.message(
+      'Update Section',
+      name: 'updateSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section updated successfully`
+  String get sectionUpdatedSuccess {
+    return Intl.message(
+      'Section updated successfully',
+      name: 'sectionUpdatedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to update section. Please try again later.`
+  String get sectionUpdateFailed {
+    return Intl.message(
+      'Failed to update section. Please try again later.',
+      name: 'sectionUpdateFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Lesson`
+  String get editLesson {
+    return Intl.message(
+      'Edit Lesson',
+      name: 'editLesson',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update the details of your lesson.`
+  String get updateLessonDetails {
+    return Intl.message(
+      'Update the details of your lesson.',
+      name: 'updateLessonDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video URL`
+  String get videoURL {
+    return Intl.message(
+      'Video URL',
+      name: 'videoURL',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload Supplement PDF`
+  String get uploadSupplementPDF {
+    return Intl.message(
+      'Upload Supplement PDF',
+      name: 'uploadSupplementPDF',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Lesson`
+  String get updateLesson {
+    return Intl.message(
+      'Update Lesson',
+      name: 'updateLesson',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson updated successfully`
+  String get lessonUpdatedSuccess {
+    return Intl.message(
+      'Lesson updated successfully',
+      name: 'lessonUpdatedSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to update lesson. Please try again later.`
+  String get lessonUpdateFailed {
+    return Intl.message(
+      'Failed to update lesson. Please try again later.',
+      name: 'lessonUpdateFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video URL must not be empty`
+  String get videoURLEmptyError {
+    return Intl.message(
+      'Video URL must not be empty',
+      name: 'videoURLEmptyError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quiz Editor`
+  String get quizEditorTitle {
+    return Intl.message(
+      'Quiz Editor',
+      name: 'quizEditorTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quiz updated successfully`
+  String get quizUpdatedSuccessfully {
+    return Intl.message(
+      'Quiz updated successfully',
+      name: 'quizUpdatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error updating quiz`
+  String get errorUpdatingQuiz {
+    return Intl.message(
+      'Error updating quiz',
+      name: 'errorUpdatingQuiz',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Question`
+  String get deleteQuestionTitle {
+    return Intl.message(
+      'Delete Question',
+      name: 'deleteQuestionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this question?`
+  String get deleteQuestionContent {
+    return Intl.message(
+      'Are you sure you want to delete this question?',
+      name: 'deleteQuestionContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Question`
+  String get addQuestion {
+    return Intl.message(
+      'Add Question',
+      name: 'addQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Question`
+  String get editQuestion {
+    return Intl.message(
+      'Edit Question',
+      name: 'editQuestion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question`
+  String get question {
+    return Intl.message(
+      'Question',
+      name: 'question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Options`
+  String get options {
+    return Intl.message(
+      'Options',
+      name: 'options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Option`
+  String get addOption {
+    return Intl.message(
+      'Add Option',
+      name: 'addOption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Option`
+  String get option {
+    return Intl.message(
+      'Option',
+      name: 'option',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify Password`
+  String get verifyPassword {
+    return Intl.message(
+      'Verify Password',
+      name: 'verifyPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your password to verify your identity.`
+  String get enterPassword {
+    return Intl.message(
+      'Please enter your password to verify your identity.',
+      name: 'enterPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get enterYourPassword {
+    return Intl.message(
+      'Enter your password',
+      name: 'enterYourPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify`
+  String get verify {
+    return Intl.message(
+      'Verify',
+      name: 'verify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Delete`
+  String get confirmDelete {
+    return Intl.message(
+      'Confirm Delete',
+      name: 'confirmDelete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this lesson?`
+  String get deleteLessonConfirmation {
+    return Intl.message(
+      'Are you sure you want to delete this lesson?',
+      name: 'deleteLessonConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lesson Options`
+  String get lessonOptionsTitle {
+    return Intl.message(
+      'Lesson Options',
+      name: 'lessonOptionsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show Quiz`
+  String get showQuiz {
+    return Intl.message(
+      'Show Quiz',
+      name: 'showQuiz',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Lesson`
+  String get deleteLesson {
+    return Intl.message(
+      'Delete Lesson',
+      name: 'deleteLesson',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Section`
+  String get deleteSectionTitle {
+    return Intl.message(
+      'Delete Section',
+      name: 'deleteSectionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete "{sectionName}"?`
+  String deleteSectionContent(Object sectionName) {
+    return Intl.message(
+      'Are you sure you want to delete "$sectionName"?',
+      name: 'deleteSectionContent',
+      desc: '',
+      args: [sectionName],
+    );
+  }
+
+  /// `Edit Profile`
+  String get editProfile {
+    return Intl.message(
+      'Edit Profile',
+      name: 'editProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get name {
+    return Intl.message(
+      'Name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Surname`
+  String get surname {
+    return Intl.message(
+      'Surname',
+      name: 'surname',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify Profile`
+  String get modifyProfile {
+    return Intl.message(
+      'Modify Profile',
+      name: 'modifyProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify Password`
+  String get modifyPassword {
+    return Intl.message(
+      'Modify Password',
+      name: 'modifyPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Language`
+  String get changeLanguage {
+    return Intl.message(
+      'Change Language',
+      name: 'changeLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contact Us`
+  String get contactUs {
+    return Intl.message(
+      'Contact Us',
+      name: 'contactUs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Password`
+  String get changePassword {
+    return Intl.message(
+      'Change Password',
+      name: 'changePassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Old Password`
+  String get oldPassword {
+    return Intl.message(
+      'Old Password',
+      name: 'oldPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password`
+  String get newPassword {
+    return Intl.message(
+      'New Password',
+      name: 'newPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm New Password`
+  String get confirmNewPassword {
+    return Intl.message(
+      'Confirm New Password',
+      name: 'confirmNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must not be empty`
+  String get passwordMustNotBeEmpty {
+    return Intl.message(
+      'Password must not be empty',
+      name: 'passwordMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get passwordsDoNotMatch {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'passwordsDoNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password changed successfully`
+  String get passwordChangedSuccessfully {
+    return Intl.message(
+      'Password changed successfully',
+      name: 'passwordChangedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Server crashed`
+  String get serverCrashed {
+    return Intl.message(
+      'Server crashed',
+      name: 'serverCrashed',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
