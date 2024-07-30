@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mosque/component/components.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:mosque/component/components.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/user_model.dart';
 import 'package:mosque/screen/Auth/login.dart';
@@ -11,6 +10,7 @@ import 'package:mosque/screen/userScreens/home/home_screen.dart';
 import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/update_form.dart';
+import 'package:mosque/generated/l10n.dart'; // Import your localization file
 
 class ProfileUser extends StatelessWidget {
   const ProfileUser({super.key});
@@ -37,19 +37,7 @@ class ProfileUser extends StatelessWidget {
                 );
               },
             ),
-            title: const Text('Profile'),
-            // actions: [
-            //   TextButton(
-            //       onPressed: () {
-            //         navigatAndFinish(context: context, page: Login());
-            //         CachHelper.removdata(key: "TOKEN");
-            //         showToast(msg: "Disconnect", state: ToastStates.error);
-            //       },
-            //       child: const Text(
-            //         "Disconnect",
-            //         style: TextStyle(color: Colors.red),
-            //       ))
-            // ],
+            title: Text(S.of(context).profile), // Updated
           ),
           drawer:
               _buildDrawer(context, HomeUserCubit.get(context).userDataModel!),
@@ -58,7 +46,6 @@ class ProfileUser extends StatelessWidget {
             builder: (context, state) {
               return SingleChildScrollView(
                 child: Column(
-                  // mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircleAvatar(
@@ -84,65 +71,10 @@ class ProfileUser extends StatelessWidget {
                     _buildProfileCard(
                         context, HomeUserCubit.get(context).userDataModel!),
                     const SizedBox(height: 30),
-                    // ListTile(
-                    //   leading: const Icon(Icons.person),
-                    //   title: const Text('Nom'),
-                    //   subtitle: Text(
-                    //     HomeUserCubit.get(context).userDataModel!.nom!,
-                    //   ),
-                    //   onTap: () {},
-                    // ),
-                    // ListTile(
-                    //   leading: const Icon(Icons.person),
-                    //   title: const Text('Prenom'),
-                    //   subtitle: Text(
-                    //     HomeUserCubit.get(context).userDataModel!.prenom!,
-                    //   ),
-                    //   onTap: () {},
-                    // ),
-                    // ListTile(
-                    //   leading: const Icon(Icons.person),
-                    //   title: const Text('Age'),
-                    //   subtitle: Text(
-                    //     HomeUserCubit.get(context)
-                    //         .userDataModel!
-                    //         .age!
-                    //         .toString(),
-                    //   ),
-                    //   onTap: () {},
-                    // ),
-                    // ListTile(
-                    //   leading: const Icon(Icons.email),
-                    //   title: const Text('Email'),
-                    //   subtitle: Text(
-                    //     HomeUserCubit.get(context).userDataModel!.email!,
-                    //   ),
-                    //   onTap: () {},
-                    // ),
-                    // ListTile(
-                    //   leading: const Icon(Icons.phone),
-                    //   title: const Text('Phone'),
-                    //   subtitle: Text(HomeUserCubit.get(context)
-                    //       .userDataModel!
-                    //       .telephone!
-                    //       .toString()),
-                    //   onTap: () {},
-                    // ),
-
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     navigatAndReturn(
-                    //         context: context, page: UpdateUserForm());
-                    //   },
-                    //   child: const Text('Edit Profile'),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: defaultSubmit(
-                          text: 'Edit Profile',
+                          text: S.of(context).edit_profile, // Updated
                           valid: () {
                             navigatAndReturn(
                                 context: context, page: UpdateUserForm());
@@ -166,42 +98,21 @@ class ProfileUser extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // _buildListTile(
-            //   context,
-            //   icon: Icons.person_outline,
-            //   title: 'username',
-            //   subtitle: joueurModel.username!,
-            //   trailing: IconButton(
-            //     icon: const Icon(Icons.copy),
-            //     onPressed: () {
-            //       Clipboard.setData(ClipboardData(text: joueurModel.username!))
-            //           .then((_) {
-            //         showToast(
-            //           msg: 'copy_username_success',
-            //           state: ToastStates.error,
-            //         );
-            //       });
-            //     },
-            //   ),
-            // ),
-
-            _buildListTile(context,
-                icon: Icons.person, title: 'nom', subtitle: joueurModel.nom!),
             _buildListTile(context,
                 icon: Icons.person,
-                title: 'prenom',
+                title: S.of(context).nom,
+                subtitle: joueurModel.nom!), // Updated
+            _buildListTile(context,
+                icon: Icons.person,
+                title: S.of(context).prenom, // Updated
                 subtitle: joueurModel.prenom!),
-            // _buildListTile(context,
-            //     icon: Icons.location_city,
-            //     title: 'wilaya',
-            //     subtitle: joueurModel.wilaya!),
             _buildListTile(context,
                 icon: Icons.email_outlined,
-                title: 'email',
+                title: S.of(context).email, // Updated
                 subtitle: joueurModel.email!),
             _buildListTile(context,
                 icon: Icons.phone,
-                title: 'phone',
+                title: S.of(context).phone, // Updated
                 subtitle: joueurModel.telephone!.toString()),
           ],
         ),
@@ -230,7 +141,6 @@ class ProfileUser extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            // decoration: BoxDecoration(color: greenConst),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,38 +157,44 @@ class ProfileUser extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.home),
-            title: Text('home', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).home,
+                style: GoogleFonts.poppins()), // Updated
             onTap: () {
               navigatAndFinish(context: context, page: const HomeScreen());
             },
           ),
           ListTile(
             leading: const Icon(Icons.edit),
-            title: Text('modify_profile', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).modify_profile,
+                style: GoogleFonts.poppins()), // Updated
             onTap: () {
               navigatAndReturn(context: context, page: UpdateUserForm());
             },
           ),
           ListTile(
             leading: const Icon(Icons.lock),
-            title: Text('modify_password', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).modify_password,
+                style: GoogleFonts.poppins()), // Updated
             onTap: () {
               // navigatAndReturn(context: context, page: UpdateMdpForm());
             },
           ),
           ListTile(
             leading: const Icon(Icons.translate),
-            title: Text('change_language', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).change_language,
+                style: GoogleFonts.poppins()), // Updated
             onTap: () {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('change_language', style: GoogleFonts.poppins()),
+                  title: Text(S.of(context).change_language,
+                      style: GoogleFonts.poppins()), // Updated
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: Text('french', style: GoogleFonts.poppins()),
+                        title: Text(S.of(context).french,
+                            style: GoogleFonts.poppins()), // Updated
                         onTap: () {
                           // MainCubit.get(context)
                           //     .changeLanguage(const Locale('fr'));
@@ -286,7 +202,8 @@ class ProfileUser extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('arabic', style: GoogleFonts.poppins()),
+                        title: Text(S.of(context).arabic,
+                            style: GoogleFonts.poppins()), // Updated
                         onTap: () {
                           // MainCubit.get(context)
                           //     .changeLanguage(const Locale('ar'));
@@ -303,19 +220,23 @@ class ProfileUser extends StatelessWidget {
             textColor: Colors.red,
             iconColor: Colors.red,
             leading: const Icon(Icons.exit_to_app),
-            title: Text('logout', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).logout,
+                style: GoogleFonts.poppins()), // Updated
             onTap: () async {
               navigatAndFinish(context: context, page: Login());
               CachHelper.removdata(key: "TOKEN");
               HomeUserCubit.get(context).resetValues();
               LessonCubit.get(context).resetValues();
               ProfileCubit.get(context).resetValues();
-              showToast(msg: "Disconnect", state: ToastStates.error);
+              showToast(
+                  msg: S.of(context).disconnect,
+                  state: ToastStates.error); // Updated
             },
           ),
           ListTile(
             leading: const Icon(Icons.contact_support),
-            title: Text('contact_us', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).contact_us,
+                style: GoogleFonts.poppins()), // Updated
             onTap: () {
               // Navigator.push(
               //   context,

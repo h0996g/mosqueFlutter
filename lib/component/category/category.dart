@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/AdminScreens/lesson/edite_section.dart';
 import 'package:mosque/screen/AdminScreens/lesson/lessonDetails.dart';
@@ -40,12 +41,16 @@ class _CategoryListState extends State<CategoryList> {
         } else if (state is DeleteSectionGood) {
           CategoryCubit.get(context).getAllSection();
           showToast(
-              msg: 'Section created successfully', state: ToastStates.success);
+              msg: S.of(context).sectionCreatedSuccessfully, // Updated
+              state: ToastStates.success);
         } else if (state is DeleteSectionBad) {
-          showToast(msg: 'Failed to create Delete', state: ToastStates.error);
+          showToast(
+              msg: S.of(context).failedToCreateDelete, // Updated
+              state: ToastStates.error);
         } else if (state is ErrorCategoryState) {
           showToast(
-              msg: state.model.message ?? 'error', state: ToastStates.error);
+              msg: state.model.message ?? S.of(context).error, // Updated
+              state: ToastStates.error);
         }
       },
       builder: (context, state) {
@@ -109,13 +114,13 @@ class _CategoryListState extends State<CategoryList> {
               );
             }
             return AlertDialog(
-              title: const Text("Choose an option"),
+              title: Text(S.of(context).chooseAnOption), // Updated
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ListTile(
                     leading: const Icon(Icons.edit),
-                    title: const Text("Edit"),
+                    title: Text(S.of(context).edit), // Updated
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -131,7 +136,7 @@ class _CategoryListState extends State<CategoryList> {
                   ),
                   ListTile(
                     leading: const Icon(Icons.delete),
-                    title: const Text("Delete"),
+                    title: Text(S.of(context).delete), // Updated
                     onTap: () {
                       Navigator.pop(context);
                       showDeleteDialog(context, sectionModel);
@@ -259,10 +264,10 @@ class CategoryCard extends StatelessWidget {
                         sectionModel.photo ?? '',
                         fit: BoxFit.cover,
                       )
-                    : const Center(
-                        child: const Text(
-                          'No photo available',
-                          style: TextStyle(color: Colors.grey),
+                    : Center(
+                        child: Text(
+                          S.of(context).noPhotoAvailable, // Updated
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ),
               ),
@@ -281,7 +286,7 @@ class CategoryCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "${sectionModel.lessonIds?.length} lessons",
+                    "${S.of(context).lessons_numbers}: ${sectionModel.lessonIds?.length} ", // Updated
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.grey,

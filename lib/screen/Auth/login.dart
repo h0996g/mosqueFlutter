@@ -15,6 +15,7 @@ class Login extends StatelessWidget {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -22,6 +23,7 @@ class Login extends StatelessWidget {
     var screenWidth = screenSize.width;
     double verticalPadding = screenHeight * 0.02;
     double horizontalPadding = screenWidth * 0.05;
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -33,13 +35,16 @@ class Login extends StatelessWidget {
               children: [
                 SizedBox(height: screenHeight * 0.2),
                 Text(
-                  S.of(context).Welcome_back,
+                  S.of(context).welcome,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Text(
-                  "Discover Limitess Choices and Unmatched Convenience.",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  S.of(context).discover_text,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontSize: 20),
                 )
               ],
             ),
@@ -55,14 +60,14 @@ class Login extends StatelessWidget {
                       type: TextInputType.emailAddress,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Email must not be empty';
+                          return S.of(context).email_empty;
                         }
                       },
                       prefixIcon: const Icon(
                         Icons.keyboard_arrow_right_sharp,
                         color: Colors.grey,
                       ),
-                      labelText: "Email",
+                      labelText: S.of(context).email_label,
                       textInputAction: TextInputAction.next,
                     ),
                     SizedBox(height: screenHeight * 0.015),
@@ -77,10 +82,10 @@ class Login extends StatelessWidget {
                             obscureText: AuthCubit.get(context).ishidden,
                             valid: (value) {
                               if (value.isEmpty) {
-                                return 'Password must not be empty';
+                                return S.of(context).password_empty;
                               }
                             },
-                            labelText: 'Password',
+                            labelText: S.of(context).password_label,
                             prefixIcon: const Icon(
                               Icons.password_outlined,
                               color: Colors.grey,
@@ -120,9 +125,10 @@ class Login extends StatelessWidget {
                                           : RESETPASSWORDADMIN;
                                     }),
                                 TextButton(
-                                    child: const Text(
-                                      'Admin',
-                                      style: TextStyle(color: Colors.black),
+                                    child: Text(
+                                      S.of(context).teacher,
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                     ),
                                     onPressed: () {
                                       AuthCubit.get(context).changeCheckBox();
@@ -138,7 +144,7 @@ class Login extends StatelessWidget {
                         ),
                         TextButton(
                             onPressed: () {},
-                            child: const Text("Forgot password?"))
+                            child: Text(S.of(context).forgot_password))
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.03),
@@ -146,8 +152,6 @@ class Login extends StatelessWidget {
                       listener: (BuildContext context, AuthState state) async {
                         if (state is LoginStateGood) {
                           if (PATH == Loginadmin) {
-                            // HomeAdminCubit.get(context)
-                            //     .setAdminModel(state.model.data!);
                             navigatAndFinish(
                                 context: context, page: const HomeAdmin());
                           } else if (PATH == Loginuser) {
@@ -184,7 +188,7 @@ class Login extends StatelessWidget {
                                 );
                               }
                             },
-                            text: 'Login');
+                            text: S.of(context).login);
                       },
                     ),
                     SizedBox(height: screenHeight * 0.015),
@@ -197,16 +201,15 @@ class Login extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(5))),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 50, vertical: 15),
-                          // textStyle: const TextStyle(fontSize: 19),
-                          // backgroundColor: Colors.blueAccent,
                         ),
                         onPressed: () {
                           navigatAndReturn(
                               context: context, page: RegisterUser());
                         },
-                        child: const Text(
-                          "Create Account",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        child: Text(
+                          S.of(context).create_account,
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 16),
                         ),
                       ),
                     ),
@@ -226,7 +229,7 @@ class Login extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  " Or login with ",
+                  S.of(context).or_login_with,
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
                 const Flexible(

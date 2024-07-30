@@ -6,8 +6,10 @@ import 'package:mosque/component/category/category.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/sorting.dart';
 import 'package:mosque/const/colors.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/profile.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   HomeUserCubit? homeUserCubit;
+
   @override
   void initState() {
     homeUserCubit = HomeUserCubit.get(context);
@@ -30,8 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //bottom bar
-      // now we will use bottom bar package
+      // Bottom bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -39,22 +41,22 @@ class _HomeScreenState extends State<HomeScreen> {
             _selectedIndex = index;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home),
+            label: S.of(context).home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_rounded),
-            label: 'Favorite',
+            icon: const Icon(Icons.favorite_rounded),
+            label: S.of(context).favorite,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Messages',
+            icon: const Icon(Icons.message),
+            label: S.of(context).messages,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon: const Icon(Icons.person),
+            label: S.of(context).profile,
           ),
         ],
         selectedItemColor: kpink,
@@ -65,9 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: [
             const CustomeAppBar(),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
@@ -77,30 +77,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, state) {
                       return Row(
                         children: [
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Hi Houssam!",
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
+                          state is GetMyInformationLoading
+                              ? const HiShimmer()
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${S.of(context).hi} ${homeUserCubit!.userDataModel!.username}', // e.g., "Hi Houssam!"
+                                      style: const TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                    Text(
+                                      S
+                                          .of(context)
+                                          .motivationalQuote, // e.g., "Today is a good day\nto learn something new!"
+                                      style: const TextStyle(
+                                        color: Colors.black54,
+                                        wordSpacing: 2.5,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Text(
-                                "Today is a good day\nto learn something new!",
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  wordSpacing: 2.5,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
                           const Spacer(),
                           Column(
                             children: [
@@ -136,55 +138,76 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  //sorting
+                  const SizedBox(height: 20),
                   const Sorting(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  //category list
-
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Categories",
-                        style: TextStyle(
+                      Text(
+                        S.of(context).categories, // e.g., "Categories"
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       InkWell(
                         onTap: () {},
-                        child: const Text(
-                          "See All",
-                          style: TextStyle(fontSize: 16, color: kblue),
+                        child: Text(
+                          S.of(context).seeAll, // e.g., "See All"
+                          style: const TextStyle(fontSize: 16, color: kblue),
                         ),
                       ),
                     ],
                   ),
-
-                  //now we create model of our images and colors which we will use in our app
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  //we can not use gridview inside column
-                  //use shrinkwrap and physical scroll
-
+                  const SizedBox(height: 20),
                   const CategoryList(
                     isAdmin: false,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
-            )
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class HiShimmer extends StatelessWidget {
+  const HiShimmer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      period: const Duration(
+          milliseconds: 1200), // Adjust duration for shimmer speed
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 250,
+            height: 36,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          const SizedBox(height: 10.0),
+          Container(
+            width: 180,
+            height: 24,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ],
       ),
     );
   }

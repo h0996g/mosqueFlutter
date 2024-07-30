@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mosque/const/colors.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/screen/userScreens/home/home_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -19,7 +20,6 @@ class WelcomeScreen extends StatelessWidget {
                 child: Container(
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                      // color: kblue,
                       borderRadius:
                           BorderRadius.only(bottomRight: Radius.circular(50))),
                   child: Column(
@@ -49,7 +49,8 @@ class WelcomeScreen extends StatelessWidget {
                         children: [
                           Spacer(),
                           Text(
-                            "Learning everything",
+                            textAlign: TextAlign.center,
+                            "قُلْ هَلْ يَسْتَوِي الَّذِينَ يَعْلَمُونَ وَالَّذِينَ لا يَعْلَمُونَ",
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
@@ -57,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           Spacer(),
                           Text(
-                            "Learn with pleasure with\nus,where you are!",
+                            S.of(context).learn_with_pleasure,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black54,
@@ -70,9 +71,7 @@ class WelcomeScreen extends StatelessWidget {
                           Spacer(
                             flex: 3,
                           ),
-                          //repleace sizebox with spacer
                           Row(
-                            //button position
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               MaterialButton(
@@ -81,14 +80,13 @@ class WelcomeScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15.0)),
                                 color: kpink,
                                 onPressed: () {
-                                  //home screen path
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => HomeScreen()));
                                 },
                                 child: Text(
-                                  "Get Started",
+                                  S.of(context).get_started,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,

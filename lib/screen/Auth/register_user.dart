@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/userScreens/home/home_screen.dart';
@@ -30,7 +31,7 @@ class RegisterUser extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Let\'s create your account',
+                S.of(context).create_account_title,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               SizedBox(height: screenHeight * 0.02),
@@ -47,10 +48,10 @@ class RegisterUser extends StatelessWidget {
                                 context: context,
                                 controller: firstNameController,
                                 type: TextInputType.text,
-                                labelText: "First Name",
+                                labelText: S.of(context).first_name,
                                 valid: (String value) {
                                   if (value.isEmpty) {
-                                    return 'First Name must not be empty';
+                                    return S.of(context).first_name_empty;
                                   }
                                 },
                                 onFieldSubmitted: () {},
@@ -65,10 +66,10 @@ class RegisterUser extends StatelessWidget {
                                 context: context,
                                 controller: lastNameController,
                                 type: TextInputType.text,
-                                labelText: "Last Name",
+                                labelText: S.of(context).last_name,
                                 valid: (String value) {
                                   if (value.isEmpty) {
-                                    return 'Last Name must not be empty';
+                                    return S.of(context).last_name_empty;
                                   }
                                 },
                                 onFieldSubmitted: () {},
@@ -84,10 +85,10 @@ class RegisterUser extends StatelessWidget {
                           context: context,
                           controller: emailController,
                           type: TextInputType.emailAddress,
-                          labelText: "Email",
+                          labelText: S.of(context).email_label,
                           valid: (String value) {
                             if (value.isEmpty) {
-                              return 'Email must not be empty';
+                              return S.of(context).email_empty;
                             }
                           },
                           onFieldSubmitted: () {},
@@ -100,10 +101,10 @@ class RegisterUser extends StatelessWidget {
                         context: context,
                         controller: phoneController,
                         type: TextInputType.number,
-                        labelText: "Phone",
+                        labelText: S.of(context).phone_label,
                         valid: (String value) {
                           if (value.isEmpty) {
-                            return 'Phone must not be empty';
+                            return S.of(context).phone_empty;
                           }
                         },
                         onFieldSubmitted: () {},
@@ -123,10 +124,10 @@ class RegisterUser extends StatelessWidget {
                               obscureText: AuthCubit.get(context).ishidden,
                               valid: (value) {
                                 if (value.isEmpty) {
-                                  return 'Password must not be empty';
+                                  return S.of(context).password_empty;
                                 }
                               },
-                              labelText: "Password",
+                              labelText: S.of(context).password_label,
                               prefixIcon: const Icon(
                                 Icons.password_outlined,
                               ),
@@ -143,10 +144,10 @@ class RegisterUser extends StatelessWidget {
                           context: context,
                           controller: ageController,
                           type: TextInputType.number,
-                          labelText: "Age",
+                          labelText: S.of(context).age_label,
                           valid: (String value) {
                             if (value.isEmpty) {
-                              return 'Age must not be empty';
+                              return S.of(context).age_empty;
                             }
                           },
                           onFieldSubmitted: () {},
@@ -161,7 +162,8 @@ class RegisterUser extends StatelessWidget {
                             navigatAndFinish(
                                 context: context, page: const HomeScreen());
                             showToast(
-                                msg: 'Hi ${state.model.data!.nom!}',
+                                msg:
+                                    '${S.of(context).hi} ${state.model.data!.nom!}',
                                 state: ToastStates.success);
                             CachHelper.putcache(
                                 key: "TOKEN", value: state.model.token);
@@ -170,7 +172,9 @@ class RegisterUser extends StatelessWidget {
                                 msg: ' ${state.errorModel.message}',
                                 state: ToastStates.error);
                           } else if (state is RegisterStateBad) {
-                            showToast(msg: "Error", state: ToastStates.error);
+                            showToast(
+                                msg: S.of(context).error,
+                                state: ToastStates.error);
                           }
                         },
                         builder: (context, state) {
@@ -192,7 +196,7 @@ class RegisterUser extends StatelessWidget {
                                       .registerUser(data: sendinfologin);
                                 }
                               },
-                              text: "Create Account");
+                              text: S.of(context).create_account);
                         },
                       ),
                       SizedBox(height: screenHeight * 0.02),
@@ -212,7 +216,7 @@ class RegisterUser extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Or sign in with",
+                    S.of(context).or_sign_in_with,
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   const Flexible(

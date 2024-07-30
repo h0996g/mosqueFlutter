@@ -5,6 +5,7 @@ import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/profile.dart';
+import 'package:mosque/generated/l10n.dart'; // Import your localization file
 
 class UpdateUserForm extends StatefulWidget {
   final emailController = TextEditingController();
@@ -23,6 +24,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
   final TextEditingController _telephoneController = TextEditingController();
   HomeUserCubit homeUserCubit = HomeUserCubit();
   final formkey = GlobalKey<FormState>();
+
   @override
   void initState() {
     homeUserCubit = HomeUserCubit.get(context);
@@ -39,7 +41,6 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _nomController.dispose();
     _prenomController.dispose();
     _ageController.dispose();
@@ -54,7 +55,9 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
       listener: (context, state) {
         if (state is UpdateUserStateGood) {
           HomeUserCubit.get(context).getMyInfo().then((value) {
-            showToast(msg: "Succes", state: ToastStates.success);
+            showToast(
+                msg: S.of(context).success,
+                state: ToastStates.success); // Updated
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const ProfileUser()),
@@ -75,7 +78,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
           },
           child: Scaffold(
             appBar: AppBar(
-              title: const Text("Update"),
+              title: Text(S.of(context).update), // Updated
             ),
             body: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -129,11 +132,11 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     defaultForm3(
                         controller: _nomController,
                         textInputAction: TextInputAction.next,
-                        labelText: 'Nom',
+                        labelText: S.of(context).nom, // Updated
                         prefixIcon: const Icon(Icons.person),
                         valid: (value) {
                           if (value!.isEmpty) {
-                            return "Name Must Be Not Empty";
+                            return S.of(context).nameMustNotBeEmpty; // Updated
                           }
                         },
                         context: context),
@@ -143,7 +146,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     defaultForm3(
                         controller: _prenomController,
                         textInputAction: TextInputAction.next,
-                        labelText: 'Prenom',
+                        labelText: S.of(context).prenom, // Updated
                         prefixIcon: const Icon(
                           Icons.person,
                           color: Colors.transparent,
@@ -152,7 +155,9 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                         context: context,
                         valid: (value) {
                           if (value!.isEmpty) {
-                            return "Prenom Must Be Not Empty";
+                            return S
+                                .of(context)
+                                .prenomMustNotBeEmpty; // Updated
                           }
                         }),
                     const SizedBox(
@@ -161,13 +166,13 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     defaultForm3(
                         controller: _ageController,
                         textInputAction: TextInputAction.next,
-                        labelText: 'Age',
+                        labelText: S.of(context).age, // Updated
                         prefixIcon: const Icon(Icons.countertops_outlined),
                         type: TextInputType.text,
                         context: context,
                         valid: (value) {
                           if (value!.isEmpty) {
-                            return "Age Must Be Not Empty";
+                            return S.of(context).ageMustNotBeEmpty; // Updated
                           }
                         }),
                     const SizedBox(
@@ -177,12 +182,12 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                         controller: _emailController,
                         textInputAction: TextInputAction.next,
                         context: context,
-                        labelText: 'Email',
+                        labelText: S.of(context).email, // Updated
                         prefixIcon: const Icon(Icons.email_outlined),
                         type: TextInputType.text,
                         valid: (value) {
                           if (value!.isEmpty) {
-                            return "Email Must Be Not Empty";
+                            return S.of(context).emailMustNotBeEmpty; // Updated
                           }
                         }),
                     const SizedBox(
@@ -191,26 +196,22 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                     defaultForm3(
                         controller: _telephoneController,
                         textInputAction: TextInputAction.next,
-                        labelText: 'Telephone',
+                        labelText: S.of(context).telephone, // Updated
                         prefixIcon: const Icon(Icons.phone),
                         type: TextInputType.phone,
                         context: context,
                         valid: (value) {
                           if (value!.isEmpty) {
-                            return "Phone Must Be Not Empty";
+                            return S.of(context).phoneMustNotBeEmpty; // Updated
                           }
                         }),
                     const SizedBox(
                       height: 50,
                     ),
                     defaultSubmit(
-                        text: 'Update',
-                        // background: Colors.grey,
+                        text: S.of(context).update, // Updated
                         valid: () {
                           if (formkey.currentState!.validate()) {
-                            // if (state is LodinUpdateResponsableState) {
-                            //   return null;
-                            // }
                             ProfileCubit.get(context).updateUser(
                               nom: _nomController.text,
                               prenom: _prenomController.text,
@@ -242,30 +243,24 @@ class SelectPhotoAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Choose the source :"),
+      title: Text(
+        S.of(context).chooseSource, // Updated
+      ),
       actions: [
         TextButton(
             onPressed: () async {
-              // if (state
-              //     is LodinUpdateResponsableState) {
-              //   return null;
-              // }
               Navigator.pop(context);
               await ProfileCubit.get(context)
                   .imagePickerProfile(ImageSource.camera);
             },
-            child: const Text("Camera")),
+            child: Text(S.of(context).camera)), // Updated
         TextButton(
             onPressed: () async {
-              // if (state
-              //     is LodinUpdateResponsableState) {
-              //   return null;
-              // }
               Navigator.pop(context);
               await ProfileCubit.get(context)
                   .imagePickerProfile(ImageSource.gallery);
             },
-            child: const Text("Gallery"))
+            child: Text(S.of(context).gallery)) // Updated
       ],
     );
   }
