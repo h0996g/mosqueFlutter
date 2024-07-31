@@ -72,7 +72,11 @@ final class CreateLessonBad extends LessonAdminState {}
 
 final class DeleteLessonLoading extends LessonAdminState {}
 
-final class DeleteLessonGood extends LessonAdminState {}
+final class DeleteLessonGood extends LessonAdminState {
+  final String? oldPdfUrl;
+
+  DeleteLessonGood({required this.oldPdfUrl});
+}
 
 final class DeleteLessonBad extends LessonAdminState {}
 

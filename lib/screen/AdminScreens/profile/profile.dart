@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mosque/Model/admin_medel.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/cubit/main_cubit.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
@@ -208,21 +209,19 @@ class ProfileAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: Text(S.of(context).french,
-                            style: GoogleFonts.poppins()),
+                        title: Text("English", style: GoogleFonts.poppins()),
                         onTap: () {
-                          // MainCubit.get(context)
-                          //     .changeLanguage(const Locale('fr'));
-                          // Navigator.pop(context);
+                          MainCubit.get(context)
+                              .changeLanguage(const Locale('fr'));
+                          Navigator.pop(context);
                         },
                       ),
                       ListTile(
-                        title: Text(S.of(context).arabic,
-                            style: GoogleFonts.poppins()),
+                        title: Text("العربية", style: GoogleFonts.poppins()),
                         onTap: () {
-                          // MainCubit.get(context)
-                          //     .changeLanguage(const Locale('ar'));
-                          // Navigator.pop(context);
+                          MainCubit.get(context)
+                              .changeLanguage(const Locale('ar'));
+                          Navigator.pop(context);
                         },
                       ),
                     ],

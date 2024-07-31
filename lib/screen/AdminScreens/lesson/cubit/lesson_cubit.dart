@@ -146,11 +146,12 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
   }
 
   String? linkPdfFile;
-  Future<void> uploadPdfFile(File pdfFile) async {
+  Future<void> uploadPdfFile(File pdfFile, {String? oldPdfUrl}) async {
+    await deleteOldPdfFirebase(deleteOldPdfUrl: oldPdfUrl);
     String fileName = path.basename(pdfFile.path);
     await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('pdfs/$fileName')
+        .child('pdf/$fileName')
         .putFile(pdfFile)
         .then((p0) async {
       await p0.ref.getDownloadURL().then((value) {
@@ -162,8 +163,25 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
   }
 
   Future<void> updateLesson(
-      {required String lessonId, required Map<String, dynamic> data}) async {
+      {required String lessonId,
+      required Map<String, dynamic> data,
+      required File? pdfFile,
+      String? oldPdfUrl,
+      required bool isJustremovePdf}) async {
     emit(UpdateLessonLoading());
+    if (isJustremovePdf) {
+      print('ddddddddddddddddddddddddd');
+      data['suplemmentPdf'] = null;
+      await deleteOldPdfFirebase(deleteOldPdfUrl: oldPdfUrl);
+    }
+    if (pdfFile != null) {
+      await uploadPdfFile(pdfFile, oldPdfUrl: oldPdfUrl);
+    }
+    if (linkPdfFile != null) {
+      data['suplemmentPdf'] = linkPdfFile;
+      linkPdfFile = null;
+    }
+
     await Httplar.httpPut(path: UPDATELESSON + lessonId, data: data)
         .then((value) {
       if (value.statusCode == 200) {
@@ -205,6 +223,7 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
     }
     if (linkPdfFile != null) {
       data['suplemmentPdf'] = linkPdfFile;
+      linkPdfFile = null;
     }
     Httplar.httpPost(path: CREATELESSON, data: data).then((value) {
       if (value.statusCode == 201) {
@@ -220,11 +239,12 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
     });
   }
 
-  Future<void> deleteLesson({required String lessonID}) async {
+  Future<void> deleteLesson(
+      {required String lessonID, required String? oldPdfUrl}) async {
     emit(DeleteLessonLoading());
-    await Httplar.httpdelete(path: DELETELESSON + lessonID).then((value) {
+    await Httplar.httpdelete(path: DELETELESSON + lessonID).then((value) async {
       if (value.statusCode == 204) {
-        emit(DeleteLessonGood());
+        emit(DeleteLessonGood(oldPdfUrl: oldPdfUrl));
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
@@ -232,26 +252,21 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
         emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
+      print(e.toString());
       emit(DeleteLessonBad());
     });
   }
 
-  // File? pdfFile;
-
-  // Future<void> pickPdfFile() async {
-  //   await FilePicker.platform.pickFiles(
-  //     type: FileType.custom,
-  //     allowedExtensions: ['pdf'],
-  //   ).then((value) {
-  //     if (value != null && value.files.single.path != null) {
-  //       pdfFile = File(value.files.single.path!);
-  //       // emit(FilePdfPickerLessonStateGood());
-  //       print('PDF file selected: ${pdfFile!.path}');
-  //     } else {
-  //       print('No file selected');
-  //     }
-  //   }).catchError((e) {
-  //     emit(FilePdfPickerLessonStateBad());
-  //   });
-  // }
+  Future<void> deleteOldPdfFirebase({required String? deleteOldPdfUrl}) async {
+    if (deleteOldPdfUrl != null) {
+      await firebase_storage.FirebaseStorage.instance
+          .refFromURL(deleteOldPdfUrl)
+          .delete()
+          .then((_) {
+        print('Old Pdf deleted successfully');
+      }).catchError((error) {
+        print('Failed to delete old Pdf: $error');
+      });
+    }
+  }
 }

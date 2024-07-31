@@ -111,8 +111,11 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
           CategoryCubit.get(context).getAllSection();
         } else if (state is DeleteLessonGood) {
           CachHelper.removdata(key: '${widget.idSection}admin');
+
           _whenStartScreen();
           CategoryCubit.get(context).getAllSection();
+          LessonAdminCubit.get(context)
+              .deleteOldPdfFirebase(deleteOldPdfUrl: state.oldPdfUrl);
         }
       },
       builder: (context, state) {
@@ -451,7 +454,8 @@ class _PlayListState extends State<PlayList> {
           content: S.of(context).deleteLessonConfirmation,
           onConfirm: () {
             Navigator.of(context).pop();
-            LessonAdminCubit.get(context).deleteLesson(lessonID: lesson.id!);
+            LessonAdminCubit.get(context).deleteLesson(
+                lessonID: lesson.id!, oldPdfUrl: lesson.suplemmentPdf);
             // Implement the actual delete functionality here
             print('Deleting lesson: ${lesson.id}');
           },

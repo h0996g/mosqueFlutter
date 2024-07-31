@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mosque/component/components.dart';
+import 'package:mosque/cubit/main_cubit.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/user_model.dart';
 import 'package:mosque/screen/Auth/login.dart';
@@ -193,21 +194,21 @@ class ProfileUser extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: Text(S.of(context).french,
+                        title: Text("English",
                             style: GoogleFonts.poppins()), // Updated
                         onTap: () {
-                          // MainCubit.get(context)
-                          //     .changeLanguage(const Locale('fr'));
-                          // Navigator.pop(context);
+                          MainCubit.get(context)
+                              .changeLanguage(const Locale('fr'));
+                          Navigator.pop(context);
                         },
                       ),
                       ListTile(
-                        title: Text(S.of(context).arabic,
+                        title: Text("العربية",
                             style: GoogleFonts.poppins()), // Updated
                         onTap: () {
-                          // MainCubit.get(context)
-                          //     .changeLanguage(const Locale('ar'));
-                          // Navigator.pop(context);
+                          MainCubit.get(context)
+                              .changeLanguage(const Locale('ar'));
+                          Navigator.pop(context);
                         },
                       ),
                     ],

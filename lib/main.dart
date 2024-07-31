@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mosque/component/const.dart';
+import 'package:mosque/cubit/main_cubit.dart';
 import 'package:mosque/firebase_options.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/helper/observer.dart';
@@ -59,6 +60,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: ((context) => MainCubit()),
+        ),
+        BlocProvider(
           create: ((context) => AuthCubit()),
         ),
         BlocProvider(
@@ -83,39 +87,43 @@ class MyApp extends StatelessWidget {
           create: ((context) => LessonAdminCubit()),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        locale: const Locale('ar'),
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        home: startwidget,
-        theme: ThemeData(
-          useMaterial3: true,
+      child: BlocBuilder<MainCubit, MainState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            locale: MainCubit.get(context).locale,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            home: startwidget,
+            theme: ThemeData(
+              useMaterial3: true,
 
-          cardColor: Colors.white,
-          // scaffoldBackgroundColor: Colors.grey,
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: const AppBarTheme(
-            surfaceTintColor: Colors.white,
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.white,
-              statusBarIconBrightness: Brightness.dark,
+              cardColor: Colors.white,
+              // scaffoldBackgroundColor: Colors.grey,
+              scaffoldBackgroundColor: Colors.white,
+              appBarTheme: const AppBarTheme(
+                surfaceTintColor: Colors.white,
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Colors.white,
+                  statusBarIconBrightness: Brightness.dark,
+                ),
+                backgroundColor: Colors.white,
+                elevation: 0,
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                iconTheme: IconThemeData(color: Colors.white),
+              ),
             ),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            titleTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-            iconTheme: IconThemeData(color: Colors.white),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -12,10 +12,10 @@ class AddNewLessonPage extends StatefulWidget {
   final bool isNavigate;
 
   const AddNewLessonPage({
-    Key? key,
+    super.key,
     required this.sectionId,
     required this.isNavigate,
-  }) : super(key: key);
+  });
 
   @override
   State<AddNewLessonPage> createState() => _AddNewLessonPageState();
@@ -33,7 +33,9 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
     );
 
     if (result != null && result.files.single.path != null) {
-      pdfFile = File(result.files.single.path!);
+      setState(() {
+        pdfFile = File(result.files.single.path!);
+      });
       print('PDF file selected: ${pdfFile!.path}');
     } else {
       print('No file selected');
@@ -72,6 +74,7 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
     descriptionController.dispose();
     urlVideoController.dispose();
     durationController.dispose();
+    pdfFile = null;
     super.dispose();
   }
 
@@ -199,7 +202,62 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                     labelText: S.of(context).duration,
                     textInputAction: TextInputAction.done,
                   ),
-                  if (pdfFile != null) Text(pdfFile!.path),
+                  if (pdfFile != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 0.02 * screenHeight),
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.picture_as_pdf,
+                              size: 50,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'PDF file selected',
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  Text(
+                                    pdfFile!.path.split('/').last,
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  pdfFile = null;
+                                });
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.red[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   SizedBox(height: screenHeight * 0.02),
                   buildUploadButton(
                     icon: Icons.upload_file,

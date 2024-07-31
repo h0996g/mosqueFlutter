@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/components.dart';
@@ -18,6 +21,10 @@ class _EditLessonPageState extends State<EditLessonPage> {
   final descriptionController = TextEditingController();
   final urlVideoController = TextEditingController();
   final durationController = TextEditingController();
+  LessonAdminCubit? cubit;
+  String? oldPdfUrl;
+  String? pdfFileUrl;
+  File? pdfFile;
   final formKey = GlobalKey<FormState>();
 
   void _submitForm() {
@@ -28,17 +35,41 @@ class _EditLessonPageState extends State<EditLessonPage> {
         'urlVideo': urlVideoController.text,
         'duration': durationController.text,
       };
-      LessonAdminCubit.get(context)
-          .updateLesson(lessonId: widget.lesson.id!, data: updatedLesson);
+      cubit!.updateLesson(
+          lessonId: widget.lesson.id!,
+          data: updatedLesson,
+          pdfFile: pdfFile,
+          oldPdfUrl: oldPdfUrl,
+          isJustremovePdf: (oldPdfUrl != null && pdfFileUrl == null));
+    }
+  }
+
+  Future<void> pickPdfFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      setState(() {
+        pdfFile = File(result.files.single.path!);
+        pdfFileUrl = pdfFile!.path;
+      });
+      print('PDF file selected: ${pdfFile!.path}');
+    } else {
+      print('No file selected');
     }
   }
 
   @override
   void initState() {
+    cubit = LessonAdminCubit.get(context);
     titleController.text = widget.lesson.title ?? '';
     descriptionController.text = widget.lesson.description ?? '';
     urlVideoController.text = widget.lesson.urlVideo ?? '';
     durationController.text = widget.lesson.duration ?? '';
+    oldPdfUrl = widget.lesson.suplemmentPdf;
+    pdfFileUrl = widget.lesson.suplemmentPdf;
     super.initState();
   }
 
@@ -48,6 +79,8 @@ class _EditLessonPageState extends State<EditLessonPage> {
     descriptionController.dispose();
     urlVideoController.dispose();
     durationController.dispose();
+    pdfFileUrl = null;
+
     super.dispose();
   }
 
@@ -63,7 +96,7 @@ class _EditLessonPageState extends State<EditLessonPage> {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          if (LessonAdminCubit.get(context).state is! UpdateLessonLoading) {
+          if (cubit!.state is! UpdateLessonLoading) {
             Navigator.pop(context);
           }
         }
@@ -72,7 +105,7 @@ class _EditLessonPageState extends State<EditLessonPage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              if (LessonAdminCubit.get(context).state is! UpdateLessonLoading) {
+              if (cubit!.state is! UpdateLessonLoading) {
                 Navigator.pop(context);
               }
             },
@@ -184,11 +217,70 @@ class _EditLessonPageState extends State<EditLessonPage> {
                       labelText: S.of(context).duration,
                       textInputAction: TextInputAction.done,
                     ),
+                    if (pdfFileUrl != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: 0.02 * screenHeight),
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.picture_as_pdf,
+                                size: 50,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'PDF file selected',
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                    Text(
+                                      pdfFileUrl!.split('/').last,
+                                      style:
+                                          Theme.of(context).textTheme.caption,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    pdfFileUrl = null;
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                  color: Colors.red[700],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     SizedBox(height: screenHeight * 0.02),
                     buildUploadButton(
                       icon: Icons.upload_file,
                       label: S.of(context).uploadSupplementPDF,
                       onPressed: () {
+                        pickPdfFile();
+
                         // Implement PDF upload logic
                         print('Uploading lesson PDF...');
                       },
