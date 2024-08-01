@@ -156,5 +156,7 @@
     "passwordMustNotBeEmpty": "Password must not be empty",
     "passwordsDoNotMatch": "Passwords do not match",
     "passwordChangedSuccessfully": "Password changed successfully",
-    "serverCrashed": "Server crashed"
+    "serverCrashed": "Server crashed",
+    "username": "Username",
+    "usernameMustNotBeEmpty": "Username must not be empty"
 }

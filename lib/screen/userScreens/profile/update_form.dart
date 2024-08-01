@@ -17,6 +17,7 @@ class UpdateUserForm extends StatefulWidget {
 }
 
 class _UpdateUserFormState extends State<UpdateUserForm> {
+  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _nomController = TextEditingController();
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
@@ -28,19 +29,19 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
   @override
   void initState() {
     homeUserCubit = HomeUserCubit.get(context);
-    _nomController.text = HomeUserCubit.get(context).userDataModel!.nom!;
-    _prenomController.text = HomeUserCubit.get(context).userDataModel!.prenom!;
-    _ageController.text =
-        HomeUserCubit.get(context).userDataModel!.age!.toString();
-    _emailController.text =
-        HomeUserCubit.get(context).userDataModel!.email!.toString();
+    _userNameController.text = homeUserCubit.userDataModel!.username!;
+    _nomController.text = homeUserCubit.userDataModel!.nom!;
+    _prenomController.text = homeUserCubit.userDataModel!.prenom!;
+    _ageController.text = homeUserCubit.userDataModel!.age!.toString();
+    _emailController.text = homeUserCubit.userDataModel!.email!.toString();
     _telephoneController.text =
-        HomeUserCubit.get(context).userDataModel!.telephone!.toString();
+        homeUserCubit.userDataModel!.telephone!.toString();
     super.initState();
   }
 
   @override
   void dispose() {
+    _userNameController.dispose();
     _nomController.dispose();
     _prenomController.dispose();
     _ageController.dispose();
@@ -130,6 +131,22 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                       height: 30,
                     ),
                     defaultForm3(
+                        controller: _userNameController,
+                        textInputAction: TextInputAction.next,
+                        labelText: S.of(context).username, // Updated
+                        prefixIcon: const Icon(Icons.person),
+                        valid: (value) {
+                          if (value!.isEmpty) {
+                            return S
+                                .of(context)
+                                .usernameMustNotBeEmpty; // Updated
+                          }
+                        },
+                        context: context),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    defaultForm3(
                         controller: _nomController,
                         textInputAction: TextInputAction.next,
                         labelText: S.of(context).nom, // Updated
@@ -213,6 +230,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                         valid: () {
                           if (formkey.currentState!.validate()) {
                             ProfileUserCubit.get(context).updateUser(
+                              userName: _userNameController.text,
                               nom: _nomController.text,
                               prenom: _prenomController.text,
                               email: _emailController.text,

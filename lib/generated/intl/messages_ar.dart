@@ -246,6 +246,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("جارٍ رفع ملف الدرس PDF..."),
         "uploadingPhoto":
             MessageLookupByLibrary.simpleMessage("جارٍ تحميل صورة القسم..."),
+        "username": MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
+        "usernameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
+            "يجب ألا يكون اسم المستخدم فارغًا"),
         "verify": MessageLookupByLibrary.simpleMessage("تحقق"),
         "verifyPassword":
             MessageLookupByLibrary.simpleMessage("التحقق من كلمة المرور"),

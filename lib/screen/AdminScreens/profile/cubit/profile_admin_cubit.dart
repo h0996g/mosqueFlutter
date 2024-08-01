@@ -31,7 +31,8 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
   }
 
   Future<void> updateAdmin(
-      {required String nom,
+      {required String userName,
+      required String nom,
       required String prenom,
       required String telephone,
       required String age,
@@ -41,14 +42,15 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     if (imageCompress != null) {
       await updateProfileImg(deleteOldImage: deleteOldImage);
     }
-    Map<String, dynamic> _model = {
+    Map<String, dynamic> model = {
+      "username": userName,
       "nom": nom,
       "prenom": prenom,
       "telephone": telephone,
       "age": age,
       if (linkProfileImg != null) "photo": linkProfileImg
     };
-    await Httplar.httpPut(path: UPDATEADMIN, data: _model).then((value) {
+    await Httplar.httpPut(path: UPDATEADMIN, data: model).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

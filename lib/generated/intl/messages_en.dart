@@ -248,6 +248,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Uploading lesson PDF..."),
         "uploadingPhoto":
             MessageLookupByLibrary.simpleMessage("Uploading section photo..."),
+        "username": MessageLookupByLibrary.simpleMessage("Username"),
+        "usernameMustNotBeEmpty":
+            MessageLookupByLibrary.simpleMessage("Username must not be empty"),
         "verify": MessageLookupByLibrary.simpleMessage("Verify"),
         "verifyPassword":
             MessageLookupByLibrary.simpleMessage("Verify Password"),

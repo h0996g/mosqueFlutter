@@ -1629,6 +1629,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Username`
+  String get username {
+    return Intl.message(
+      'Username',
+      name: 'username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username must not be empty`
+  String get usernameMustNotBeEmpty {
+    return Intl.message(
+      'Username must not be empty',
+      name: 'usernameMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

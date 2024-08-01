@@ -24,7 +24,8 @@ class ProfileUserCubit extends Cubit<ProfileUserState> {
   }
 
   Future<void> updateUser(
-      {required String nom,
+      {required String userName,
+      required String nom,
       required String prenom,
       required String telephone,
       required String email,
@@ -37,7 +38,9 @@ class ProfileUserCubit extends Cubit<ProfileUserState> {
         deleteOldImage: deleteOldImage,
       );
     }
-    Map<String, dynamic> _model = {
+
+    Map<String, dynamic> model0 = {
+      "username": userName,
       "nom": nom,
       "prenom": prenom,
       "email": email,
@@ -45,7 +48,7 @@ class ProfileUserCubit extends Cubit<ProfileUserState> {
       "age": age,
       if (linkProfileImg != null) "photo": linkProfileImg
     };
-    await Httplar.httpPut(path: UPDATEJOUEUR, data: _model).then((value) {
+    await Httplar.httpPut(path: UPDATEJOUEUR, data: model0).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

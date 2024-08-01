@@ -156,5 +156,7 @@
     "passwordMustNotBeEmpty": "يجب ألا تكون كلمة المرور فارغة",
     "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
     "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح",
-    "serverCrashed": "حدث خطأ في الخادم"
+    "serverCrashed": "حدث خطأ في الخادم",
+    "username": "اسم المستخدم",
+    "usernameMustNotBeEmpty": "يجب ألا يكون اسم المستخدم فارغًا"
 }

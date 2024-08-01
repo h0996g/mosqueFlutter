@@ -16,6 +16,7 @@ class UpdateAdminForm extends StatefulWidget {
 }
 
 class _UpdateAdminFormState extends State<UpdateAdminForm> {
+  final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _nomController = TextEditingController();
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
@@ -27,6 +28,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
   void initState() {
     super.initState();
     homeAdminCubit = HomeAdminCubit.get(context).adminModel!;
+    _userNameController.text = homeAdminCubit.username!;
     _nomController.text = homeAdminCubit.nom!;
     _prenomController.text = homeAdminCubit.prenom!;
     _ageController.text = homeAdminCubit.age!.toString();
@@ -35,6 +37,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
 
   @override
   void dispose() {
+    _userNameController.dispose();
     _nomController.dispose();
     _prenomController.dispose();
     _ageController.dispose();
@@ -110,6 +113,19 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 30),
+                  defaultForm3(
+                    controller: _userNameController,
+                    textInputAction: TextInputAction.next,
+                    labelText: S.of(context).username,
+                    prefixIcon: const Icon(Icons.person),
+                    valid: (value) {
+                      if (value!.isEmpty) {
+                        return S.of(context).usernameMustNotBeEmpty;
+                      }
+                    },
+                    context: context,
                   ),
                   const SizedBox(height: 30),
                   defaultForm3(
@@ -199,6 +215,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                               return null;
                             }
                             ProfileAdminCubit.get(context).updateAdmin(
+                              userName: _userNameController.text,
                               nom: _nomController.text,
                               prenom: _prenomController.text,
                               telephone: _telephoneController.text,
