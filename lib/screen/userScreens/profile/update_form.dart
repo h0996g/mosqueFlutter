@@ -79,8 +79,16 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
           },
           child: Scaffold(
             appBar: AppBar(
-              title: Text(S.of(context).update), // Updated
-            ),
+                title: Text(S.of(context).update), // Updated
+                leading: IconButton(
+                  color: Colors.black,
+                  icon: const Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    if (state is! UpdateUserLoadingState) {
+                      Navigator.pop(context);
+                    }
+                  },
+                )),
             body: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Form(

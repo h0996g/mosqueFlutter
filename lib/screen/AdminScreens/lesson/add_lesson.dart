@@ -86,202 +86,216 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
     double verticalPadding = screenHeight * 0.02;
     double horizontalPadding = screenWidth * 0.05;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          if (_cubit.state is! CreateLessonLoading) {
             Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              if (_cubit.state is CreateLessonLoading) {
+                return;
+              }
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-            vertical: verticalPadding, horizontal: horizontalPadding),
-        child: BlocConsumer<LessonAdminCubit, LessonAdminState>(
-          listener: (context, state) {
-            if (state is CreateLessonGood) {
-              if (widget.isNavigate) {
-                Navigator.pop(context);
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+              vertical: verticalPadding, horizontal: horizontalPadding),
+          child: BlocConsumer<LessonAdminCubit, LessonAdminState>(
+            listener: (context, state) {
+              if (state is CreateLessonGood) {
+                if (widget.isNavigate) {
+                  Navigator.pop(context);
+                }
+                showToast(
+                  msg: S.of(context).lessonCreatedSuccess,
+                  state: ToastStates.success,
+                );
+              } else if (state is CreateLessonBad) {
+                showToast(
+                  msg: S.of(context).lessonCreationFailed,
+                  state: ToastStates.error,
+                );
               }
-              showToast(
-                msg: S.of(context).lessonCreatedSuccess,
-                state: ToastStates.success,
-              );
-            } else if (state is CreateLessonBad) {
-              showToast(
-                msg: S.of(context).lessonCreationFailed,
-                state: ToastStates.error,
-              );
-            }
-          },
-          builder: (context, state) {
-            return Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    S.of(context).createNewLesson,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Text(
-                    S.of(context).fillInLessonDetails,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  SizedBox(height: screenHeight * 0.04),
-                  defaultForm3(
-                    context: context,
-                    controller: titleController,
-                    type: TextInputType.text,
-                    valid: (String value) {
-                      if (value.isEmpty) {
-                        return S.of(context).titleEmptyError;
-                      }
-                    },
-                    prefixIcon: const Icon(
-                      Icons.title,
-                      color: Colors.grey,
+            },
+            builder: (context, state) {
+              return Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.of(context).createNewLesson,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    labelText: S.of(context).lessonTitle,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  defaultForm3(
-                    context: context,
-                    controller: descriptionController,
-                    type: TextInputType.multiline,
-                    valid: (String value) {
-                      if (value.isEmpty) {
-                        return S.of(context).descriptionEmptyError;
-                      }
-                    },
-                    prefixIcon: const Icon(
-                      Icons.description,
-                      color: Colors.grey,
+                    SizedBox(height: screenHeight * 0.02),
+                    Text(
+                      S.of(context).fillInLessonDetails,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    labelText: S.of(context).description,
-                    maxline: 3,
-                    textInputAction: TextInputAction.newline,
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  defaultForm3(
-                    context: context,
-                    controller: urlVideoController,
-                    type: TextInputType.url,
-                    valid: (String value) {
-                      if (value.isEmpty) {
-                        return S.of(context).videoUrlEmptyError;
-                      }
-                    },
-                    prefixIcon: const Icon(
-                      Icons.video_library,
-                      color: Colors.grey,
+                    SizedBox(height: screenHeight * 0.04),
+                    defaultForm3(
+                      context: context,
+                      controller: titleController,
+                      type: TextInputType.text,
+                      valid: (String value) {
+                        if (value.isEmpty) {
+                          return S.of(context).titleEmptyError;
+                        }
+                      },
+                      prefixIcon: const Icon(
+                        Icons.title,
+                        color: Colors.grey,
+                      ),
+                      labelText: S.of(context).lessonTitle,
+                      textInputAction: TextInputAction.next,
                     ),
-                    labelText: S.of(context).videoUrl,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  defaultForm3(
-                    context: context,
-                    controller: durationController,
-                    type: TextInputType.text,
-                    valid: (String value) {
-                      if (value.isEmpty) {
-                        return S.of(context).durationEmptyError;
-                      }
-                    },
-                    prefixIcon: const Icon(
-                      Icons.timer,
-                      color: Colors.grey,
+                    SizedBox(height: screenHeight * 0.02),
+                    defaultForm3(
+                      context: context,
+                      controller: descriptionController,
+                      type: TextInputType.multiline,
+                      valid: (String value) {
+                        if (value.isEmpty) {
+                          return S.of(context).descriptionEmptyError;
+                        }
+                      },
+                      prefixIcon: const Icon(
+                        Icons.description,
+                        color: Colors.grey,
+                      ),
+                      labelText: S.of(context).description,
+                      maxline: 3,
+                      textInputAction: TextInputAction.newline,
                     ),
-                    labelText: S.of(context).duration,
-                    textInputAction: TextInputAction.done,
-                  ),
-                  if (pdfFile != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: 0.02 * screenHeight),
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.picture_as_pdf,
-                              size: 50,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'PDF file selected',
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                  Text(
-                                    pdfFile!.path.split('/').last,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
+                    SizedBox(height: screenHeight * 0.02),
+                    defaultForm3(
+                      context: context,
+                      controller: urlVideoController,
+                      type: TextInputType.url,
+                      valid: (String value) {
+                        if (value.isEmpty) {
+                          return S.of(context).videoUrlEmptyError;
+                        }
+                      },
+                      prefixIcon: const Icon(
+                        Icons.video_library,
+                        color: Colors.grey,
+                      ),
+                      labelText: S.of(context).videoUrl,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    defaultForm3(
+                      context: context,
+                      controller: durationController,
+                      type: TextInputType.text,
+                      valid: (String value) {
+                        if (value.isEmpty) {
+                          return S.of(context).durationEmptyError;
+                        }
+                      },
+                      prefixIcon: const Icon(
+                        Icons.timer,
+                        color: Colors.grey,
+                      ),
+                      labelText: S.of(context).duration,
+                      textInputAction: TextInputAction.done,
+                    ),
+                    if (pdfFile != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: 0.02 * screenHeight),
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  pdfFile = null;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.red[700],
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.picture_as_pdf,
+                                size: 50,
+                                color: Colors.red,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'PDF file selected',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                    Text(
+                                      pdfFile!.path.split('/').last,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    pdfFile = null;
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                  color: Colors.red[700],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  SizedBox(height: screenHeight * 0.02),
-                  buildUploadButton(
-                    icon: Icons.upload_file,
-                    label: S.of(context).uploadSupplementPdf,
-                    onPressed: () {
-                      pickPdfFile();
-                    },
-                  ),
-                  SizedBox(height: screenHeight * 0.04),
-                  if (state is CreateLessonLoading)
-                    const Center(child: CircularProgressIndicator())
-                  else
-                    buildSubmitButton(
-                      context,
-                      () {
-                        _submitForm(context, _cubit);
+                    SizedBox(height: screenHeight * 0.02),
+                    buildUploadButton(
+                      icon: Icons.upload_file,
+                      label: S.of(context).uploadSupplementPdf,
+                      onPressed: () {
+                        pickPdfFile();
                       },
-                      S.of(context).createLesson,
                     ),
-                ],
-              ),
-            );
-          },
+                    SizedBox(height: screenHeight * 0.04),
+                    if (state is CreateLessonLoading)
+                      const Center(child: CircularProgressIndicator())
+                    else
+                      buildSubmitButton(
+                        context,
+                        () {
+                          _submitForm(context, _cubit);
+                        },
+                        S.of(context).createLesson,
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

@@ -74,7 +74,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          if (CategoryCubit.get(context).state is! UpdateSectionLoading) {
+          if (_cubit!.state is! UpdateSectionLoading) {
             Navigator.pop(context);
           }
         }
@@ -83,7 +83,7 @@ class _EditSectionPageState extends State<EditSectionPage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              if (CategoryCubit.get(context).state is! UpdateSectionLoading) {
+              if (_cubit!.state is! UpdateSectionLoading) {
                 Navigator.pop(context);
               }
             },

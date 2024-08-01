@@ -60,7 +60,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          if (CategoryCubit.get(context).state is! CreateSectionLoading) {
+          if (_cubit!.state is! CreateSectionLoading) {
             Navigator.pop(context);
           }
         }
@@ -69,7 +69,7 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
         appBar: AppBar(
             leading: IconButton(
           onPressed: () {
-            if (CategoryCubit.get(context).state is! CreateSectionLoading) {
+            if (_cubit!.state is! CreateSectionLoading) {
               Navigator.pop(context);
             }
           },

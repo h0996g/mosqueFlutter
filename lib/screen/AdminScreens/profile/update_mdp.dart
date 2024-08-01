@@ -29,6 +29,14 @@ class UpdateMdpForm extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(S.of(context).changePassword),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+            onPressed: () {
+              if (canPop == true) {
+                Navigator.pop(context);
+              }
+            },
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),

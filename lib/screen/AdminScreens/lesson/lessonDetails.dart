@@ -126,6 +126,9 @@ class _LessonAdminScreenState extends State<LessonAdminScreen> {
               appBar: AppBar(
                 leading: IconButton(
                   onPressed: () {
+                    if (state is CreateLessonLoading) {
+                      return;
+                    }
                     Navigator.pop(context);
                   },
                   icon: const Icon(

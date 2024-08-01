@@ -60,6 +60,17 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(S.of(context).update),
+          leading: IconButton(
+            onPressed: () {
+              if (canPop == true) {
+                Navigator.pop(context);
+              }
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
