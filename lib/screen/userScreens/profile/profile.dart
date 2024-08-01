@@ -11,7 +11,8 @@ import 'package:mosque/screen/userScreens/home/home_screen.dart';
 import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/update_form.dart';
-import 'package:mosque/generated/l10n.dart'; // Import your localization file
+import 'package:mosque/generated/l10n.dart';
+import 'package:mosque/screen/userScreens/profile/update_mdp.dart'; // Import your localization file
 
 class ProfileUser extends StatelessWidget {
   const ProfileUser({super.key});
@@ -42,7 +43,7 @@ class ProfileUser extends StatelessWidget {
           ),
           drawer:
               _buildDrawer(context, HomeUserCubit.get(context).userDataModel!),
-          body: BlocConsumer<ProfileCubit, ProfileState>(
+          body: BlocConsumer<ProfileUserCubit, ProfileUserState>(
             listener: (context, state) {},
             builder: (context, state) {
               return SingleChildScrollView(
@@ -177,7 +178,7 @@ class ProfileUser extends StatelessWidget {
             title: Text(S.of(context).modify_password,
                 style: GoogleFonts.poppins()), // Updated
             onTap: () {
-              // navigatAndReturn(context: context, page: UpdateMdpForm());
+              navigatAndReturn(context: context, page: UpdateMdpForm());
             },
           ),
           ListTile(
@@ -228,7 +229,7 @@ class ProfileUser extends StatelessWidget {
               CachHelper.removdata(key: "TOKEN");
               HomeUserCubit.get(context).resetValues();
               LessonCubit.get(context).resetValues();
-              ProfileCubit.get(context).resetValues();
+              ProfileUserCubit.get(context).resetValues();
               showToast(
                   msg: S.of(context).disconnect,
                   state: ToastStates.error); // Updated

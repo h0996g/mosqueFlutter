@@ -36,9 +36,9 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
       setState(() {
         pdfFile = File(result.files.single.path!);
       });
-      print('PDF file selected: ${pdfFile!.path}');
+      // print('PDF file selected: ${pdfFile!.path}');
     } else {
-      print('No file selected');
+      // print('No file selected');
     }
   }
 
@@ -49,7 +49,7 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
 
   final formKey = GlobalKey<FormState>();
 
-  void _submitForm(context, LessonAdminCubit _cubit) {
+  void _submitForm(context, LessonAdminCubit cubit) {
     if (formKey.currentState!.validate()) {
       Map<String, dynamic> data = {
         'section': widget.sectionId,
@@ -58,7 +58,7 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
         'urlVideo': urlVideoController.text,
         'duration': durationController.text,
       };
-      _cubit.createLesson(data: data, pdfFile: pdfFile);
+      cubit.createLesson(data: data, pdfFile: pdfFile);
     }
   }
 
@@ -234,11 +234,12 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                                   Text(
                                     'PDF file selected',
                                     style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
                                   Text(
                                     pdfFile!.path.split('/').last,
-                                    style: Theme.of(context).textTheme.caption,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],
                               ),
@@ -264,7 +265,6 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                     label: S.of(context).uploadSupplementPdf,
                     onPressed: () {
                       pickPdfFile();
-                      print(S.of(context).uploadingPdf);
                     },
                   ),
                   SizedBox(height: screenHeight * 0.04),

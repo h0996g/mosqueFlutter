@@ -51,7 +51,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileCubit, ProfileState>(
+    return BlocConsumer<ProfileUserCubit, ProfileUserState>(
       listener: (context, state) {
         if (state is UpdateUserStateGood) {
           HomeUserCubit.get(context).getMyInfo().then((value) {
@@ -93,11 +93,11 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                       children: [
                         CircleAvatar(
                           backgroundColor: Colors.transparent,
-                          backgroundImage: ProfileCubit.get(context)
+                          backgroundImage: ProfileUserCubit.get(context)
                                       .imageCompress !=
                                   null
                               ? FileImage(
-                                  ProfileCubit.get(context).imageCompress!)
+                                  ProfileUserCubit.get(context).imageCompress!)
                               : HomeUserCubit.get(context)
                                           .userDataModel!
                                           .photo !=
@@ -212,7 +212,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                         text: S.of(context).update, // Updated
                         valid: () {
                           if (formkey.currentState!.validate()) {
-                            ProfileCubit.get(context).updateUser(
+                            ProfileUserCubit.get(context).updateUser(
                               nom: _nomController.text,
                               prenom: _prenomController.text,
                               email: _emailController.text,
@@ -250,14 +250,14 @@ class SelectPhotoAlert extends StatelessWidget {
         TextButton(
             onPressed: () async {
               Navigator.pop(context);
-              await ProfileCubit.get(context)
+              await ProfileUserCubit.get(context)
                   .imagePickerProfile(ImageSource.camera);
             },
             child: Text(S.of(context).camera)), // Updated
         TextButton(
             onPressed: () async {
               Navigator.pop(context);
-              await ProfileCubit.get(context)
+              await ProfileUserCubit.get(context)
                   .imagePickerProfile(ImageSource.gallery);
             },
             child: Text(S.of(context).gallery)) // Updated

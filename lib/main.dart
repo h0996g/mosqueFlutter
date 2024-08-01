@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
           create: ((context) => ProfileAdminCubit()),
         ),
         BlocProvider(
-          create: ((context) => ProfileCubit()),
+          create: ((context) => ProfileUserCubit()),
         ),
         BlocProvider(
           create: ((context) => HomeUserCubit()),

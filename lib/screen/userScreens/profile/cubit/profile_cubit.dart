@@ -14,10 +14,10 @@ import 'package:mosque/model/user_model.dart';
 
 part 'profile_state.dart';
 
-class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileInitial());
+class ProfileUserCubit extends Cubit<ProfileUserState> {
+  ProfileUserCubit() : super(ProfileInitial());
 
-  static ProfileCubit get(context) => BlocProvider.of(context);
+  static ProfileUserCubit get(context) => BlocProvider.of(context);
   void resetValues() {
     imageCompress = null;
     linkProfileImg = null;
@@ -110,5 +110,39 @@ class ProfileCubit extends Cubit<ProfileState> {
         print('Failed to delete old image: $error');
       });
     }
+  }
+
+  Future<void> updateMdpUser({
+    required String old,
+    required String newPassword,
+  }) async {
+    emit(UpdateMdpUserLoadingState());
+
+    Map<String, dynamic> model = {
+      "oldPassword": old,
+      "newPassword": newPassword,
+    };
+    await Httplar.httpPut(path: UPDATEMDPUSER, data: model).then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateMdpUserStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(model: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateMdpAdminStateBad());
+    });
+  }
+
+  Map<String, bool> isHidden = {
+    "pass": true,
+    "pass1": true,
+    "pass2": true,
+  };
+  void togglePasswordVisibility(String fieldKey) {
+    isHidden[fieldKey] = !isHidden[fieldKey]!;
+    emit(PasswordVisibilityChanged());
   }
 }
