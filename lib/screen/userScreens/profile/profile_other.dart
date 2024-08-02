@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mosque/component/components.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/model/user_model.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
+import 'package:mosque/screen/userScreens/profile/progress_user.dart';
 
-class ProfileOtherStudent extends StatelessWidget {
+class ProfileOtherStudent extends StatefulWidget {
   final String id;
   const ProfileOtherStudent({super.key, required this.id});
 
   @override
+  State<ProfileOtherStudent> createState() => _ProfileOtherStudentState();
+}
+
+class _ProfileOtherStudentState extends State<ProfileOtherStudent> {
+  late final DataUserModel user;
+  ProfileUserCubit? _cubit;
+  // ProfileUserCubit.get(context).getOtherUser(id: widget.id);
+  @override
+  void initState() {
+    _cubit = ProfileUserCubit.get(context);
+    _cubit!.getOtherUser(id: widget.id);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    late final DataUserModel user;
-    ProfileUserCubit.get(context).getOtherUser(id: id);
     return BlocConsumer<ProfileUserCubit, ProfileUserState>(
       listener: (context, state) {
         if (state is GetOtherUserStateGood) {
@@ -61,6 +76,14 @@ class ProfileOtherStudent extends StatelessWidget {
                   const SizedBox(height: 20),
                   _buildProfileCard(context, user),
                   const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: buildSubmitButton(context, () {
+                      navigatAndReturn(
+                          context: context,
+                          page: ProgressUserDetails(id: user.id!));
+                    }, S.of(context).show_progress),
+                  ),
                 ],
               ),
             ));

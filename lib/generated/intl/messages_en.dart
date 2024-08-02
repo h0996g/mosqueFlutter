@@ -223,6 +223,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
         "serverCrashed": MessageLookupByLibrary.simpleMessage("Server crashed"),
         "showQuiz": MessageLookupByLibrary.simpleMessage("Show Quiz"),
+        "show_progress": MessageLookupByLibrary.simpleMessage("Show progress"),
         "students": MessageLookupByLibrary.simpleMessage("Students"),
         "success": MessageLookupByLibrary.simpleMessage("Success"),
         "supplement": MessageLookupByLibrary.simpleMessage("Supplement"),

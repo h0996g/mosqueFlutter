@@ -221,6 +221,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "serverCrashed":
             MessageLookupByLibrary.simpleMessage("حدث خطأ في الخادم"),
         "showQuiz": MessageLookupByLibrary.simpleMessage("عرض الاختبار"),
+        "show_progress": MessageLookupByLibrary.simpleMessage("عرض التقدم"),
         "students": MessageLookupByLibrary.simpleMessage("الطلاب"),
         "success": MessageLookupByLibrary.simpleMessage("نجاح"),
         "supplement": MessageLookupByLibrary.simpleMessage("ملحق"),

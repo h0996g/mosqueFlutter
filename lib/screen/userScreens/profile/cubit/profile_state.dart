@@ -36,6 +36,16 @@ final class PasswordVisibilityChanged extends ProfileUserState {}
 
 final class GetOtherUserLoadingState extends ProfileUserState {}
 
+final class GetProgressUserLoadingState extends ProfileUserState {}
+
+final class GetProgressUserStateGood extends ProfileUserState {
+  final List<ProDataModel> model;
+
+  GetProgressUserStateGood({required this.model});
+}
+
+final class GetProgressUserStateBad extends ProfileUserState {}
+
 final class GetUserStateBad extends ProfileUserState {}
 
 final class GetOtherUserStateGood extends ProfileUserState {

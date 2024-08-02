@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mosque/component/appbar.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/const/colors.dart';
-import 'package:mosque/screen/AdminScreens/lesson/add_section.dart';
 import 'package:mosque/screen/AdminScreens/profile/profile.dart';
 
 import '../../../component/category/category.dart';
@@ -20,8 +18,6 @@ class HomeAdmin extends StatefulWidget {
 }
 
 class _HomeAdminState extends State<HomeAdmin> {
-  int _selectedIndex = 0;
-
   HomeAdminCubit? homeAdminCubit;
   @override
   void initState() {

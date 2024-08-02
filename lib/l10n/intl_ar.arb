@@ -159,5 +159,6 @@
     "passwordChangedSuccessfully": "تم تغيير كلمة المرور بنجاح",
     "serverCrashed": "حدث خطأ في الخادم",
     "username": "اسم المستخدم",
-    "usernameMustNotBeEmpty": "يجب ألا يكون اسم المستخدم فارغًا"
+    "usernameMustNotBeEmpty": "يجب ألا يكون اسم المستخدم فارغًا",
+    "show_progress": "عرض التقدم"
 }

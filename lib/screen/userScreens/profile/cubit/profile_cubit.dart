@@ -8,6 +8,7 @@ import 'package:meta/meta.dart';
 import 'package:mosque/Api/constApi.dart';
 import 'package:mosque/Api/httplaravel.dart';
 import 'package:mosque/model/error_model.dart';
+import 'package:mosque/model/progress_model.dart';
 import 'dart:convert' as convert;
 
 import 'package:mosque/model/user_model.dart';
@@ -23,6 +24,26 @@ class ProfileUserCubit extends Cubit<ProfileUserState> {
     linkProfileImg = null;
   }
 
+  Future<void> getProgressUser({required String id}) async {
+    emit(GetProgressUserLoadingState());
+    await Httplar.httpget(path: GETPROGRESSUSER + id).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(value.body) as List;
+        List<ProDataModel> model =
+            jsonResponse.map((e) => ProDataModel.fromJson(e)).toList();
+        emit(GetProgressUserStateGood(model: model));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetUserStateBad());
+    });
+  }
+
   Future<void> getOtherUser({required String id}) async {
     emit(GetOtherUserLoadingState());
     await Httplar.httpget(path: GETOtherUSER + id).then((value) {
@@ -32,7 +53,10 @@ class ProfileUserCubit extends Cubit<ProfileUserState> {
         DataUserModel model = DataUserModel.fromJson(jsonResponse);
         emit(GetOtherUserStateGood(model: model));
       } else {
-        print(value.body);
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        ErrorModel errorModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(model: errorModel));
       }
     }).catchError((e) {
       print(e.toString());
