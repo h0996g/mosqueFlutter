@@ -23,6 +23,23 @@ class ProfileUserCubit extends Cubit<ProfileUserState> {
     linkProfileImg = null;
   }
 
+  Future<void> getOtherUser({required String id}) async {
+    emit(GetOtherUserLoadingState());
+    await Httplar.httpget(path: GETOtherUSER + id).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        DataUserModel model = DataUserModel.fromJson(jsonResponse);
+        emit(GetOtherUserStateGood(model: model));
+      } else {
+        print(value.body);
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetUserStateBad());
+    });
+  }
+
   Future<void> updateUser(
       {required String userName,
       required String nom,

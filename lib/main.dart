@@ -10,7 +10,7 @@ import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/helper/observer.dart';
 import 'package:mosque/helper/socket.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
-import 'package:mosque/screen/AdminScreens/home/home.dart';
+import 'package:mosque/screen/AdminScreens/home/startPage.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
@@ -41,7 +41,7 @@ void main() async {
     if (DECODEDTOKEN['role'] == 'user') {
       startWidget = const WelcomeScreen();
     } else if (DECODEDTOKEN['role'] == 'admin') {
-      startWidget = const HomeAdmin();
+      startWidget = const StartPageAdmin();
     }
   }
   final SocketService _socketService = SocketService();

@@ -300,6 +300,16 @@ class S {
     );
   }
 
+  /// `Students`
+  String get students {
+    return Intl.message(
+      'Students',
+      name: 'students',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Messages`
   String get messages {
     return Intl.message(

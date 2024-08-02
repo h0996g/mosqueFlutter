@@ -7,7 +7,7 @@ import 'package:mosque/cubit/main_cubit.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
-import 'package:mosque/screen/AdminScreens/home/home.dart';
+import 'package:mosque/screen/AdminScreens/home/startPage.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/profile/update_form.dart';
 import 'package:mosque/screen/Auth/login.dart';
@@ -25,7 +25,7 @@ class ProfileAdmin extends StatelessWidget {
       onPopInvoked: (didPop) async {
         if (!didPop) {
           // Navigator.pop(context);
-          navigatAndFinish(context: context, page: const HomeAdmin());
+          navigatAndFinish(context: context, page: const StartPageAdmin());
         }
       },
       child: Scaffold(
@@ -173,7 +173,7 @@ class ProfileAdmin extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: Text(S.of(context).home, style: GoogleFonts.poppins()),
             onTap: () {
-              navigatAndFinish(context: context, page: const HomeAdmin());
+              navigatAndFinish(context: context, page: const StartPageAdmin());
             },
           ),
           ListTile(

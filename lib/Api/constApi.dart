@@ -3,7 +3,8 @@ const URLHTTP = '192.168.1.14:3000';
 // const URLHTTP = 'mosque-node-h0996g-h0996gs-projects.vercel.app';
 // const URLHTTP = '10.0.2.2:3000';
 // const URLHTTP = '10.0.2.2:3000';
-
+const GETALLSTUDENTS = '/api/users';
+const GETOtherUSER = '/api/user/';
 const Loginuser = '/api/user/login';
 const REGISTERJOUER = '/api/user/register';
 const GETMYINFORMATIONJOUEUR = '/api/user/myinformation';

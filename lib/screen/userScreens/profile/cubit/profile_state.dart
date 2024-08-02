@@ -33,3 +33,13 @@ final class UpdateMdpUserStateGood extends ProfileUserState {}
 final class UpdateMdpAdminStateBad extends ProfileUserState {}
 
 final class PasswordVisibilityChanged extends ProfileUserState {}
+
+final class GetOtherUserLoadingState extends ProfileUserState {}
+
+final class GetUserStateBad extends ProfileUserState {}
+
+final class GetOtherUserStateGood extends ProfileUserState {
+  final DataUserModel model;
+
+  GetOtherUserStateGood({required this.model});
+}
