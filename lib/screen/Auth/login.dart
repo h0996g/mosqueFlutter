@@ -5,7 +5,7 @@ import 'package:mosque/component/components.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/helper/cachhelper.dart';
-import 'package:mosque/screen/AdminScreens/home/home.dart';
+import 'package:mosque/screen/AdminScreens/home/startPage.dart';
 import 'package:mosque/screen/Auth/cubit/auth_cubit.dart';
 import 'package:mosque/screen/Auth/register_user.dart';
 import 'package:mosque/screen/userScreens/home/home_screen.dart';
@@ -153,7 +153,7 @@ class Login extends StatelessWidget {
                         if (state is LoginStateGood) {
                           if (PATH == Loginadmin) {
                             navigatAndFinish(
-                                context: context, page: const HomeAdmin());
+                                context: context, page: const StartPageAdmin());
                           } else if (PATH == Loginuser) {
                             navigatAndFinish(
                                 context: context, page: const HomeScreen());
