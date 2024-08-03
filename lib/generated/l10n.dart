@@ -1669,6 +1669,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Quiz`
+  String get quizTitle {
+    return Intl.message(
+      'Quiz',
+      name: 'quizTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time remaining: {remainingSeconds} seconds`
+  String timeRemaining(Object remainingSeconds) {
+    return Intl.message(
+      'Time remaining: $remainingSeconds seconds',
+      name: 'timeRemaining',
+      desc: '',
+      args: [remainingSeconds],
+    );
+  }
+
+  /// `Error loading quiz`
+  String get errorLoadingQuiz {
+    return Intl.message(
+      'Error loading quiz',
+      name: 'errorLoadingQuiz',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finish`
+  String get finish {
+    return Intl.message(
+      'Finish',
+      name: 'finish',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get next {
+    return Intl.message(
+      'Next',
+      name: 'next',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Score`
+  String get yourScore {
+    return Intl.message(
+      'Your Score',
+      name: 'yourScore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get continuee {
+    return Intl.message(
+      'Continue',
+      name: 'continuee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check Answer`
+  String get checkAnswer {
+    return Intl.message(
+      'Check Answer',
+      name: 'checkAnswer',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

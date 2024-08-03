@@ -160,5 +160,13 @@
     "serverCrashed": "حدث خطأ في الخادم",
     "username": "اسم المستخدم",
     "usernameMustNotBeEmpty": "يجب ألا يكون اسم المستخدم فارغًا",
-    "show_progress": "عرض التقدم"
+    "show_progress": "عرض التقدم",
+    "quizTitle": "اختبار",
+    "timeRemaining": "الوقت المتبقي: {remainingSeconds} ثواني",
+    "errorLoadingQuiz": "خطأ في تحميل الاختبار",
+    "finish": "إنهاء",
+    "next": "التالي",
+    "yourScore": "نتيجتك",
+    "continuee": "استمر",
+    "checkAnswer": "تحقق من الإجابة"
 }

@@ -51,6 +51,7 @@ class _QuizEditorScreenState extends State<QuizEditorScreen> {
                   showToast(
                       msg: S.of(context).quizUpdatedSuccessfully,
                       state: ToastStates.success);
+                      Navigator.pop(context);
                 } else {
                   showToast(
                       msg: S.of(context).errorUpdatingQuiz,

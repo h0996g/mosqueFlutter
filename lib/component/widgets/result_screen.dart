@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 
 class ResultScreen extends StatefulWidget {
@@ -51,9 +52,9 @@ class _ResultScreenState extends State<ResultScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Your Score',
-              style: TextStyle(
+            Text(
+              S.of(context).yourScore,
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -83,26 +84,13 @@ class _ResultScreenState extends State<ResultScreen>
                         ),
                       ),
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          '${(_animation.value * 100).toInt()}%',
-                          style: const TextStyle(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '${widget.scorePercentage}%',
-                          style: const TextStyle(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      '${(_animation.value * 100).toInt()}%',
+                      style: const TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 );
@@ -111,14 +99,14 @@ class _ResultScreenState extends State<ResultScreen>
             const SizedBox(height: 48),
             ElevatedButton(
               onPressed: () async {
-                if (widget.scorePercentage / 100 >= 0.5) {
+                if (widget.scorePercentage >= 50) {
                   await HomeUserCubit.get(context)
                       .updateLessonCompletionStatus(
                     idlesson: widget.idLesson,
                     idSection: widget.idSection,
                     score: widget.scorePercentage.toInt(),
                   )
-                      .then((value) async {
+                      .then((value) {
                     widget.onQuizCompleted();
                     Navigator.pop(context);
                   });
@@ -137,9 +125,9 @@ class _ResultScreenState extends State<ResultScreen>
                   borderRadius: BorderRadius.circular(24),
                 ),
               ),
-              child: const Text(
-                'Continue',
-                style: TextStyle(
+              child: Text(
+                S.of(context).continuee,
+                style: const TextStyle(
                   fontSize: 20,
                   color: Colors.white,
                 ),

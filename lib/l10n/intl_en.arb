@@ -160,5 +160,13 @@
     "serverCrashed": "Server crashed",
     "username": "Username",
     "usernameMustNotBeEmpty": "Username must not be empty",
-    "show_progress": "Show progress"
+    "show_progress": "Show progress",
+    "quizTitle": "Quiz",
+    "timeRemaining": "Time remaining: {remainingSeconds} seconds",
+    "errorLoadingQuiz": "Error loading quiz",
+    "finish": "Finish",
+    "next": "Next",
+    "yourScore": "Your Score",
+    "continuee": "Continue",
+    "checkAnswer": "Check Answer"
 }

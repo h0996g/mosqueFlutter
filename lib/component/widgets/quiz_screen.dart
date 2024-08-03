@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/widgets/answer_card.dart';
 import 'package:mosque/component/widgets/next_button.dart';
 import 'package:mosque/component/widgets/result_screen.dart';
+import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/model/section_model.dart';
 import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 
 class QuizScreen extends StatefulWidget {
-  // final Lesson lesson;
   final String lessonId;
   final String sectionId;
   final Function(int) onQuizCompleted;
@@ -25,13 +25,14 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  int? selectedAnswerIndex;
+  Set<int> selectedAnswers = {};
   int questionIndex = 0;
   int score = 0;
   int remainingSeconds = 10;
   Timer? timer;
   LessonCubit? lessonCubit;
   List<Quiz> quiz = [];
+  bool showCorrectAnswer = false;
 
   @override
   void initState() {
@@ -54,80 +55,108 @@ class _QuizScreenState extends State<QuizScreen> {
           remainingSeconds--;
         });
       } else {
-        goToNextQuestion();
+        checkAnswer();
       }
     });
   }
 
   void pickAnswer(int value) {
-    selectedAnswerIndex = value;
-    final question = quiz[questionIndex];
-    if (question.correctAnswerIndex!.contains(selectedAnswerIndex)) {
-      score++;
+    if (!showCorrectAnswer) {
+      setState(() {
+        if (selectedAnswers.contains(value)) {
+          selectedAnswers.remove(value);
+        } else {
+          selectedAnswers.add(value);
+        }
+      });
     }
-    setState(() {});
+  }
+
+  void checkAnswer() {
+    timer?.cancel();
+    setState(() {
+      showCorrectAnswer = true;
+    });
+    calculateScore();
+  }
+
+  void calculateScore() {
+    final question = quiz[questionIndex];
+    Set<int> correctAnswers = Set.from(question.correctAnswerIndex!);
+    if (selectedAnswers.isNotEmpty && correctAnswers.isNotEmpty) {
+      if (selectedAnswers.length == correctAnswers.length &&
+          selectedAnswers.containsAll(correctAnswers)) {
+        score++;
+      }
+    }
   }
 
   void goToNextQuestion() {
-    timer?.cancel();
     if (questionIndex < quiz.length - 1) {
-      questionIndex++;
-      selectedAnswerIndex = null;
-      remainingSeconds = 10;
+      setState(() {
+        questionIndex++;
+        selectedAnswers.clear();
+        remainingSeconds = 10;
+        showCorrectAnswer = false;
+      });
       startTimer();
     } else {
-      // Last question, go to result screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => ResultScreen(
-            idLesson: widget.lessonId,
-            idSection: widget.sectionId,
-            scorePercentage: (score / quiz.length) * 100,
-            onQuizCompleted: () {
-              widget.onQuizCompleted(score);
-            },
-          ),
-        ),
-      );
+      navigateToResultScreen();
     }
-    setState(() {});
   }
 
-  // late final Quiz question;
-  // late bool isLastQuestion;
+  void navigateToResultScreen() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => ResultScreen(
+          idLesson: widget.lessonId,
+          idSection: widget.sectionId,
+          scorePercentage: (score / quiz.length) * 100,
+          onQuizCompleted: () {
+            widget.onQuizCompleted(score);
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
           ),
-          backgroundColor: Colors.black,
-          title: const Text(
-            'Quiz',
-            style: TextStyle(color: Colors.white),
-          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-        body:
-            BlocConsumer<LessonCubit, LessonState>(listener: (context, state) {
+        backgroundColor: Colors.white,
+        title: Text(
+          S.of(context).quizTitle,
+          style: const TextStyle(color: Colors.black),
+        ),
+      ),
+      body: BlocConsumer<LessonCubit, LessonState>(
+        listener: (context, state) {
           if (state is GetQuizGood) {
             quiz = state.quiz;
           }
-        }, builder: (context, state) {
+        },
+        builder: (context, state) {
           if (state is GetQuizLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (state is GetQuizBad) {
-            return const Center(
-              child: Text('Error loading quiz'),
+            return Center(
+              child: Text(
+                S.of(context).errorLoadingQuiz,
+                style: const TextStyle(color: Colors.black),
+              ),
             );
           } else {
             if (quiz.isEmpty) {
@@ -149,15 +178,15 @@ class _QuizScreenState extends State<QuizScreen> {
                       quiz[questionIndex].question!,
                       style: const TextStyle(
                         fontSize: 21,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      'Time remaining: $remainingSeconds seconds',
+                      S.of(context).timeRemaining(remainingSeconds),
                       style: const TextStyle(
                         fontSize: 18,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     ListView.builder(
@@ -165,51 +194,38 @@ class _QuizScreenState extends State<QuizScreen> {
                       itemCount: quiz[questionIndex].options!.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: selectedAnswerIndex == null
-                              ? () => pickAnswer(index)
-                              : null,
+                          onTap: () => pickAnswer(index),
                           child: AnswerCard(
                             currentIndex: index,
                             question: quiz[questionIndex].options![index],
-                            isSelected: selectedAnswerIndex == index,
-                            selectedAnswerIndex: selectedAnswerIndex,
+                            isSelected: selectedAnswers.contains(index),
+                            selectedAnswers: selectedAnswers,
                             correctAnswerIndex:
                                 quiz[questionIndex].correctAnswerIndex!,
+                            showCorrectAnswer: showCorrectAnswer,
                           ),
                         );
                       },
                     ),
-                    // Next Button
-                    questionIndex == quiz.length - 1
+                    showCorrectAnswer
                         ? RectangularButton(
-                            onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (_) => ResultScreen(
-                                    idLesson: widget.lessonId,
-                                    idSection: widget.sectionId,
-                                    scorePercentage:
-                                        (score / quiz.length) * 100,
-                                    onQuizCompleted: () {
-                                      widget.onQuizCompleted(score);
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                            label: 'Finish',
+                            onPressed: goToNextQuestion,
+                            label: questionIndex == quiz.length - 1
+                                ? S.of(context).finish
+                                : S.of(context).next,
                           )
                         : RectangularButton(
-                            onPressed: selectedAnswerIndex != null
-                                ? goToNextQuestion
-                                : null,
-                            label: 'Next',
+                            onPressed:
+                                selectedAnswers.isNotEmpty ? checkAnswer : null,
+                            label: S.of(context).checkAnswer,
                           ),
                   ],
                 ),
               );
             }
           }
-        }));
+        },
+      ),
+    );
   }
 }

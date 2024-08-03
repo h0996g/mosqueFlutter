@@ -23,6 +23,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(sectionName) =>
       "Are you sure you want to delete \"${sectionName}\"?";
 
+  static String m1(remainingSeconds) =>
+      "Time remaining: ${remainingSeconds} seconds";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "Rulings_and_sermons":
@@ -49,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Change Password"),
         "change_language":
             MessageLookupByLibrary.simpleMessage("Change Language"),
+        "checkAnswer": MessageLookupByLibrary.simpleMessage("Check Answer"),
         "chooseAnOption":
             MessageLookupByLibrary.simpleMessage("Choose an option"),
         "chooseSource":
@@ -63,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Are you sure you want to delete this comment?"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
         "contact_us": MessageLookupByLibrary.simpleMessage("Contact Us"),
+        "continuee": MessageLookupByLibrary.simpleMessage("Continue"),
         "createLesson": MessageLookupByLibrary.simpleMessage("Create Lesson"),
         "createNewLesson":
             MessageLookupByLibrary.simpleMessage("Create a New Lesson"),
@@ -111,6 +116,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterYourPassword":
             MessageLookupByLibrary.simpleMessage("Enter your password"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
+        "errorLoadingQuiz":
+            MessageLookupByLibrary.simpleMessage("Error loading quiz"),
         "errorUpdatingQuiz":
             MessageLookupByLibrary.simpleMessage("Error updating quiz"),
         "failedToCreateDelete":
@@ -120,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Fill in the details for your new lesson."),
         "fillInSectionDetails": MessageLookupByLibrary.simpleMessage(
             "Fill in the details for your new section."),
+        "finish": MessageLookupByLibrary.simpleMessage("Finish"),
         "first_name": MessageLookupByLibrary.simpleMessage("First Name"),
         "first_name_empty": MessageLookupByLibrary.simpleMessage(
             "First Name must not be empty"),
@@ -169,6 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nameMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("Name must not be empty"),
         "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),
+        "next": MessageLookupByLibrary.simpleMessage("Next"),
         "no": MessageLookupByLibrary.simpleMessage("No"),
         "noPhotoAvailable":
             MessageLookupByLibrary.simpleMessage("No photo available"),
@@ -204,6 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "proposal": MessageLookupByLibrary.simpleMessage("Proposal"),
         "question": MessageLookupByLibrary.simpleMessage("Question"),
         "quizEditorTitle": MessageLookupByLibrary.simpleMessage("Quiz Editor"),
+        "quizTitle": MessageLookupByLibrary.simpleMessage("Quiz"),
         "quizUpdatedSuccessfully":
             MessageLookupByLibrary.simpleMessage("Quiz updated successfully"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
@@ -230,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "surname": MessageLookupByLibrary.simpleMessage("Surname"),
         "teacher": MessageLookupByLibrary.simpleMessage("teacher"),
         "telephone": MessageLookupByLibrary.simpleMessage("Phone"),
+        "timeRemaining": m1,
         "titleEmptyError":
             MessageLookupByLibrary.simpleMessage("Title must not be empty"),
         "unknown_user": MessageLookupByLibrary.simpleMessage("Unknown User"),
@@ -263,6 +274,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "videoUrlEmptyError":
             MessageLookupByLibrary.simpleMessage("Video URL must not be empty"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
-        "yes": MessageLookupByLibrary.simpleMessage("Yes")
+        "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+        "yourScore": MessageLookupByLibrary.simpleMessage("Your Score")
       };
 }

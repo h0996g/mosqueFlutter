@@ -23,6 +23,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(sectionName) =>
       "هل أنت متأكد أنك تريد حذف \"${sectionName}\"؟";
 
+  static String m1(remainingSeconds) =>
+      "الوقت المتبقي: ${remainingSeconds} ثواني";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "Rulings_and_sermons":
@@ -46,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "changePassword":
             MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
         "change_language": MessageLookupByLibrary.simpleMessage("تغيير اللغة"),
+        "checkAnswer": MessageLookupByLibrary.simpleMessage("تحقق من الإجابة"),
         "chooseAnOption": MessageLookupByLibrary.simpleMessage("اختر خيارًا"),
         "chooseSource": MessageLookupByLibrary.simpleMessage("اختر المصدر:"),
         "comment_deleted":
@@ -58,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "هل أنت متأكد أنك تريد حذف هذا التعليق؟"),
         "contactUs": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
         "contact_us": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
+        "continuee": MessageLookupByLibrary.simpleMessage("استمر"),
         "createLesson": MessageLookupByLibrary.simpleMessage("إنشاء درس"),
         "createNewLesson":
             MessageLookupByLibrary.simpleMessage("إنشاء درس جديد"),
@@ -106,6 +111,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterYourPassword":
             MessageLookupByLibrary.simpleMessage("أدخل كلمة المرور الخاصة بك"),
         "error": MessageLookupByLibrary.simpleMessage("خطأ"),
+        "errorLoadingQuiz":
+            MessageLookupByLibrary.simpleMessage("خطأ في تحميل الاختبار"),
         "errorUpdatingQuiz":
             MessageLookupByLibrary.simpleMessage("خطأ في تحديث الاختبار"),
         "failedToCreateDelete":
@@ -115,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("املأ تفاصيل درسك الجديد."),
         "fillInSectionDetails":
             MessageLookupByLibrary.simpleMessage("املأ تفاصيل القسم الجديد."),
+        "finish": MessageLookupByLibrary.simpleMessage("إنهاء"),
         "first_name": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
         "first_name_empty": MessageLookupByLibrary.simpleMessage(
             "يجب ألا يكون الاسم الأول فارغًا"),
@@ -165,6 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الاسم لا يجب أن يكون فارغًا"),
         "newPassword":
             MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
+        "next": MessageLookupByLibrary.simpleMessage("التالي"),
         "no": MessageLookupByLibrary.simpleMessage("لا"),
         "noPhotoAvailable":
             MessageLookupByLibrary.simpleMessage("لا توجد صورة متاحة"),
@@ -201,6 +210,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "proposal": MessageLookupByLibrary.simpleMessage("اقتراح"),
         "question": MessageLookupByLibrary.simpleMessage("السؤال"),
         "quizEditorTitle": MessageLookupByLibrary.simpleMessage("محرر الأسئلة"),
+        "quizTitle": MessageLookupByLibrary.simpleMessage("اختبار"),
         "quizUpdatedSuccessfully":
             MessageLookupByLibrary.simpleMessage("تم تحديث الاختبار بنجاح"),
         "save": MessageLookupByLibrary.simpleMessage("حفظ"),
@@ -228,6 +238,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "surname": MessageLookupByLibrary.simpleMessage("اللقب"),
         "teacher": MessageLookupByLibrary.simpleMessage("معلم"),
         "telephone": MessageLookupByLibrary.simpleMessage("الهاتف"),
+        "timeRemaining": m1,
         "titleEmptyError":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون العنوان فارغًا"),
         "unknown_user": MessageLookupByLibrary.simpleMessage("مستخدم مجهول"),
@@ -261,6 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "videoUrlEmptyError": MessageLookupByLibrary.simpleMessage(
             "يجب ألا يكون رابط الفيديو فارغًا"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحبا"),
-        "yes": MessageLookupByLibrary.simpleMessage("نعم")
+        "yes": MessageLookupByLibrary.simpleMessage("نعم"),
+        "yourScore": MessageLookupByLibrary.simpleMessage("نتيجتك")
       };
 }
