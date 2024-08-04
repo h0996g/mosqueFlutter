@@ -18,7 +18,7 @@ class ProfileAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DataAdminModel adminModel = HomeAdminCubit.get(context).adminModel!;
+    // final DataAdminModel adminModel = HomeAdminCubit.get(context).adminModel!;
 
     return PopScope(
       canPop: false,
@@ -43,31 +43,37 @@ class ProfileAdmin extends StatelessWidget {
           ),
           title: Text(S.of(context).profile),
         ),
-        drawer: _buildDrawer(context, adminModel),
-        body: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
+        drawer: _buildDrawer(context, HomeAdminCubit.get(context).adminModel!),
+        body: BlocConsumer<HomeAdminCubit, HomeAdminState>(
           listener: (context, state) {},
           builder: (context, state) {
+            if (state is GetMyInformationLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: adminModel.photo != null
-                        ? NetworkImage(adminModel.photo!)
-                        : const AssetImage('assets/images/user.png')
-                            as ImageProvider<Object>,
+                    backgroundImage:
+                        HomeAdminCubit.get(context).adminModel!.photo != null
+                            ? NetworkImage(
+                                HomeAdminCubit.get(context).adminModel!.photo!)
+                            : const AssetImage('assets/images/user.png')
+                                as ImageProvider<Object>,
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    adminModel.username!,
+                    HomeAdminCubit.get(context).adminModel!.username!,
                     style: GoogleFonts.poppins(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 20),
-                  _buildProfileCard(context, adminModel),
+                  _buildProfileCard(
+                      context, HomeAdminCubit.get(context).adminModel!),
                   const SizedBox(height: 30),
                   Padding(
                     padding: const EdgeInsets.all(16.0),

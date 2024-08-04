@@ -207,14 +207,18 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
 
                       if (state is UpdateAdminStateGood) {
                         HomeAdminCubit.get(context).getMyInfo().then((value) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProfileAdmin(),
-                            ),
-                            (route) => false,
-                          );
+                          showToast(
+                              msg: S.of(context).success,
+                              state: ToastStates.success);
+                          // Navigator.pushAndRemoveUntil(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const ProfileAdmin(),
+                          //   ),
+                          //   (route) => false,
+                          // );
                         });
+                        Navigator.pop(context);
                       }
                     },
                     builder: (context, state) {

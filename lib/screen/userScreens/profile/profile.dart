@@ -10,6 +10,7 @@ import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/screen/userScreens/home/home_screen.dart';
 import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
+// import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/update_form.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/screen/userScreens/profile/update_mdp.dart'; // Import your localization file
@@ -23,7 +24,8 @@ class ProfileUser extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          navigatAndFinish(context: context, page: const HomeScreen());
+          // navigatAndFinish(context: context, page: const HomeScreen());
+          Navigator.pop(context);
         }
       },
       child: Scaffold(
@@ -43,9 +45,12 @@ class ProfileUser extends StatelessWidget {
           ),
           drawer:
               _buildDrawer(context, HomeUserCubit.get(context).userDataModel!),
-          body: BlocConsumer<ProfileUserCubit, ProfileUserState>(
+          body: BlocConsumer<HomeUserCubit, HomeUserState>(
             listener: (context, state) {},
             builder: (context, state) {
+              if (state is GetMyInformationLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

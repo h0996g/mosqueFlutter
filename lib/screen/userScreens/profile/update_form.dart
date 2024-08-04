@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
-import 'package:mosque/screen/userScreens/profile/profile.dart';
 import 'package:mosque/generated/l10n.dart'; // Import your localization file
 
 class UpdateUserForm extends StatefulWidget {
@@ -55,16 +54,18 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
     return BlocConsumer<ProfileUserCubit, ProfileUserState>(
       listener: (context, state) {
         if (state is UpdateUserStateGood) {
+          // Updated
           HomeUserCubit.get(context).getMyInfo().then((value) {
-            showToast(
-                msg: S.of(context).success,
-                state: ToastStates.success); // Updated
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfileUser()),
-              (route) => false,
-            );
+            showToast(msg: S.of(context).success, state: ToastStates.success);
           });
+          Navigator.pop(context);
+          // Navigator.pop(context);
+          // Navigator.pushAndRemoveUntil(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const ProfileUser()),
+          //   (route) => false,
+          // );
+          // });
         }
       },
       builder: (context, state) {
