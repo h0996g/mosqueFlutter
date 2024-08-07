@@ -168,5 +168,8 @@
     "next": "Next",
     "yourScore": "Your Score",
     "continuee": "Continue",
-    "checkAnswer": "Check Answer"
+    "checkAnswer": "Check Answer",
+    "there_are_no_lessons_yet": "There are no lessons yet",
+    "congratulations": "Congratulations",
+    "focusAndTryAgain": "Focus and try again"
 }

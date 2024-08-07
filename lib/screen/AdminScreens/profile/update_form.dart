@@ -6,7 +6,6 @@ import 'package:mosque/component/components.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
-import 'package:mosque/screen/AdminScreens/profile/profile.dart';
 
 class UpdateAdminForm extends StatefulWidget {
   const UpdateAdminForm({super.key});

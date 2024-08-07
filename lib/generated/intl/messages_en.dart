@@ -65,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Confirm New Password"),
         "confirm_delete_comment": MessageLookupByLibrary.simpleMessage(
             "Are you sure you want to delete this comment?"),
+        "congratulations":
+            MessageLookupByLibrary.simpleMessage("Congratulations"),
         "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
         "contact_us": MessageLookupByLibrary.simpleMessage("Contact Us"),
         "continuee": MessageLookupByLibrary.simpleMessage("Continue"),
@@ -131,6 +133,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "first_name": MessageLookupByLibrary.simpleMessage("First Name"),
         "first_name_empty": MessageLookupByLibrary.simpleMessage(
             "First Name must not be empty"),
+        "focusAndTryAgain":
+            MessageLookupByLibrary.simpleMessage("Focus and try again"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "french": MessageLookupByLibrary.simpleMessage("French"),
@@ -240,6 +244,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "surname": MessageLookupByLibrary.simpleMessage("Surname"),
         "teacher": MessageLookupByLibrary.simpleMessage("teacher"),
         "telephone": MessageLookupByLibrary.simpleMessage("Phone"),
+        "there_are_no_lessons_yet":
+            MessageLookupByLibrary.simpleMessage("There are no lessons yet"),
         "timeRemaining": m1,
         "titleEmptyError":
             MessageLookupByLibrary.simpleMessage("Title must not be empty"),

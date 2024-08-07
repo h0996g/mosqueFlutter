@@ -7,7 +7,6 @@ import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/model/user_model.dart';
 import 'package:mosque/screen/Auth/login.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
-import 'package:mosque/screen/userScreens/home/home_screen.dart';
 import 'package:mosque/screen/userScreens/lesson/cubit/lesson_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 // import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
@@ -156,7 +155,7 @@ class ProfileUser extends StatelessWidget {
                   radius: 40,
                   backgroundImage: joueurModel.photo != null
                       ? NetworkImage(joueurModel.photo!)
-                      : const AssetImage('assets/images/football.png')
+                      : const AssetImage('assets/images/user.png')
                           as ImageProvider<Object>,
                 ),
               ],
@@ -167,7 +166,10 @@ class ProfileUser extends StatelessWidget {
             title: Text(S.of(context).home,
                 style: GoogleFonts.poppins()), // Updated
             onTap: () {
-              navigatAndFinish(context: context, page: const HomeScreen());
+              // navigatAndFinish(context: context, page: const HomeScreen());
+              // Navigator.popUntil(context, (route) => route.isFirst);
+              Navigator.pop(context);
+              Navigator.pop(context);
             },
           ),
           ListTile(

@@ -1749,6 +1749,36 @@ class S {
       args: [],
     );
   }
+
+  /// `There are no lessons yet`
+  String get there_are_no_lessons_yet {
+    return Intl.message(
+      'There are no lessons yet',
+      name: 'there_are_no_lessons_yet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Congratulations`
+  String get congratulations {
+    return Intl.message(
+      'Congratulations',
+      name: 'congratulations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Focus and try again`
+  String get focusAndTryAgain {
+    return Intl.message(
+      'Focus and try again',
+      name: 'focusAndTryAgain',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

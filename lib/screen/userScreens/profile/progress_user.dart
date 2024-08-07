@@ -1,8 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/model/progress_model.dart';
-
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
 
 class ProgressUserDetails extends StatefulWidget {
@@ -19,6 +17,7 @@ class ProgressUserDetails extends StatefulWidget {
 class _ProgressUserDetailsState extends State<ProgressUserDetails> {
   ProfileUserCubit? _cubit;
   List<ProDataModel> progressData = [];
+
   @override
   void initState() {
     _cubit = ProfileUserCubit.get(context);
@@ -54,11 +53,14 @@ class _ProgressUserDetailsState extends State<ProgressUserDetails> {
               },
             ),
           ),
-          body: ListView.builder(
-            itemCount: progressData.length,
-            itemBuilder: (context, index) {
-              return SectionCard(sectionData: progressData[index]);
-            },
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              itemCount: progressData.length,
+              itemBuilder: (context, index) {
+                return SectionCard(sectionData: progressData[index]);
+              },
+            ),
           ),
         );
       },
@@ -71,40 +73,90 @@ class SectionCard extends StatelessWidget {
 
   const SectionCard({super.key, required this.sectionData});
 
+  Color _getProgressColor(double score) {
+    if (score == 100) {
+      return Colors.green; // Gold for 100%
+    } else if (score >= 80) {
+      return Colors.amber; // Green for 80-99%
+    } else if (score >= 50) {
+      return Colors.yellow; // Yellow for 50-79%
+    } else {
+      return Colors.grey; // Default color for below 50%
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              sectionData.section.name,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            sectionData.section.name,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
             ),
-            const SizedBox(height: 10),
-            Text(sectionData.section.description),
-            const SizedBox(height: 10),
-            const Divider(),
-            ...sectionData.completedLessons.map((lesson) {
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  child: Text(
-                    lesson.score.toString(),
-                    style: const TextStyle(color: Colors.white),
-                  ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            sectionData.section.description,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black54,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Column(
+            children: sectionData.completedLessons.map((lesson) {
+              final double score = lesson.score.toDouble();
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            lesson.lesson.title,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          LinearProgressIndicator(
+                            value: score / 100,
+                            backgroundColor: Colors.grey[300],
+                            color: _getProgressColor(score),
+                            minHeight: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      '${lesson.score}%',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
                 ),
-                title: Text(lesson.lesson.title),
               );
-            }),
-          ],
-        ),
+            }).toList(),
+          ),
+        ],
       ),
     );
   }

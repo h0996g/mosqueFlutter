@@ -12,22 +12,32 @@ class RectangularButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return ElevatedButton(
       onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black87,
+        backgroundColor: Colors.white, // Text color for light button
+        elevation: 2, // Button shadow
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8), // Rounded corners
+          side: BorderSide(
+            color: Colors.grey[300]!, // Subtle border color
+          ),
+        ),
+      ),
       child: SizedBox(
         height: 50,
         width: double.infinity,
-        child: Card(
-          color: onPressed != null ? Colors.grey[800] : Colors.grey[700],
-          child: Center(
-            child: Text(
-              label,
-              style: const TextStyle(
-                letterSpacing: 2,
-                fontSize: 25,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              letterSpacing: 1.5, // Adjusted letter spacing
+              fontSize: 20, // Adjusted font size
+              fontWeight: FontWeight.w500, // Medium weight font
+              color: onPressed != null
+                  ? Colors.black87
+                  : Colors.grey[500], // Text color based on button state
             ),
           ),
         ),

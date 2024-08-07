@@ -25,66 +25,76 @@ class AnswerCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Container(
-        height: 70,
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[800],
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: showCorrectAnswer
-                ? (isCorrectAnswer
-                    ? Colors.green
-                    : (isWrongAnswer ? Colors.red : Colors.grey[600]!))
-                : (isSelected ? Colors.blue : Colors.grey[600]!),
+      child: Material(
+        elevation: 4.0, // Added shadow
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white, // Light background color
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: showCorrectAnswer
+                  ? (isCorrectAnswer
+                      ? Colors.green
+                      : (isWrongAnswer ? Colors.red : Colors.grey[300]!))
+                  : (isSelected
+                      ? Colors.blue
+                      : Colors.grey[300]!), // Softer border colors
+            ),
           ),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                question,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  question,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87, // Improved contrast
+                    fontWeight: FontWeight.w500, // Slightly bolder font
+                  ),
+                  softWrap: true, // Wrap text to the next line
                 ),
               ),
-            ),
-            const SizedBox(width: 10),
-            if (showCorrectAnswer)
-              isCorrectAnswer
-                  ? buildCorrectIcon()
-                  : (isWrongAnswer ? buildWrongIcon() : const SizedBox.shrink())
-            else if (isSelected)
-              buildSelectedIcon(),
-          ],
+              const SizedBox(width: 10),
+              if (showCorrectAnswer)
+                isCorrectAnswer
+                    ? buildCorrectIcon()
+                    : (isWrongAnswer
+                        ? buildWrongIcon()
+                        : const SizedBox.shrink())
+              else if (isSelected)
+                buildSelectedIcon(),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget buildCorrectIcon() => const CircleAvatar(
+  Widget buildCorrectIcon() => CircleAvatar(
         radius: 15,
         backgroundColor: Colors.green,
-        child: Icon(
+        child: const Icon(
           Icons.check,
           color: Colors.white,
         ),
       );
 
-  Widget buildWrongIcon() => const CircleAvatar(
+  Widget buildWrongIcon() => CircleAvatar(
         radius: 15,
         backgroundColor: Colors.red,
-        child: Icon(
+        child: const Icon(
           Icons.close,
           color: Colors.white,
         ),
       );
 
-  Widget buildSelectedIcon() => const CircleAvatar(
+  Widget buildSelectedIcon() => CircleAvatar(
         radius: 15,
         backgroundColor: Colors.blue,
-        child: Icon(
+        child: const Icon(
           Icons.check,
           color: Colors.white,
         ),

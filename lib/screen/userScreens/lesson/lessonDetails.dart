@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/const.dart';
 import 'package:mosque/component/widgets/lesson_card.dart';
@@ -95,12 +97,14 @@ class _LessonScreenState extends State<LessonScreen> {
       listener: (context, state) async {
         if (state is GetSectionByIdStateGood) {
           model = state.model;
-          if (!isFirstTimeSection(widget.idSection)) {
-            await homeUserCubit!.updateLessonCompletionStatus(
-              idlesson: model!.lessonObjects!.first.id!,
-              idSection: widget.idSection,
-              score: 100,
-            );
+          if (state.model.lessonObjects!.isNotEmpty) {
+            if (!isFirstTimeSection(widget.idSection)) {
+              await homeUserCubit!.updateLessonCompletionStatus(
+                idlesson: model!.lessonObjects!.first.id!,
+                idSection: widget.idSection,
+                score: 100,
+              );
+            }
           }
         }
       },
@@ -120,6 +124,27 @@ class _LessonScreenState extends State<LessonScreen> {
             child: Text('Error'),
           );
         } else {
+          if (state is GetSectionByIdStateGood &&
+              state.model.lessonObjects!.isEmpty) {
+            return Scaffold(
+              appBar: AppBar(
+                  leading: IconButton(
+                color: Colors.black,
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )),
+              body: Center(
+                child: Container(
+                  child: Text(
+                    S.of(context).there_are_no_lessons_yet,
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ),
+              ),
+            );
+          }
           return YoutubePlayerBuilder(
             player: player,
             builder: (context, player) {
@@ -661,82 +686,120 @@ class _CommentsItemsState extends State<CommentsItems> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: widget.userID == widget.comments.user?.id
-            ? Border.all(color: Colors.grey.shade800)
-            : Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.comments.user?.username ?? S.of(context).unknown_user,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                widget.comments.isDeleted == true || isDelete == true
-                    ? Text(
-                        S.of(context).comment_deleted, // Updated
-                        style: TextStyle(color: Colors.red[300]),
-                      )
-                    : Text(widget.comments.comment ?? ''),
-                const SizedBox(height: 5),
-                Text(
-                  widget.comments.createdAt ?? '',
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-              ],
+    bool isCurrentUser = widget.userID == widget.comments.user?.id;
+
+    return Align(
+      alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isCurrentUser ? Colors.blue[50] : Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
             ),
-          ),
-          if (widget.userID == widget.comments.user?.id &&
-              (widget.comments.isDeleted == false && isDelete == false))
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(S.of(context).delete_comment), // Updated
-                        content: Text(
-                            S.of(context).confirm_delete_comment), // Updated
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(S.of(context).no), // Updated
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              LessonCubit.get(context)
-                                  .deleteComment(
-                                lessonID: widget.lessonID,
-                                commentID: widget.comments.id!,
-                              )
-                                  .then((value) {
-                                setState(() {
-                                  isDelete = true;
-                                });
-                              });
-                              Navigator.pop(context);
-                            },
-                            child: Text(S.of(context).yes), // Updated
-                          ),
-                        ],
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (isCurrentUser &&
+                (widget.comments.isDeleted == false && isDelete == false))
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(S.of(context).delete_comment),
+                            content: Text(S.of(context).confirm_delete_comment),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(S.of(context).no),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  LessonCubit.get(context)
+                                      .deleteComment(
+                                    lessonID: widget.lessonID,
+                                    commentID: widget.comments.id!,
+                                  )
+                                      .then((value) {
+                                    setState(() {
+                                      isDelete = true;
+                                    });
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Text(S.of(context).yes),
+                              ),
+                            ],
+                          );
+                        },
                       );
-                    });
-              },
+                    },
+                  ),
+                ],
+              ),
+            if (!isCurrentUser)
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: widget.comments.user?.photo != null
+                    ? NetworkImage(widget.comments.user!.photo!)
+                    : const AssetImage('assets/images/user.png')
+                        as ImageProvider,
+              ),
+            if (!isCurrentUser) const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: isCurrentUser
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.comments.user?.username ??
+                        S.of(context).unknown_user,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  widget.comments.isDeleted == true || isDelete == true
+                      ? Text(
+                          S.of(context).comment_deleted,
+                          style: TextStyle(color: Colors.red[300]),
+                        )
+                      : Text(
+                          widget.comments.comment ?? '',
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.comments.createdAt ?? '',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-        ],
+            if (isCurrentUser) const SizedBox(width: 10),
+          ],
+        ),
       ),
     );
   }

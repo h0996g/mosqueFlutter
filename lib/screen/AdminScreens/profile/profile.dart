@@ -179,7 +179,10 @@ class ProfileAdmin extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: Text(S.of(context).home, style: GoogleFonts.poppins()),
             onTap: () {
-              navigatAndFinish(context: context, page: const StartPageAdmin());
+              // navigatAndFinish(context: context, page: const StartPageAdmin());
+              Navigator.pop(context);
+              Navigator.pop(context);
+              // Navigator.popUntil(context, (route) => route.isFirst);
             },
           ),
           ListTile(

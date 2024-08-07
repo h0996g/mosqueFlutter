@@ -168,5 +168,8 @@
     "next": "التالي",
     "yourScore": "نتيجتك",
     "continuee": "استمر",
-    "checkAnswer": "تحقق من الإجابة"
+    "checkAnswer": "تحقق من الإجابة",
+    "there_are_no_lessons_yet": "لا توجد دروس بعد",
+    "congratulations": "تهانينا",
+    "focusAndTryAgain": "قم بالتركيز وحاول مرة اخرى"
 }

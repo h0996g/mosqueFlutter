@@ -60,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور الجديدة"),
         "confirm_delete_comment": MessageLookupByLibrary.simpleMessage(
             "هل أنت متأكد أنك تريد حذف هذا التعليق؟"),
+        "congratulations": MessageLookupByLibrary.simpleMessage("تهانينا"),
         "contactUs": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
         "contact_us": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
         "continuee": MessageLookupByLibrary.simpleMessage("استمر"),
@@ -126,6 +127,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "first_name": MessageLookupByLibrary.simpleMessage("الاسم الأول"),
         "first_name_empty": MessageLookupByLibrary.simpleMessage(
             "يجب ألا يكون الاسم الأول فارغًا"),
+        "focusAndTryAgain":
+            MessageLookupByLibrary.simpleMessage("قم بالتركيز وحاول مرة اخرى"),
         "forgot_password":
             MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور؟"),
         "french": MessageLookupByLibrary.simpleMessage("الفرنسية"),
@@ -238,6 +241,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "surname": MessageLookupByLibrary.simpleMessage("اللقب"),
         "teacher": MessageLookupByLibrary.simpleMessage("معلم"),
         "telephone": MessageLookupByLibrary.simpleMessage("الهاتف"),
+        "there_are_no_lessons_yet":
+            MessageLookupByLibrary.simpleMessage("لا توجد دروس بعد"),
         "timeRemaining": m1,
         "titleEmptyError":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون العنوان فارغًا"),
