@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mosque/Model/admin_medel.dart';
+import 'package:mosque/component/cache_network_img.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
@@ -99,7 +100,8 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                                 ? FileImage(ProfileAdminCubit.get(context)
                                     .imageCompress!)
                                 : homeAdminCubit.photo != null
-                                    ? NetworkImage(homeAdminCubit.photo!)
+                                    ? CachedNetworkImageWidgetProvider
+                                        .getImageProvider(homeAdminCubit.photo!)
                                     : const AssetImage('assets/images/user.png')
                                         as ImageProvider<Object>,
                             radius: 60,

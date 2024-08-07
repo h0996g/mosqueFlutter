@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mosque/Model/admin_medel.dart';
+import 'package:mosque/component/cache_network_img.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/cubit/main_cubit.dart';
 import 'package:mosque/generated/l10n.dart';
@@ -58,7 +59,7 @@ class ProfileAdmin extends StatelessWidget {
                     radius: 50,
                     backgroundImage:
                         HomeAdminCubit.get(context).adminModel!.photo != null
-                            ? NetworkImage(
+                            ? CachedNetworkImageWidgetProvider.getImageProvider(
                                 HomeAdminCubit.get(context).adminModel!.photo!)
                             : const AssetImage('assets/images/user.png')
                                 as ImageProvider<Object>,
@@ -168,7 +169,8 @@ class ProfileAdmin extends StatelessWidget {
                 CircleAvatar(
                   radius: 40,
                   backgroundImage: adminModel.photo != null
-                      ? NetworkImage(adminModel.photo!)
+                      ? CachedNetworkImageWidgetProvider.getImageProvider(
+                          adminModel.photo!)
                       : const AssetImage('assets/images/user.png')
                           as ImageProvider<Object>,
                 ),

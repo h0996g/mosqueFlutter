@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mosque/component/cache_network_img.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/screen/userScreens/home/cubit/home_user_cubit.dart';
 import 'package:mosque/screen/userScreens/profile/cubit/profile_cubit.dart';
@@ -112,9 +113,11 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                                           .userDataModel!
                                           .photo !=
                                       null
-                                  ? NetworkImage(HomeUserCubit.get(context)
-                                      .userDataModel!
-                                      .photo!)
+                                  ? CachedNetworkImageWidgetProvider
+                                      .getImageProvider(
+                                          HomeUserCubit.get(context)
+                                              .userDataModel!
+                                              .photo!)
                                   : const AssetImage('assets/images/user.png')
                                       as ImageProvider<Object>,
                           radius: 60,

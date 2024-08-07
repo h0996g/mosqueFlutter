@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/component/cache_network_img.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/screen/AdminScreens/lesson/cubit/lesson_cubit.dart';
@@ -210,11 +211,11 @@ class CategoryCard extends StatelessWidget {
   final SectionModel sectionModel;
 
   const CategoryCard({
-    super.key,
+    Key? key,
     required this.sectionModel,
     required this.idSection,
     required this.isAdmin,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -255,23 +256,21 @@ class CategoryCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(15.0),
-                ),
-                child: sectionModel.photo != null
-                    ? Image.network(
-                        sectionModel.photo ?? '',
-                        fit: BoxFit.cover,
-                      )
-                    : Center(
-                        child: Text(
-                          S.of(context).noPhotoAvailable, // Updated
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                      ),
+                child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(15.0),
               ),
-            ),
+              child: sectionModel.photo != null
+                  ? CachedNetworkImageWidget(
+                      imageUrl: sectionModel.photo ?? '',
+                    )
+                  : Center(
+                      child: Text(
+                        S.of(context).noPhotoAvailable, // Updated
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ),
+            )),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(

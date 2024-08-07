@@ -63,6 +63,7 @@ dependencies:
   youtube_player_flutter: ^9.0.1
   rename: ^3.0.2
   confetti: ^0.7.0
+  flutter_cache_manager: ^3.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

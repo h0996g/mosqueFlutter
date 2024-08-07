@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/component/cache_network_img.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/model/user_model.dart';
 import 'package:mosque/screen/AdminScreens/students/cubit/students_cubit.dart';
@@ -48,7 +49,7 @@ class _StudentsState extends State<Students> {
                 },
                 leading: CircleAvatar(
                   backgroundImage: students[index].photo != null
-                      ? NetworkImage(
+                      ? CachedNetworkImageWidgetProvider.getImageProvider(
                           students[index].photo!,
                         )
                       : Image.asset('assets/images/user.png').image,

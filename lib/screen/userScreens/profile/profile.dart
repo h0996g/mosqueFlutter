@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mosque/component/cache_network_img.dart';
 import 'package:mosque/component/components.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mosque/cubit/main_cubit.dart';
@@ -60,7 +61,7 @@ class ProfileUser extends StatelessWidget {
                                   .userDataModel!
                                   .photo !=
                               null
-                          ? NetworkImage(
+                          ? CachedNetworkImageWidgetProvider.getImageProvider(
                               HomeUserCubit.get(context).userDataModel!.photo!)
                           : const AssetImage('assets/images/user.png')
                               as ImageProvider<Object>,
@@ -154,10 +155,10 @@ class ProfileUser extends StatelessWidget {
                 CircleAvatar(
                   radius: 40,
                   backgroundImage: joueurModel.photo != null
-                      ? NetworkImage(joueurModel.photo!)
-                      : const AssetImage('assets/images/user.png')
-                          as ImageProvider<Object>,
-                ),
+                      ? CachedNetworkImageWidgetProvider.getImageProvider(
+                          joueurModel.photo!)
+                      : const AssetImage('assets/images/user.png'),
+                )
               ],
             ),
           ),

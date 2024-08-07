@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mosque/component/appbar.dart';
+import 'package:mosque/component/cache_network_img.dart';
 import 'package:mosque/component/category/category.dart';
 import 'package:mosque/component/components.dart';
 import 'package:mosque/component/sorting.dart';
@@ -122,7 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .userDataModel!
                                                     .photo !=
                                                 null
-                                            ? CachedNetworkImageProvider(
+                                            ? CachedNetworkImageWidgetProvider
+                                                .getImageProvider(
                                                 HomeUserCubit.get(context)
                                                     .userDataModel!
                                                     .photo!,
