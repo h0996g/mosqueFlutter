@@ -755,6 +755,7 @@ class _CommentsItemsState extends State<CommentsItems> {
               ),
             if (!isCurrentUser)
               CircleAvatar(
+                backgroundColor: Colors.transparent,
                 radius: 20,
                 backgroundImage: widget.comments.user?.photo != null
                     ? NetworkImage(widget.comments.user!.photo!)

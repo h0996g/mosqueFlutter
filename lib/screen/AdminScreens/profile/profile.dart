@@ -25,8 +25,8 @@ class ProfileAdmin extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          // Navigator.pop(context);
-          navigatAndFinish(context: context, page: const StartPageAdmin());
+          Navigator.pop(context);
+          // navigatAndFinish(context: context, page: const StartPageAdmin());
         }
       },
       child: Scaffold(
@@ -56,6 +56,7 @@ class ProfileAdmin extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
+                    backgroundColor: Colors.transparent,
                     radius: 50,
                     backgroundImage:
                         HomeAdminCubit.get(context).adminModel!.photo != null
@@ -167,6 +168,7 @@ class ProfileAdmin extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
+                  backgroundColor: Colors.transparent,
                   radius: 40,
                   backgroundImage: adminModel.photo != null
                       ? CachedNetworkImageWidgetProvider.getImageProvider(

@@ -118,6 +118,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                                         page: const ProfileAdmin());
                                   },
                                   child: CircleAvatar(
+                                    backgroundColor: Colors.transparent,
                                     radius: 35,
                                     backgroundImage: HomeAdminCubit.get(context)
                                                 .adminModel!

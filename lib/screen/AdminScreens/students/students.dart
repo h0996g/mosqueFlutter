@@ -48,6 +48,7 @@ class _StudentsState extends State<Students> {
                       ));
                 },
                 leading: CircleAvatar(
+                  backgroundColor: Colors.transparent,
                   backgroundImage: students[index].photo != null
                       ? CachedNetworkImageWidgetProvider.getImageProvider(
                           students[index].photo!,

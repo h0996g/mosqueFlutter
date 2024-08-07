@@ -50,33 +50,40 @@ class _StartPageAdminState extends State<StartPageAdmin> {
                 ),
               )
             : null,
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.home),
-              label: S.of(context).home, // Updated
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.group),
-              label: S.of(context).students, // Updated
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.message),
-              label: S.of(context).messages, // Updated
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.person),
-              label: S.of(context).profile, // Updated
-            ),
-          ],
-          selectedItemColor: kpink,
-          unselectedItemColor: Colors.grey[300],
+        bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Colors.white,
+          ),
+          child: BottomNavigationBar(
+            // backgroundColor: Colors.red,
+            // fixedColor: Colors.green,
+            currentIndex: _selectedIndex,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.home),
+                label: S.of(context).home, // Updated
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.group),
+                label: S.of(context).students, // Updated
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.message),
+                label: S.of(context).messages, // Updated
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(Icons.person),
+                label: S.of(context).profile, // Updated
+              ),
+            ],
+            selectedItemColor: kpink,
+            unselectedItemColor: Colors.grey[300],
+          ),
         ),
         body: _selectedIndex == 0
             ? const HomeAdmin()

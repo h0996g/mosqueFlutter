@@ -56,6 +56,7 @@ class ProfileUser extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircleAvatar(
+                      backgroundColor: Colors.transparent,
                       radius: 50,
                       backgroundImage: HomeUserCubit.get(context)
                                   .userDataModel!
@@ -153,6 +154,7 @@ class ProfileUser extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
+                  backgroundColor: Colors.transparent,
                   radius: 40,
                   backgroundImage: joueurModel.photo != null
                       ? CachedNetworkImageWidgetProvider.getImageProvider(

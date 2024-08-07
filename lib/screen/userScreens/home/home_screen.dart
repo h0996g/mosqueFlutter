@@ -117,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             page: const ProfileUser());
                                       },
                                       child: CircleAvatar(
+                                        backgroundColor: Colors.transparent,
                                         radius: 35,
                                         backgroundImage: HomeUserCubit.get(
                                                         context)

@@ -59,6 +59,7 @@ class _ProfileOtherStudentState extends State<ProfileOtherStudent> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CircleAvatar(
+                    backgroundColor: Colors.transparent,
                     radius: 50,
                     backgroundImage: user.photo != null
                         ? NetworkImage(user.photo!)
