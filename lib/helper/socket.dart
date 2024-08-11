@@ -6,7 +6,8 @@ class SocketService {
 
   void connect() {
     socket = IO.io(
-        'https://mosque-node-h0996g-h0996gs-projects.vercel.app',
+        // 'https://mosque-node-h0996g-h0996gs-projects.vercel.app',
+        'http://192.168.1.19:3000',
         <String, dynamic>{
           'transports': ['websocket'],
           'autoConnect': true,
@@ -34,8 +35,8 @@ class SocketService {
     socket!.emit('leaveLesson', lessonId);
   }
 
-  void sendComment(String lessonId, String comment, String userId,
-      String onModel, String username) {
+  void sendComment(
+      String lessonId, String comment, String userId, String username) {
     socket!.emit('newComment', {
       'lessonId': lessonId,
       'comment': comment,
@@ -43,7 +44,6 @@ class SocketService {
         '_id': userId,
         'username': username,
       },
-      'onModel': onModel,
       'createdAt': DateTime.now().toIso8601String(),
     });
   }

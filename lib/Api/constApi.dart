@@ -26,7 +26,8 @@ const GETALLSECTION = '/api/sections';
 const GETSECTIONBYID = '/api/section/';
 
 const COMPLETLESSONPROGRESS = '/api/lesson/complete';
-const ADDCOMMENTTOLESSON = '/api/lesson/comment/';
+const ADDCOMMENTUSERTOLESSON = '/api/lesson/user/comment/';
+const ADDCOMMENTADMINTOLESSON = '/api/lesson/admin/comment/';
 const GETCOMMENTS = '/api/lesson/comments/';
 const GETQUIZ = '/api/lesson/quiz/';
 const DELETECOMMENT = '/api/lesson/comment/';

@@ -432,6 +432,7 @@ class _PlayListState extends State<PlayList> {
                 } else {
                   if (isCompletedlesson(
                       widget.lesson[index - 1], widget.idSection)) {
+                    widget.controller.pause();
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -619,15 +620,16 @@ class _CommentSectionState extends State<CommentSection> {
       final comment = _commentController.text;
       final userId = homeUserCubit!
           .userDataModel!.id!; // Get the user ID from your user management
-      const onModel = 'User'; // or 'Admin'
+      // const onModel = 'User'; // or 'Admin'
       LessonCubit.get(context)
-          .addCommentToLesson(
-              lessinId: widget.lessonId,
-              comment: comment,
-              userID: userId,
-              onModel: onModel)
+          .addCommentUserToLesson(
+        lessinId: widget.lessonId,
+        comment: comment,
+        // userID: userId,
+        // onModel: onModel
+      )
           .then((value) {
-        _socketService.sendComment(widget.lessonId, comment, userId, onModel,
+        _socketService.sendComment(widget.lessonId, comment, userId,
             homeUserCubit!.userDataModel!.username!);
       });
 
@@ -691,11 +693,12 @@ class CommentsItems extends StatefulWidget {
   final String userID;
   final String lessonID;
 
-  const CommentsItems(
-      {super.key,
-      required this.comments,
-      required this.userID,
-      required this.lessonID});
+  const CommentsItems({
+    super.key,
+    required this.comments,
+    required this.userID,
+    required this.lessonID,
+  });
 
   @override
   State<CommentsItems> createState() => _CommentsItemsState();
@@ -707,6 +710,10 @@ class _CommentsItemsState extends State<CommentsItems> {
   @override
   Widget build(BuildContext context) {
     bool isCurrentUser = widget.userID == widget.comments.user?.id;
+    bool isAdmin = widget.comments.isAdmin ?? false;
+
+    // Define a primary color for the design
+    final Color primaryColor = Colors.blue[50]!;
 
     return Align(
       alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -714,7 +721,7 @@ class _CommentsItemsState extends State<CommentsItems> {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: isCurrentUser ? Colors.blue[50] : Colors.white,
+          color: isCurrentUser ? primaryColor : Colors.white,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
@@ -729,7 +736,8 @@ class _CommentsItemsState extends State<CommentsItems> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (isCurrentUser &&
-                (widget.comments.isDeleted == false && isDelete == false))
+                !isDelete &&
+                !(widget.comments.isDeleted ?? false))
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -789,13 +797,27 @@ class _CommentsItemsState extends State<CommentsItems> {
                     ? CrossAxisAlignment.end
                     : CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.comments.user?.username ??
-                        S.of(context).unknown_user,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
+                  Row(
+                    mainAxisAlignment: isCurrentUser
+                        ? MainAxisAlignment.end
+                        : MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.comments.user?.username ??
+                            S.of(context).unknown_user,
+                        style: TextStyle(
+                          fontWeight:
+                              isAdmin ? FontWeight.bold : FontWeight.normal,
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      if (isAdmin) ...[
+                        const SizedBox(width: 5),
+                        const Icon(Icons.verified,
+                            size: 16, color: Colors.black87),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: 5),
                   widget.comments.isDeleted == true || isDelete == true
@@ -805,7 +827,8 @@ class _CommentsItemsState extends State<CommentsItems> {
                         )
                       : Text(
                           widget.comments.comment ?? '',
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black87),
                         ),
                   const SizedBox(height: 5),
                   Text(

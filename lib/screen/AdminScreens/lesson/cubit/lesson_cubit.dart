@@ -62,15 +62,16 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
   }
 
   String? newCommentId;
-  Future<void> addCommentToLesson(
-      {required String lessinId,
-      required String comment,
-      required String userID,
-      required String onModel}) async {
+  Future<void> addCommentToLesson({
+    required String lessinId,
+    required String comment,
+    // required String userID,
+    // required String onModel
+  }) async {
     emit(AddCommentToLessonLoading());
-    await Httplar.httpPost(path: ADDCOMMENTTOLESSON + lessinId, data: {
-      "user": userID,
-      "onModel": onModel,
+    await Httplar.httpPost(path: ADDCOMMENTADMINTOLESSON + lessinId, data: {
+      // "user": userID,
+      // "onModel": onModel,
       "comment": comment,
     }).then((value) {
       if (value.statusCode == 201) {

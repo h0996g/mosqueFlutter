@@ -624,15 +624,16 @@ class _CommentSectionState extends State<CommentSection> {
       final comment = _commentController.text;
       final userId = homeAdminCubit!
           .adminModel!.id!; // Get the user ID from your user management
-      const onModel = 'Admin'; // or 'Admin'
+      // const onModel = 'Admin'; // or 'Admin'
       LessonAdminCubit.get(context)
           .addCommentToLesson(
-              lessinId: widget.lessonId,
-              comment: comment,
-              userID: userId,
-              onModel: onModel)
+        lessinId: widget.lessonId,
+        comment: comment,
+        // userID: userId,
+        // onModel: onModel
+      )
           .then((value) {
-        _socketService.sendComment(widget.lessonId, comment, userId, onModel,
+        _socketService.sendComment(widget.lessonId, comment, userId,
             homeAdminCubit!.adminModel!.username!);
       });
 
@@ -696,97 +697,137 @@ class CommentsItems extends StatefulWidget {
   final String userID;
   final String lessonID;
 
-  const CommentsItems(
-      {super.key,
-      required this.comments,
-      required this.userID,
-      required this.lessonID});
+  const CommentsItems({
+    super.key,
+    required this.comments,
+    required this.userID,
+    required this.lessonID,
+  });
 
   @override
   State<CommentsItems> createState() => _CommentsItemsState();
 }
-// Import your localization file
 
 class _CommentsItemsState extends State<CommentsItems> {
   bool isDelete = false;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: widget.userID == widget.comments.user?.id
-            ? Border.all(color: Colors.grey.shade800)
-            : Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.comments.user?.username ?? S.of(context).unknown_user,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                widget.comments.isDeleted == true || isDelete == true
-                    ? Text(
-                        S.of(context).comment_deleted,
-                        style: TextStyle(color: Colors.red[300]),
-                      )
-                    : Text(widget.comments.comment ?? ''),
-                const SizedBox(height: 5),
-                Text(
-                  widget.comments.createdAt ?? '',
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-              ],
+    bool isCurrentUser = widget.userID == widget.comments.user?.id;
+
+    return Align(
+      alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isCurrentUser ? Colors.blue[50] : Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
             ),
-          ),
-          if (widget.userID == widget.comments.user?.id &&
-              (widget.comments.isDeleted == false && isDelete == false))
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(S.of(context).delete_comment),
-                        content: Text(S.of(context).confirm_delete_comment),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(S.of(context).no),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              LessonAdminCubit.get(context)
-                                  .deleteComment(
-                                lessonID: widget.lessonID,
-                                commentID: widget.comments.id!,
-                              )
-                                  .then((value) {
-                                setState(() {
-                                  isDelete = true;
-                                });
-                              });
-                              Navigator.pop(context);
-                            },
-                            child: Text(S.of(context).yes),
-                          ),
-                        ],
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (isCurrentUser &&
+                (widget.comments.isDeleted == false && isDelete == false))
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(S.of(context).delete_comment),
+                            content: Text(S.of(context).confirm_delete_comment),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(S.of(context).no),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  LessonAdminCubit.get(context)
+                                      .deleteComment(
+                                    lessonID: widget.lessonID,
+                                    commentID: widget.comments.id!,
+                                  )
+                                      .then((value) {
+                                    setState(() {
+                                      isDelete = true;
+                                    });
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Text(S.of(context).yes),
+                              ),
+                            ],
+                          );
+                        },
                       );
-                    });
-              },
+                    },
+                  ),
+                ],
+              ),
+            if (!isCurrentUser)
+              CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 20,
+                backgroundImage: widget.comments.user?.photo != null
+                    ? NetworkImage(widget.comments.user!.photo!)
+                    : const AssetImage('assets/images/user.png')
+                        as ImageProvider,
+              ),
+            if (!isCurrentUser) const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: isCurrentUser
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.comments.user?.username ??
+                        S.of(context).unknown_user,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  widget.comments.isDeleted == true || isDelete == true
+                      ? Text(
+                          S.of(context).comment_deleted,
+                          style: TextStyle(color: Colors.red[300]),
+                        )
+                      : Text(
+                          widget.comments.comment ?? '',
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.comments.createdAt ?? '',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-        ],
+            if (isCurrentUser) const SizedBox(width: 10),
+          ],
+        ),
       ),
     );
   }

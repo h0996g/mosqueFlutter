@@ -156,26 +156,30 @@ class Quiz {
 }
 
 class Comment {
-  final User? user;
-  final String? onModel;
+  final User? user; // simple user includ just username and photo and id
   final String? comment;
   final String? id;
   final bool? isDeleted;
   final String? createdAt;
+  final bool? isAdmin;
 
   Comment({
     this.user,
-    this.onModel,
     this.comment,
     this.isDeleted,
     this.createdAt,
     this.id,
+    this.isAdmin,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
-      user: json['user'] != null ? User.fromJson(json['user']) : null,
-      onModel: json['onModel'],
+      user: json['user'] != null
+          ? User.fromJson(json['user'])
+          : json['admin'] != null
+              ? User.fromJson(json['admin'])
+              : null,
+      isAdmin: json['admin'] != null ? true : false,
       comment: json['comment'],
       isDeleted: json['isDeleted'] ?? false,
       createdAt: json['createdAt'],
