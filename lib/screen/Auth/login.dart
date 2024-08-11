@@ -114,15 +114,6 @@ class Login extends StatelessWidget {
                                       PATH = value == true
                                           ? Loginadmin
                                           : Loginuser;
-                                      PATH1 = value == true
-                                          ? RECOVERPASSWORD
-                                          : RECOVERPASSWORDADMIN;
-                                      PATH2 = value == true
-                                          ? VERIFYJOUEURCODE
-                                          : VERIFYADMINCODE;
-                                      PATH3 = value == true
-                                          ? RESETPASSWORD
-                                          : RESETPASSWORDADMIN;
                                     }),
                                 TextButton(
                                     child: Text(

@@ -5,10 +5,12 @@ class SocketService {
   static IO.Socket? socket;
 
   void connect() {
-    socket = IO.io('http://192.168.1.19:3000', <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': true,
-    });
+    socket = IO.io(
+        'https://mosque-node-h0996g-h0996gs-projects.vercel.app',
+        <String, dynamic>{
+          'transports': ['websocket'],
+          'autoConnect': true,
+        });
 
     socket!.connect();
 

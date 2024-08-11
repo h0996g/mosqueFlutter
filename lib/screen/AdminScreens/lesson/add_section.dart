@@ -36,7 +36,6 @@ class _AddSectionScreenState extends State<AddSectionScreen> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       Map<String, dynamic> data = {
-        'admin': HomeAdminCubit.get(context).adminModel!.id,
         'name': _nameController.text,
         'description': _descriptionController.text,
       };

@@ -129,6 +129,11 @@ class _EditLessonPageState extends State<EditLessonPage> {
                 showToast(
                     msg: S.of(context).lessonUpdateFailed,
                     state: ToastStates.error);
+              } else if (state is ErrorState) {
+                showToast(
+                  msg: state.model.message ?? 'error',
+                  state: ToastStates.error,
+                );
               }
             },
             builder: (context, state) {

@@ -170,7 +170,6 @@ class LessonAdminCubit extends Cubit<LessonAdminState> {
       required bool isJustremovePdf}) async {
     emit(UpdateLessonLoading());
     if (isJustremovePdf) {
-      print('ddddddddddddddddddddddddd');
       data['suplemmentPdf'] = null;
       await deleteOldPdfFirebase(deleteOldPdfUrl: oldPdfUrl);
     }

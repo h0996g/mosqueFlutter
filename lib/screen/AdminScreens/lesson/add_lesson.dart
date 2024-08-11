@@ -128,6 +128,11 @@ class _AddNewLessonPageState extends State<AddNewLessonPage> {
                   msg: S.of(context).lessonCreationFailed,
                   state: ToastStates.error,
                 );
+              } else if (state is ErrorState) {
+                showToast(
+                  msg: state.model.message ?? 'error',
+                  state: ToastStates.error,
+                );
               }
             },
             builder: (context, state) {

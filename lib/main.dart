@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mosque/component/const.dart';
-import 'package:mosque/const/colors.dart';
 import 'package:mosque/cubit/main_cubit.dart';
 import 'package:mosque/firebase_options.dart';
 import 'package:mosque/helper/cachhelper.dart';
