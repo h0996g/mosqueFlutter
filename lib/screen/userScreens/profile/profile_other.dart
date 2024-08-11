@@ -28,33 +28,33 @@ class _ProfileOtherStudentState extends State<ProfileOtherStudent> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileUserCubit, ProfileUserState>(
-      listener: (context, state) {
-        if (state is GetOtherUserStateGood) {
-          user = state.model;
-        }
-      },
-      builder: (context, state) {
-        if (state is GetOtherUserLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Scaffold(
-            appBar: AppBar(
-              title: Text(S.of(context).profile), // Updated
-              leading: IconButton(
-                color: Colors.black,
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(S.of(context).profile), // Updated
+          leading: IconButton(
+            color: Colors.black,
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
             ),
-            body: SingleChildScrollView(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: BlocConsumer<ProfileUserCubit, ProfileUserState>(
+          listener: (context, state) {
+            if (state is GetOtherUserStateGood) {
+              user = state.model;
+            }
+          },
+          builder: (context, state) {
+            if (state is GetOtherUserLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -87,9 +87,9 @@ class _ProfileOtherStudentState extends State<ProfileOtherStudent> {
                   ),
                 ],
               ),
-            ));
-      },
-    );
+            );
+          },
+        ));
   }
 
   Widget _buildProfileCard(BuildContext context, DataUserModel joueurModel) {

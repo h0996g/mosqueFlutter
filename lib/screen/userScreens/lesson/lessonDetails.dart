@@ -116,12 +116,32 @@ class _LessonScreenState extends State<LessonScreen> {
         // }
 
         if (state is GetSectionByIdLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Scaffold(
+            appBar: AppBar(
+                leading: IconButton(
+              color: Colors.black,
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (state is GetSectionByIdStateBad) {
-          return const Center(
-            child: Text('Error'),
+          return Scaffold(
+            appBar: AppBar(
+                leading: IconButton(
+              color: Colors.black,
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )),
+            body: const Center(
+              child: Text('Error'),
+            ),
           );
         } else {
           if (state is GetSectionByIdStateGood &&

@@ -27,33 +27,33 @@ class _ProgressUserDetailsState extends State<ProgressUserDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileUserCubit, ProfileUserState>(
-      listener: (context, state) {
-        if (state is GetProgressUserStateGood) {
-          progressData = state.model;
-        }
-      },
-      builder: (context, state) {
-        if (state is GetProgressUserLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Scaffold(
-          appBar: AppBar(
-            // title: const Text('User Progress'),
-            leading: IconButton(
-              color: Colors.black,
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        // title: const Text('User Progress'),
+        leading: IconButton(
+          color: Colors.black,
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
           ),
-          body: Padding(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: BlocConsumer<ProfileUserCubit, ProfileUserState>(
+        listener: (context, state) {
+          if (state is GetProgressUserStateGood) {
+            progressData = state.model;
+          }
+        },
+        builder: (context, state) {
+          if (state is GetProgressUserLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView.builder(
               itemCount: progressData.length,
@@ -61,9 +61,9 @@ class _ProgressUserDetailsState extends State<ProgressUserDetails> {
                 return SectionCard(sectionData: progressData[index]);
               },
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
