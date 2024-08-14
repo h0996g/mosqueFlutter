@@ -7,7 +7,8 @@ class SocketService {
   void connect() {
     socket = IO.io(
         // 'https://mosque-node-h0996g-h0996gs-projects.vercel.app',
-        'http://192.168.1.19:3000',
+        'https://fiqhpath-deb34fe08f93.herokuapp.com',
+        // 'http://192.168.1.19:3000',
         <String, dynamic>{
           'transports': ['websocket'],
           'autoConnect': true,
