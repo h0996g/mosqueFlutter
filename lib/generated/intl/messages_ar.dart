@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "Rulings_and_sermons":
             MessageLookupByLibrary.simpleMessage("حكم ومواعظ"),
+        "about_us": MessageLookupByLibrary.simpleMessage("معلومات عنا"),
         "addOption": MessageLookupByLibrary.simpleMessage("أضف خياراً"),
         "addQuestion": MessageLookupByLibrary.simpleMessage("أضف سؤالاً"),
         "addSection": MessageLookupByLibrary.simpleMessage("إضافة قسم"),
@@ -62,7 +63,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "هل أنت متأكد أنك تريد حذف هذا التعليق؟"),
         "congratulations": MessageLookupByLibrary.simpleMessage("تهانينا"),
         "contactUs": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
-        "contact_us": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
         "continuee": MessageLookupByLibrary.simpleMessage("استمر"),
         "createLesson": MessageLookupByLibrary.simpleMessage("إنشاء درس"),
         "createNewLesson":

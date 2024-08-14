@@ -8,11 +8,11 @@ import 'package:mosque/cubit/main_cubit.dart';
 import 'package:mosque/generated/l10n.dart';
 import 'package:mosque/helper/cachhelper.dart';
 import 'package:mosque/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
-import 'package:mosque/screen/AdminScreens/home/startPage.dart';
 import 'package:mosque/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:mosque/screen/AdminScreens/profile/update_form.dart';
 import 'package:mosque/screen/Auth/login.dart';
 import 'package:mosque/screen/AdminScreens/profile/update_mdp.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileAdmin extends StatelessWidget {
   const ProfileAdmin({super.key});
@@ -259,12 +259,14 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.contact_support),
-            title: Text(S.of(context).contactUs, style: GoogleFonts.poppins()),
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ContactUsPage()),
-              // );
+            title: Text(S.of(context).about_us, style: GoogleFonts.poppins()),
+            onTap: () async {
+              const url = 'https://h0996g.github.io/portfolio/';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
             },
           ),
         ],

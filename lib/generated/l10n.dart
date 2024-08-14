@@ -720,11 +720,11 @@ class S {
     );
   }
 
-  /// `Contact Us`
-  String get contact_us {
+  /// `About Us`
+  String get about_us {
     return Intl.message(
-      'Contact Us',
-      name: 'contact_us',
+      'About Us',
+      name: 'about_us',
       desc: '',
       args: [],
     );
