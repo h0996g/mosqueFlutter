@@ -35,33 +35,38 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // Bottom bar
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: S.of(context).home,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.favorite_rounded),
-            label: S.of(context).favorite,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.message),
-            label: S.of(context).messages,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
-            label: S.of(context).profile,
-          ),
-        ],
-        selectedItemColor: kpink,
-        unselectedItemColor: Colors.grey[300],
+      bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+          canvasColor: Colors.white,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home),
+              label: S.of(context).home,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.favorite_rounded),
+              label: S.of(context).favorite,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.message),
+              label: S.of(context).messages,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.person),
+              label: S.of(context).profile,
+            ),
+          ],
+          selectedItemColor: kpink,
+          unselectedItemColor: Colors.grey[300],
+        ),
       ),
 
       body: SafeArea(
