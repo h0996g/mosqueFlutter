@@ -1,7 +1,7 @@
 // const URLHTTP = '192.168.1.23:3000';
-// const URLHTTP = '192.168.1.19:3000';
+const URLHTTP = '192.168.138.68:3000';
 // const URLHTTP = 'mosque-node-h0996gs-projects.vercel.app';
-const URLHTTP = 'fiqhpath-deb34fe08f93.herokuapp.com';
+// const URLHTTP = 'fiqhpath-deb34fe08f93.herokuapp.com';
 // const URLHTTP = 'mosque-node.vercel.app';
 // const URLHTTP = '10.0.2.2:3000';
 // const URLHTTP = '10.0.2.2:3000';

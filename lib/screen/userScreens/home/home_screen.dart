@@ -34,9 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+      ),
       // Bottom bar
       bottomNavigationBar: Theme(
-          data: Theme.of(context).copyWith(
+        data: Theme.of(context).copyWith(
           canvasColor: Colors.white,
         ),
         child: BottomNavigationBar(
